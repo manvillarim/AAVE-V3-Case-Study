@@ -1,0 +1,10 @@
+{
+  "claimAllRewards: one reward type": "50311",
+  "claimAllRewardsToSelf: one reward type": "50107",
+  "claimRewards partial: one reward type": "48430",
+  "claimRewards: one reward type": "48168",
+  "configureAssets: one reward type": "263847",
+  "getUserAccruedRewards: one reward type": "2090",
+  "setDistributionEnd": "5940",
+  "setEmissionPerSecond: one reward one emission": "11455"
+}

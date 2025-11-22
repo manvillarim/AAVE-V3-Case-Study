@@ -1,0 +1,8 @@
+{
+    "importFilesToOrigRelpaths": {},
+    "primary_contract": "RewardsDistributorOptimized",
+    "specfile": "/home/manoel/projeto/GasOptimizationCatalog/case-study/specs/RewardsDistributor.spec",
+    "specfileOrigRelpath": "../specs/RewardsDistributor.spec",
+    "specfilesToImportDecls": {},
+    "type": "spec"
+}

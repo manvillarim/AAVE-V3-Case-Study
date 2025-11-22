@@ -1,0 +1,67 @@
+{
+    "/home/manoel/projeto/GasOptimizationCatalog/case-study": [
+        {
+            "anonymous_key": "27fe9464da3972b6704f2ccb71a8c983084bc268",
+            "domain": "https://prover.certora.com",
+            "job_id": "a423b6531ee64e918bf55e3c07825c06",
+            "notify_msg": "Collector - Equivalence check for gas optimizations",
+            "output_url": "https://prover.certora.com/output/480394/a423b6531ee64e918bf55e3c07825c06?anonymousKey=27fe9464da3972b6704f2ccb71a8c983084bc268",
+            "time": 1763068594,
+            "user_id": "480394"
+        },
+        {
+            "anonymous_key": "aa5f9494295817a9d5a8feccc0e2e1bc245c73b3",
+            "domain": "https://prover.certora.com",
+            "job_id": "e14e64943b074623a4ba658b071fb89c",
+            "notify_msg": "Collector - Equivalence check for gas optimizations",
+            "output_url": "https://prover.certora.com/output/480394/e14e64943b074623a4ba658b071fb89c?anonymousKey=aa5f9494295817a9d5a8feccc0e2e1bc245c73b3",
+            "time": 1763068577,
+            "user_id": "480394"
+        },
+        {
+            "anonymous_key": "505f348e2580105fc8e5ef14f286045678cafe55",
+            "domain": "https://prover.certora.com",
+            "job_id": "209eccbb867944129a28c0e1bc54ed4a",
+            "notify_msg": "RewardsDistributor - Equivalence check for gas optimizations",
+            "output_url": "https://prover.certora.com/output/480394/209eccbb867944129a28c0e1bc54ed4a?anonymousKey=505f348e2580105fc8e5ef14f286045678cafe55",
+            "time": 1763067699,
+            "user_id": "480394"
+        },
+        {
+            "anonymous_key": "9d0073a429fae0682c53e0ca1a24f59d66105135",
+            "domain": "https://prover.certora.com",
+            "job_id": "b892135b51124bc2ba3616346768252c",
+            "notify_msg": "RewardsController - Equivalence check for gas optimizations",
+            "output_url": "https://prover.certora.com/output/480394/b892135b51124bc2ba3616346768252c?anonymousKey=9d0073a429fae0682c53e0ca1a24f59d66105135",
+            "time": 1763067564,
+            "user_id": "480394"
+        },
+        {
+            "anonymous_key": "91a3843fdd1d0051e7f02816bede9eeb87c59cc0",
+            "domain": "https://prover.certora.com",
+            "job_id": "78374d0a211c42ee9d278a155b071848",
+            "notify_msg": "RewardsDistributor - Equivalence check for gas optimizations",
+            "output_url": "https://prover.certora.com/output/480394/78374d0a211c42ee9d278a155b071848?anonymousKey=91a3843fdd1d0051e7f02816bede9eeb87c59cc0",
+            "time": 1763067451,
+            "user_id": "480394"
+        },
+        {
+            "anonymous_key": "4e4dce58323a80f4473b044b0437b64135d747b0",
+            "domain": "https://prover.certora.com",
+            "job_id": "922d0051f7c1463682289e30c8efda3a",
+            "notify_msg": "RewardsController - Equivalence check for gas optimizations",
+            "output_url": "https://prover.certora.com/output/480394/922d0051f7c1463682289e30c8efda3a?anonymousKey=4e4dce58323a80f4473b044b0437b64135d747b0",
+            "time": 1763067077,
+            "user_id": "480394"
+        },
+        {
+            "anonymous_key": "66949b3dede83e892495bcab116a85795ad4a9ec",
+            "domain": "https://prover.certora.com",
+            "job_id": "050db977579d4c208f97fdd8679e09f7",
+            "notify_msg": "Collector - Equivalence check for gas optimizations",
+            "output_url": "https://prover.certora.com/output/480394/050db977579d4c208f97fdd8679e09f7?anonymousKey=66949b3dede83e892495bcab116a85795ad4a9ec",
+            "time": 1763066596,
+            "user_id": "480394"
+        }
+    ]
+}

@@ -1,0 +1,2268 @@
+{
+    "RegistryOptimized_00000000ce4604a0000000000000000000000005": {
+        "contracts": [
+            {
+                "address": "00000000ce4604a0000000000000000000000005",
+                "allMethods": [
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [],
+                        "isLibrary": false,
+                        "name": "constructor",
+                        "notpayable": true,
+                        "originalFile": "Harness/PoolAddressesProviderRegistry/RegistryOptimized.sol",
+                        "paramNames": [],
+                        "returns": [],
+                        "sighash": "0",
+                        "sourceBytes": {
+                            "begin": 285,
+                            "size": 66
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "constructor",
+                        "notpayable": true,
+                        "originalFile": "Harness/PoolAddressesProviderRegistry/RegistryOptimized.sol",
+                        "paramNames": [
+                            "owner"
+                        ],
+                        "returns": [],
+                        "sighash": "0",
+                        "sourceBytes": {
+                            "begin": 285,
+                            "size": 66
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "getAddressesProviderAddressById",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin-full-optimized/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [
+                            "id"
+                        ],
+                        "returns": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "sighash": "57dc0566",
+                        "sourceBytes": {
+                            "begin": 3006,
+                            "size": 138
+                        },
+                        "stateMutability": "view",
+                        "visibility": "external"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "getAddressesProviderIdByAddress",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin-full-optimized/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [
+                            "addressesProvider"
+                        ],
+                        "returns": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "sighash": "d0267be7",
+                        "sourceBytes": {
+                            "begin": 2777,
+                            "size": 176
+                        },
+                        "stateMutability": "view",
+                        "visibility": "external"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [],
+                        "isLibrary": false,
+                        "name": "getAddressesProvidersList",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin-full-optimized/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [],
+                        "returns": [
+                            {
+                                "location": "memory",
+                                "typeDesc": {
+                                    "dynamicArrayBaseType": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    },
+                                    "type": "Array"
+                                }
+                            }
+                        ],
+                        "sighash": "365ccbbf",
+                        "sourceBytes": {
+                            "begin": 1555,
+                            "size": 128
+                        },
+                        "stateMutability": "view",
+                        "visibility": "external"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [],
+                        "isLibrary": false,
+                        "name": "owner",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                        "paramNames": [],
+                        "returns": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "sighash": "8da5cb5b",
+                        "sourceBytes": {
+                            "begin": 1019,
+                            "size": 71
+                        },
+                        "stateMutability": "view",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            },
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "registerAddressesProvider",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin-full-optimized/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [
+                            "provider",
+                            "id"
+                        ],
+                        "returns": [],
+                        "sighash": "d258191e",
+                        "sourceBytes": {
+                            "begin": 1736,
+                            "size": 528
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "external"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [],
+                        "isLibrary": false,
+                        "name": "renounceOwnership",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                        "paramNames": [],
+                        "returns": [],
+                        "sighash": "715018a6",
+                        "sourceBytes": {
+                            "begin": 1602,
+                            "size": 135
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "transferOwnership",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                        "paramNames": [
+                            "newOwner"
+                        ],
+                        "returns": [],
+                        "sighash": "f2fde38b",
+                        "sourceBytes": {
+                            "begin": 1876,
+                            "size": 226
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "unregisterAddressesProvider",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin-full-optimized/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [
+                            "provider"
+                        ],
+                        "returns": [],
+                        "sighash": "0de26707",
+                        "sourceBytes": {
+                            "begin": 2317,
+                            "size": 407
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "external"
+                    }
+                ],
+                "bytecode": "60806040526004361015610013575b610097565b5f3560e01c80630de2670714610092578063365ccbbf1461008d57806357dc056614610088578063715018a6146100835780638da5cb5b1461007e578063d0267be714610079578063d258191e146100745763f2fde38b0361000e57610297565b610280565b61023a565b61020d565b6101f7565b6101d2565b61017f565b6100d2565b5f80fd5b6001600160a01b0381160361009757565b35906100b78261009b565b565b602090600319011261000e576100cf60046100ac565b90565b3461000e576100e86100e3366100b9565b6104cf565b005b5f90600319011261000e57565b60208082520190565b6026815260200190565b60209181520190565b6001600160a01b03169052565b9061012d81602093610113565b0190565b9060206101408351809361010a565b9201905f5b8181106101525750505090565b90919260206101646001928651610120565b9401929101610145565b9060206100cf928181520190610131565b3461000e5761018d366100ea565b6101a461019861058c565b6040519182918261016e565b0390f35b3590565b602090600319011261000e576100cf60046101a8565b6020810192916100b79190610113565b3461000e576101a46101eb6101e6366101ac565b610596565b604051918291826101c2565b3461000e57610205366100ea565b6100e8610647565b3461000e5761021b366100ea565b6101a46101eb61064f565b9052565b6020810192916100b79190610226565b3461000e576101a461025361024e366100b9565b6106a4565b6040519182918261022a565b604090600319011261000e5761027560046100ac565b906100cf60246101a8565b3461000e576100e86102913661025f565b90610773565b3461000e576100e86102a8366100b9565b6108d4565b6001600160a01b031690565b6100cf90546102ad565b7f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65729052565b6102f36020916100f7565b61012d816102c3565b60206100cf91818152016102e8565b1561031257565b60405162461bcd60e51b81528061032b600482016102fc565b0390fd5b6100b7906103616103405f546102ad565b61035061034b6108dd565b6102ad565b6001600160a01b039091161461030b565b61042b565b6001600160a01b03165f90815260016020526040902090565b6001600160a01b03165f90815260046020526040902090565b6100cf90546100cf565b5f52600260205260405f2090565b6001600160a01b0319166001600160a01b039091161790565b6103d45f82546103b0565b9055565b6103e35f80546103b0565b5f55565b5f546103e3916001600160a01b0316906103b0565b906103d49060018060a01b031682546103b0565b5090565b6103d45f8254610410565b906103d4908254610410565b61043c61043782610366565b610398565b90817fffffff6e4604afefe123321beef1b02fffffffffffffffffffffffff000000025281156104c057610477610472836103a2565b6103c9565b61048861048382610366565b610414565b61049181610a37565b6001600160a01b03167f254723080701bde71d562cad0e967cef23d86bb27ee842c190a2596820f3b2415f80a3565b6307498ebd60e41b5f5260045ffd5b6100b79061032f565b5f5260205f2090565b906104f76104f18354809361010a565b926104d8565b905f5b8181106105075750505090565b9091926001610520819261051b87546102ad565b610120565b94019291016104fa565b601f01601f191690565b634e487b7160e01b5f52604160045260245ffd5b906105529061052a565b810190811067ffffffffffffffff82111761056c57604052565b610534565b906100b761058592604051938480926104e1565b0383610548565b6100cf6003610571565b6105a26100cf916103a2565b6102b9565b64f196e500097fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00090000525f7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00090001526100b76106026103405f546102ad565b6100b75f80546001600160a01b039061061a906102ad565b167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08280a36100b76103d8565b6100b76105a7565b64f196e500007fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00000000525f7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00000001526100cf5f546102ad565b6104376100cf91610366565b906100b7916106c26103405f546102ad565b8115610764576001600160a01b036106dc6105a2846103a2565b16610764576106f56106f061043783610366565b6100cf565b6107555761070b8261070683610366565b61041f565b61071d81610718846103a2565b6103fc565b61072681610b84565b6001600160a01b03167fc2e7cc813550ef0e7126cc0571281850ce5df2e9c400acf3589c38e4627f85f15f80a3565b630cf17b4960e11b5f5260045ffd5b63f771765760e01b5f5260045ffd5b906100b7916106b0565b6100b79064f196e5000a7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000a00005260017fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000a000152807fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000a1000526100b7906108016103405f546102ad565b61087d565b60206564647265737360d01b917f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206181520152565b610845604091610100565b61012d81610806565b60206100cf918181520161083a565b1561086457565b60405162461bcd60e51b81528061032b6004820161084e565b6100b7906001600160a01b03811661089681151561085d565b5f546001600160a01b03906108aa906102ad565b167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e05f80a36103e7565b6100b79061077d565b64f196e500037fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00030000525f7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00030001523390565b634e487b7160e01b5f52601160045260245ffd5b5f1981019190821161094e57565b61092c565b634e487b7160e01b5f52603260045260245ffd5b6003548110156109815761097b60036104d8565b01905f90565b610953565b60039190911b1c6001600160a01b031690565b6001600160a01b0392831660039290921b91821b9290911b19161790565b905f6103d4918354610999565b805490926103d4926001600160a01b0390911691610999565b634e487b7160e01b5f52603160045260245ffd5b80548210156109815761097b906104d8565b906100b7916109b7565b6003548015610a32575f1901610a2d610a278260036109f1565b90610a03565b600355565b6109dd565b64f196e500087fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000800005260017fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0008000152807fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0008100052610ae1610483610ab86104378461037f565b92837fffffff6e4604afefe123321beef1b02fffffffffffffffffffffffff000000035261037f565b610aec600354610940565b90817fffffff6e4604afefe123321beef1b02fffffffffffffffffffffffff0000000452818110610b22575b50506100b7610a0d565b610706610b3b610b34610b5394610967565b9054610986565b610b4e81610b4885610967565b906109c4565b61037f565b5f80610b18565b600354906801000000000000000082101561056c57610b488260016100b7940160035560036109f1565b6100b79064f196e500077fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000700005260017fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0007000152807fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0007100052610c066003546107068361037f565b610b5a56fea26469706673582212206b4c860e034040316560d2dafe7f5eda765bc40ae4560c152cc60f751b18faf764736f6c634300081a0033",
+                "compilerName": "solc",
+                "compilerParameters": {
+                    "optimizerOn": true,
+                    "optimizerRuns": 200,
+                    "type": "SolcParameters",
+                    "viaIR": true
+                },
+                "compilerVersion": "0.8.26",
+                "constructorBytecode": "608060405234610028576100196100146100ba565b6100d8565b604051610c41908161039f8239f35b5f80fd5b601f01601f191690565b634e487b7160e01b5f52604160045260245ffd5b906100549061002c565b81019081106001600160401b0382111761006d57604052565b610036565b90610080604051928361004a565b565b6001600160a01b0381160361002857565b519061008082610082565b908160209103126100b5576100b290610093565b90565b610028565b6100b2611000803803806100cd81610072565b92833981019061009e565b61008090610080906100e86100ed565b610358565b610080610133565b6001600160a01b031690565b6001600160a01b0319166001600160a01b039091161790565b5f5461012f916001600160a01b031690610101565b5f55565b61014361013e610361565b6100f5565b807c91b9fb50101edccde4110e4fd0000000000000000000000000fffffffe195261016d8161011a565b6001600160a01b03165f5f80516020610fe08339815191528180a3565b64f196e5000a63fff5ffff6c048dcfda8080f6e66f2088727f60851b011952600163fff5fffe6c048dcfda8080f6e66f2088727f60851b01195263fff5efff6c048dcfda8080f6e66f2088727f60851b01198190526100809061026b565b60208082520190565b6026815260200190565b7f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65729052565b61022b6020916101e8565b610234816101fb565b0190565b60206100b29181815201610220565b1561024e57565b60405162461bcd60e51b81528061026760048201610238565b0390fd5b6100809061029861027c5f546100f5565b61028761013e610361565b6001600160a01b0390911614610247565b610314565b60206564647265737360d01b917f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206181520152565b6102dc6040916101f1565b6102348161029d565b60206100b291818152016102d1565b156102fb57565b60405162461bcd60e51b815280610267600482016102e5565b610080906001600160a01b03811661032d8115156102f4565b5f546001600160a01b0390610341906100f5565b165f80516020610fe08339815191525f80a361011a565b6100809061018a565b64f196e5000363fffcffff6c048dcfda8080f6e66f2088727f60851b0119525f63fffcfffe6c048dcfda8080f6e66f2088727f60851b011952339056fe60806040526004361015610013575b610097565b5f3560e01c80630de2670714610092578063365ccbbf1461008d57806357dc056614610088578063715018a6146100835780638da5cb5b1461007e578063d0267be714610079578063d258191e146100745763f2fde38b0361000e57610297565b610280565b61023a565b61020d565b6101f7565b6101d2565b61017f565b6100d2565b5f80fd5b6001600160a01b0381160361009757565b35906100b78261009b565b565b602090600319011261000e576100cf60046100ac565b90565b3461000e576100e86100e3366100b9565b6104cf565b005b5f90600319011261000e57565b60208082520190565b6026815260200190565b60209181520190565b6001600160a01b03169052565b9061012d81602093610113565b0190565b9060206101408351809361010a565b9201905f5b8181106101525750505090565b90919260206101646001928651610120565b9401929101610145565b9060206100cf928181520190610131565b3461000e5761018d366100ea565b6101a461019861058c565b6040519182918261016e565b0390f35b3590565b602090600319011261000e576100cf60046101a8565b6020810192916100b79190610113565b3461000e576101a46101eb6101e6366101ac565b610596565b604051918291826101c2565b3461000e57610205366100ea565b6100e8610647565b3461000e5761021b366100ea565b6101a46101eb61064f565b9052565b6020810192916100b79190610226565b3461000e576101a461025361024e366100b9565b6106a4565b6040519182918261022a565b604090600319011261000e5761027560046100ac565b906100cf60246101a8565b3461000e576100e86102913661025f565b90610773565b3461000e576100e86102a8366100b9565b6108d4565b6001600160a01b031690565b6100cf90546102ad565b7f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65729052565b6102f36020916100f7565b61012d816102c3565b60206100cf91818152016102e8565b1561031257565b60405162461bcd60e51b81528061032b600482016102fc565b0390fd5b6100b7906103616103405f546102ad565b61035061034b6108dd565b6102ad565b6001600160a01b039091161461030b565b61042b565b6001600160a01b03165f90815260016020526040902090565b6001600160a01b03165f90815260046020526040902090565b6100cf90546100cf565b5f52600260205260405f2090565b6001600160a01b0319166001600160a01b039091161790565b6103d45f82546103b0565b9055565b6103e35f80546103b0565b5f55565b5f546103e3916001600160a01b0316906103b0565b906103d49060018060a01b031682546103b0565b5090565b6103d45f8254610410565b906103d4908254610410565b61043c61043782610366565b610398565b90817fffffff6e4604afefe123321beef1b02fffffffffffffffffffffffff000000025281156104c057610477610472836103a2565b6103c9565b61048861048382610366565b610414565b61049181610a37565b6001600160a01b03167f254723080701bde71d562cad0e967cef23d86bb27ee842c190a2596820f3b2415f80a3565b6307498ebd60e41b5f5260045ffd5b6100b79061032f565b5f5260205f2090565b906104f76104f18354809361010a565b926104d8565b905f5b8181106105075750505090565b9091926001610520819261051b87546102ad565b610120565b94019291016104fa565b601f01601f191690565b634e487b7160e01b5f52604160045260245ffd5b906105529061052a565b810190811067ffffffffffffffff82111761056c57604052565b610534565b906100b761058592604051938480926104e1565b0383610548565b6100cf6003610571565b6105a26100cf916103a2565b6102b9565b64f196e500097fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00090000525f7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00090001526100b76106026103405f546102ad565b6100b75f80546001600160a01b039061061a906102ad565b167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08280a36100b76103d8565b6100b76105a7565b64f196e500007fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00000000525f7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00000001526100cf5f546102ad565b6104376100cf91610366565b906100b7916106c26103405f546102ad565b8115610764576001600160a01b036106dc6105a2846103a2565b16610764576106f56106f061043783610366565b6100cf565b6107555761070b8261070683610366565b61041f565b61071d81610718846103a2565b6103fc565b61072681610b84565b6001600160a01b03167fc2e7cc813550ef0e7126cc0571281850ce5df2e9c400acf3589c38e4627f85f15f80a3565b630cf17b4960e11b5f5260045ffd5b63f771765760e01b5f5260045ffd5b906100b7916106b0565b6100b79064f196e5000a7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000a00005260017fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000a000152807fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000a1000526100b7906108016103405f546102ad565b61087d565b60206564647265737360d01b917f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206181520152565b610845604091610100565b61012d81610806565b60206100cf918181520161083a565b1561086457565b60405162461bcd60e51b81528061032b6004820161084e565b6100b7906001600160a01b03811661089681151561085d565b5f546001600160a01b03906108aa906102ad565b167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e05f80a36103e7565b6100b79061077d565b64f196e500037fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00030000525f7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00030001523390565b634e487b7160e01b5f52601160045260245ffd5b5f1981019190821161094e57565b61092c565b634e487b7160e01b5f52603260045260245ffd5b6003548110156109815761097b60036104d8565b01905f90565b610953565b60039190911b1c6001600160a01b031690565b6001600160a01b0392831660039290921b91821b9290911b19161790565b905f6103d4918354610999565b805490926103d4926001600160a01b0390911691610999565b634e487b7160e01b5f52603160045260245ffd5b80548210156109815761097b906104d8565b906100b7916109b7565b6003548015610a32575f1901610a2d610a278260036109f1565b90610a03565b600355565b6109dd565b64f196e500087fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000800005260017fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0008000152807fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0008100052610ae1610483610ab86104378461037f565b92837fffffff6e4604afefe123321beef1b02fffffffffffffffffffffffff000000035261037f565b610aec600354610940565b90817fffffff6e4604afefe123321beef1b02fffffffffffffffffffffffff0000000452818110610b22575b50506100b7610a0d565b610706610b3b610b34610b5394610967565b9054610986565b610b4e81610b4885610967565b906109c4565b61037f565b5f80610b18565b600354906801000000000000000082101561056c57610b488260016100b7940160035560036109f1565b6100b79064f196e500077fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000700005260017fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0007000152807fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0007100052610c066003546107068361037f565b610b5a56fea26469706673582212206b4c860e034040316560d2dafe7f5eda765bc40ae4560c152cc60f751b18faf764736f6c634300081a00338be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+                "constructorSrcmap": "219:134:0:-:0;;;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;;;;;;;;;;;-1:-1:-1;;219:134:0;;:::o;:::-;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;-1:-1:-1;;;;;219:134:0;;;;;;;:::o;:::-;;:::i;:::-;;;;;;;;:::i;:::-;:::o;:::-;-1:-1:-1;;;;;219:134:0;;;;;:::o;:::-;;;;;;:::i;:::-;;;;;;;;;;;;:::i;:::-;;:::o;:::-;;:::i;:::-;;;;;;;;;;:::i;:::-;;;;;;;;:::i;285:66::-;;;1491:5:4;1440:62;;;:::i;:::-;1491:5;:::i;207:2215:3:-;;;:::i;219:134:0:-;-1:-1:-1;;;;;219:134:0;;:::o;:::-;-1:-1:-1;;;;;;219:134:0;-1:-1:-1;;;;;219:134:0;;;;;:::o;:::-;984:18:2;219:134:0;;;-1:-1:-1;;;;;219:134:0;;;:::i;:::-;984:18:2;219:134:0;:::o;816:245:2:-;836:32;856:12;;:::i;:::-;836:32;:::i;:::-;869:110;;;;984:18;;;:::i;:::-;-1:-1:-1;;;;;219:134:0;984:18:2;-1:-1:-1;;;;;;;;;;;984:18:2;;1013:43;816:245::o;2672:329::-;2715:281;-1:-1:-1;;;;;;2715:281:2;;-1:-1:-1;;;;;;2715:281:2;-1:-1:-1;;;;;;2715:281:2;;;2997:1;;;:::i;219:134:0:-;;;;;;;:::o;:::-;;;;;;;:::o;:::-;;;;:::o;:::-;;;;;:::i;:::-;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;:::i;:::-;;;;:::o;:::-;;;-1:-1:-1;;;219:134:0;;;;;;;;:::i;:::-;;;;1476:106:2;1576:1;1476:106;1503:67;219:134:0;1511:6:2;219:134:0;;:::i;:::-;1511:22:2;1521:12;;:::i;1511:22::-;-1:-1:-1;;;;;219:134:0;;;1511:22:2;1503:67;:::i;:::-;1576:1;:::i;219:134:0:-;;-1:-1:-1;;;219:134:0;;;;;;:::o;:::-;;;;;:::i;:::-;;;;:::i;:::-;;;;;;;;;:::i;:::-;;;;:::o;:::-;;;-1:-1:-1;;;219:134:0;;;;;;;;:::i;2423:249:2:-;2650:17;;-1:-1:-1;;;;;219:134:0;;2522:73:2;2530:22;;;2522:73;:::i;:::-;2550:1;219:134:0;-1:-1:-1;;;;;219:134:0;;;;:::i;:::-;;-1:-1:-1;;;;;;;;;;;2550:1:2;2606:38;;2650:17;:::i;2423:249::-;;;;:::i;588:303:1:-;659:196;-1:-1:-1;;;;;;659:196:1;;-1:-1:-1;;;;;;659:196:1;875:10;;588:303::o",
+                "extensionContracts": [],
+                "file": "Harness/PoolAddressesProviderRegistry/RegistryOptimized.sol",
+                "immutables": [],
+                "internalFunctions": {
+                    "0xf196e50000": {
+                        "canonicalId": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol|RegistryOptimized",
+                        "declaringContract": "RegistryOptimized",
+                        "method": {
+                            "contractName": "RegistryOptimized",
+                            "fullArgs": [],
+                            "isLibrary": false,
+                            "name": "owner",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                            "paramNames": [],
+                            "returns": [
+                                {
+                                    "location": "stack",
+                                    "typeDesc": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    }
+                                }
+                            ],
+                            "sighash": "8da5cb5b",
+                            "sourceBytes": {
+                                "begin": 1019,
+                                "size": 71
+                            },
+                            "stateMutability": "view",
+                            "visibility": "public"
+                        }
+                    },
+                    "0xf196e50001": {
+                        "canonicalId": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol|RegistryOptimized",
+                        "declaringContract": "RegistryOptimized",
+                        "method": {
+                            "contractName": "RegistryOptimized",
+                            "fullArgs": [],
+                            "isLibrary": false,
+                            "name": "renounceOwnership",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                            "paramNames": [],
+                            "returns": [],
+                            "sighash": "715018a6",
+                            "sourceBytes": {
+                                "begin": 1602,
+                                "size": 135
+                            },
+                            "stateMutability": "nonpayable",
+                            "visibility": "public"
+                        }
+                    },
+                    "0xf196e50002": {
+                        "canonicalId": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol|RegistryOptimized",
+                        "declaringContract": "RegistryOptimized",
+                        "method": {
+                            "contractName": "RegistryOptimized",
+                            "fullArgs": [
+                                {
+                                    "location": "stack",
+                                    "typeDesc": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    }
+                                }
+                            ],
+                            "isLibrary": false,
+                            "name": "transferOwnership",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                            "paramNames": [
+                                "newOwner"
+                            ],
+                            "returns": [],
+                            "sighash": "f2fde38b",
+                            "sourceBytes": {
+                                "begin": 1876,
+                                "size": 226
+                            },
+                            "stateMutability": "nonpayable",
+                            "visibility": "public"
+                        }
+                    },
+                    "0xf196e50003": {
+                        "canonicalId": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Context.sol|Context",
+                        "declaringContract": "Context",
+                        "method": {
+                            "contractName": "Context",
+                            "fullArgs": [],
+                            "isLibrary": false,
+                            "name": "_msgSender",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Context.sol",
+                            "paramNames": [],
+                            "returns": [
+                                {
+                                    "location": "stack",
+                                    "typeDesc": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    }
+                                }
+                            ],
+                            "sighash": "0",
+                            "sourceBytes": {
+                                "begin": 588,
+                                "size": 107
+                            },
+                            "stateMutability": "view",
+                            "visibility": "internal"
+                        }
+                    },
+                    "0xf196e50004": {
+                        "canonicalId": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Context.sol|Context",
+                        "declaringContract": "Context",
+                        "method": {
+                            "contractName": "Context",
+                            "fullArgs": [],
+                            "isLibrary": false,
+                            "name": "_msgData",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Context.sol",
+                            "paramNames": [],
+                            "returns": [
+                                {
+                                    "location": "memory",
+                                    "typeDesc": {
+                                        "type": "PackedBytes"
+                                    }
+                                }
+                            ],
+                            "sighash": "0",
+                            "sourceBytes": {
+                                "begin": 699,
+                                "size": 220
+                            },
+                            "stateMutability": "view",
+                            "visibility": "internal"
+                        }
+                    },
+                    "0xf196e50005": {
+                        "canonicalId": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol|Ownable",
+                        "declaringContract": "Ownable",
+                        "method": {
+                            "contractName": "Ownable",
+                            "fullArgs": [
+                                {
+                                    "location": "stack",
+                                    "typeDesc": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    }
+                                }
+                            ],
+                            "isLibrary": false,
+                            "name": "transferOwnership",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                            "paramNames": [
+                                "newOwner"
+                            ],
+                            "returns": [],
+                            "sighash": "f2fde38b",
+                            "sourceBytes": {
+                                "begin": 1876,
+                                "size": 226
+                            },
+                            "stateMutability": "nonpayable",
+                            "visibility": "public"
+                        }
+                    },
+                    "0xf196e50006": {
+                        "canonicalId": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol|Ownable",
+                        "declaringContract": "Ownable",
+                        "method": {
+                            "contractName": "Ownable",
+                            "fullArgs": [],
+                            "isLibrary": false,
+                            "name": "renounceOwnership",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                            "paramNames": [],
+                            "returns": [],
+                            "sighash": "715018a6",
+                            "sourceBytes": {
+                                "begin": 1602,
+                                "size": 135
+                            },
+                            "stateMutability": "nonpayable",
+                            "visibility": "public"
+                        }
+                    },
+                    "0xf196e50007": {
+                        "canonicalId": "aave-v3-origin-full-optimized/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol|PoolAddressesProviderRegistry",
+                        "declaringContract": "PoolAddressesProviderRegistry",
+                        "method": {
+                            "contractName": "PoolAddressesProviderRegistry",
+                            "fullArgs": [
+                                {
+                                    "location": "stack",
+                                    "typeDesc": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    }
+                                }
+                            ],
+                            "isLibrary": false,
+                            "name": "_addToAddressesProvidersList",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin-full-optimized/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                            "paramNames": [
+                                "provider"
+                            ],
+                            "returns": [],
+                            "sighash": "0",
+                            "sourceBytes": {
+                                "begin": 3284,
+                                "size": 189
+                            },
+                            "stateMutability": "nonpayable",
+                            "visibility": "internal"
+                        }
+                    },
+                    "0xf196e50008": {
+                        "canonicalId": "aave-v3-origin-full-optimized/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol|PoolAddressesProviderRegistry",
+                        "declaringContract": "PoolAddressesProviderRegistry",
+                        "method": {
+                            "contractName": "PoolAddressesProviderRegistry",
+                            "fullArgs": [
+                                {
+                                    "location": "stack",
+                                    "typeDesc": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    }
+                                }
+                            ],
+                            "isLibrary": false,
+                            "name": "_removeFromAddressesProvidersList",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin-full-optimized/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                            "paramNames": [
+                                "provider"
+                            ],
+                            "returns": [],
+                            "sighash": "0",
+                            "sourceBytes": {
+                                "begin": 3618,
+                                "size": 591
+                            },
+                            "stateMutability": "nonpayable",
+                            "visibility": "internal"
+                        }
+                    },
+                    "0xf196e50009": {
+                        "canonicalId": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol|PoolAddressesProviderRegistry",
+                        "declaringContract": "PoolAddressesProviderRegistry",
+                        "method": {
+                            "contractName": "PoolAddressesProviderRegistry",
+                            "fullArgs": [],
+                            "isLibrary": false,
+                            "name": "renounceOwnership",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                            "paramNames": [],
+                            "returns": [],
+                            "sighash": "715018a6",
+                            "sourceBytes": {
+                                "begin": 1602,
+                                "size": 135
+                            },
+                            "stateMutability": "nonpayable",
+                            "visibility": "public"
+                        }
+                    },
+                    "0xf196e5000a": {
+                        "canonicalId": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol|PoolAddressesProviderRegistry",
+                        "declaringContract": "PoolAddressesProviderRegistry",
+                        "method": {
+                            "contractName": "PoolAddressesProviderRegistry",
+                            "fullArgs": [
+                                {
+                                    "location": "stack",
+                                    "typeDesc": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    }
+                                }
+                            ],
+                            "isLibrary": false,
+                            "name": "transferOwnership",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                            "paramNames": [
+                                "newOwner"
+                            ],
+                            "returns": [],
+                            "sighash": "f2fde38b",
+                            "sourceBytes": {
+                                "begin": 1876,
+                                "size": 226
+                            },
+                            "stateMutability": "nonpayable",
+                            "visibility": "public"
+                        }
+                    }
+                },
+                "is_static_address": false,
+                "lang": "Solidity",
+                "localAssignments": {
+                    "1": {
+                        "lhs": "msgSender",
+                        "sourceLoc": {
+                            "begin": "836",
+                            "len": "32",
+                            "source": "2"
+                        }
+                    },
+                    "2": {
+                        "lhs": "oldId",
+                        "sourceLoc": {
+                            "begin": "2406",
+                            "len": "48",
+                            "source": "4"
+                        }
+                    },
+                    "3": {
+                        "lhs": "index",
+                        "sourceLoc": {
+                            "begin": "3694",
+                            "len": "52",
+                            "source": "4"
+                        }
+                    },
+                    "4": {
+                        "lhs": "lastIndex",
+                        "sourceLoc": {
+                            "begin": "3906",
+                            "len": "54",
+                            "source": "4"
+                        }
+                    }
+                },
+                "methods": [
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "constructor",
+                        "notpayable": true,
+                        "originalFile": "Harness/PoolAddressesProviderRegistry/RegistryOptimized.sol",
+                        "paramNames": [
+                            "owner"
+                        ],
+                        "returns": [],
+                        "sighash": "0",
+                        "sourceBytes": {
+                            "begin": 285,
+                            "size": 66
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [],
+                        "isLibrary": false,
+                        "name": "constructor",
+                        "notpayable": true,
+                        "originalFile": "Harness/PoolAddressesProviderRegistry/RegistryOptimized.sol",
+                        "paramNames": [],
+                        "returns": [],
+                        "sighash": "0",
+                        "sourceBytes": {
+                            "begin": 285,
+                            "size": 66
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "getAddressesProviderAddressById",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin-full-optimized/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [
+                            "id"
+                        ],
+                        "returns": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "sighash": "57dc0566",
+                        "sourceBytes": {
+                            "begin": 3006,
+                            "size": 138
+                        },
+                        "stateMutability": "view",
+                        "visibility": "external"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "getAddressesProviderIdByAddress",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin-full-optimized/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [
+                            "addressesProvider"
+                        ],
+                        "returns": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "sighash": "d0267be7",
+                        "sourceBytes": {
+                            "begin": 2777,
+                            "size": 176
+                        },
+                        "stateMutability": "view",
+                        "visibility": "external"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "unregisterAddressesProvider",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin-full-optimized/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [
+                            "provider"
+                        ],
+                        "returns": [],
+                        "sighash": "0de26707",
+                        "sourceBytes": {
+                            "begin": 2317,
+                            "size": 407
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "external"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [],
+                        "isLibrary": false,
+                        "name": "renounceOwnership",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                        "paramNames": [],
+                        "returns": [],
+                        "sighash": "715018a6",
+                        "sourceBytes": {
+                            "begin": 1602,
+                            "size": 135
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "transferOwnership",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                        "paramNames": [
+                            "newOwner"
+                        ],
+                        "returns": [],
+                        "sighash": "f2fde38b",
+                        "sourceBytes": {
+                            "begin": 1876,
+                            "size": 226
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [],
+                        "isLibrary": false,
+                        "name": "owner",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                        "paramNames": [],
+                        "returns": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "sighash": "8da5cb5b",
+                        "sourceBytes": {
+                            "begin": 1019,
+                            "size": 71
+                        },
+                        "stateMutability": "view",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            },
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "registerAddressesProvider",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin-full-optimized/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [
+                            "provider",
+                            "id"
+                        ],
+                        "returns": [],
+                        "sighash": "d258191e",
+                        "sourceBytes": {
+                            "begin": 1736,
+                            "size": 528
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "external"
+                    },
+                    {
+                        "contractName": "RegistryOptimized",
+                        "fullArgs": [],
+                        "isLibrary": false,
+                        "name": "getAddressesProvidersList",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin-full-optimized/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [],
+                        "returns": [
+                            {
+                                "location": "memory",
+                                "typeDesc": {
+                                    "dynamicArrayBaseType": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    },
+                                    "type": "Array"
+                                }
+                            }
+                        ],
+                        "sighash": "365ccbbf",
+                        "sourceBytes": {
+                            "begin": 1555,
+                            "size": 128
+                        },
+                        "stateMutability": "view",
+                        "visibility": "external"
+                    }
+                ],
+                "name": "RegistryOptimized",
+                "original_file": "Harness/PoolAddressesProviderRegistry/RegistryOptimized.sol",
+                "solidityTypes": [],
+                "sourceBytes": {
+                    "begin": 219,
+                    "size": 134
+                },
+                "srcmap": "219:134:0:-:0;;;;;;;;;-1:-1:-1;219:134:0;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;:::i;:::-;;:::i;:::-;;:::i;:::-;;:::i;:::-;;:::i;:::-;;:::i;:::-;;;;;-1:-1:-1;;;;;219:134:0;;;;;:::o;:::-;;;;;;:::i;:::-;:::o;:::-;;;;;;;;;;;;:::i;:::-;;:::o;:::-;;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;;;;;:::o;:::-;;;;;;;:::o;:::-;;;;;;;:::o;:::-;;;;;;;:::o;:::-;-1:-1:-1;;;;;219:134:0;;;:::o;:::-;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;:::i;:::-;;1648:30:4;;:::i;:::-;219:134:0;;;;;;;:::i;:::-;;;;;;;:::o;:::-;;;;;;;;;;;;:::i;:::-;;;;;;;;;;:::i;:::-;;;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;;:::i;:::-;;;;;;;:::i;:::-;;;:::i;:::-;;;;;;;:::i;:::-;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;:::i;:::-;;;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;;:::i;:::-;;;;;;;;;;;;:::i;:::-;;;;;:::i;:::-;;;;;;;;:::i;:::-;;;:::i;:::-;;;;;;;;:::i;:::-;;:::i;:::-;-1:-1:-1;;;;;219:134:0;;:::o;:::-;;;;;:::i;:::-;;;;:::o;:::-;;;;;:::i;:::-;;;;:::i;:::-;;;;;;;;;:::i;:::-;;;;:::o;:::-;;;-1:-1:-1;;;219:134:0;;;;;;;;:::i;:::-;;;;1476:106:2;1576:1;1476:106;1503:67;219:134:0;1511:6:2;219:134:0;;:::i;:::-;1511:22:2;1521:12;;:::i;:::-;1511:22;:::i;:::-;-1:-1:-1;;;;;219:134:0;;;1511:22:2;1503:67;:::i;:::-;1576:1;:::i;219:134:0:-;-1:-1:-1;;;;;219:134:0;;;;;;;;;;;;:::o;:::-;-1:-1:-1;;;;;219:134:0;;;;;4378:26:4;219:134:0;;;;;;:::o;:::-;;;;;:::i;:::-;;;2633:22:4;219:134:0;;;;;;:::o;:::-;-1:-1:-1;;;;;;219:134:0;-1:-1:-1;;;;;219:134:0;;;;;:::o;:::-;;;;;;:::i;:::-;;;:::o;:::-;;2008:6:2;219:134:0;;;:::i;:::-;2008:6:2;219:134:0;:::o;:::-;2550:1:2;219:134:0;;;-1:-1:-1;;;;;219:134:0;;;:::i;:::-;;;;;;;;;;;;;:::i;:::-;;;:::o;:::-;;2579:1:4;219:134:0;;;:::i;:::-;;;;;;;:::i;2317:513:4:-;2422:32;;;;:::i;:::-;;:::i;:::-;2455:106;;;;2570:10;;2566:61;;2633:42;:29;;;:::i;:::-;:42;:::i;:::-;2681:36;:32;;;:::i;:::-;:36;:::i;:::-;2758:8;;;:::i;:::-;-1:-1:-1;;;;;219:134:0;2779:46:4;2579:1;;2779:46;2317:513::o;2566:61::-;2595:32;;;2579:1;2595:32;;2579:1;2595:32;2317:513;;;;:::i;219:134:0:-;;;;;;;:::o;:::-;;;;;;;;;:::i;:::-;;;:::i;:::-;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;;;;;-1:-1:-1;;219:134:0;;:::o;:::-;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;:::o;:::-;;:::i;:::-;;;;;;;;;;;;:::i;:::-;;;;:::i;:::-;;1655:23:4;219:134:0;:::i;3112:138:4:-;3219:26;;3112:138;3219:26;:::i;:::-;;:::i;2057:227:2:-;2083:196;;;;;;2280:1;1503:67;219:134:0;1511:6:2;219:134:0;;:::i;1503:67:2:-;1576:1;2008:6;219:134:0;;-1:-1:-1;;;;;219:134:0;;;;:::i;:::-;;1987:40:2;;;;2033:19;;:::i;1908:149::-;;;:::i;1129:267::-;1177:196;;;;;;219:134:0;1177:196:2;219:134:0;;:::i;2883:176:4:-;3013:41;;2883:176;3013:41;:::i;1476:106:2:-;;1576:1;1476:106;1503:67;219:134:0;1511:6:2;219:134:0;;:::i;1503:67:2:-;1839:7:4;;1835:54;;-1:-1:-1;;;;;1899:26:4;;;;:::i;:::-;219:134:0;1895:87:4;;1992:37;:32;;;;:::i;:::-;:37;:::i;:::-;1988:87;;2082:37;:32;;;;:::i;:::-;:37;:::i;:::-;2125;:26;;;;:::i;:::-;:37;:::i;:::-;2198:8;;;:::i;:::-;-1:-1:-1;;;;;219:134:0;2218:41:4;1845:1;;2218:41;1736:528::o;1988:87::-;2044:31;;;1845:1;2044:31;;1845:1;2044:31;1895:87;1861:28;;;1845:1;1954:28;;1845:1;1954:28;1736:528;;;;;:::i;2672:329:2:-;2997:1;2672:329;2715:281;;;;;;;;;1576:1;1476:106;1503:67;219:134:0;1511:6:2;219:134:0;;:::i;1503:67:2:-;1576:1;:::i;219:134:0:-;;-1:-1:-1;;;219:134:0;;;;;;:::o;:::-;;;;;:::i;:::-;;;;:::i;:::-;;;;;;;;;:::i;:::-;;;;:::o;:::-;;;-1:-1:-1;;;219:134:0;;;;;;;;:::i;2423:249:2:-;2650:17;;-1:-1:-1;;;;;219:134:0;;2522:73:2;2530:22;;;2522:73;:::i;:::-;2550:1;219:134:0;-1:-1:-1;;;;;219:134:0;;;;:::i;:::-;;2606:38:2;2550:1;2606:38;;2650:17;:::i;2423:249::-;;;;:::i;588:303:1:-;659:196;;;;;;875:10;588:303;:::o;219:134:0:-;;;;;;;;;;;;;-1:-1:-1;;219:134:0;;;;;;;;:::o;:::-;;:::i;:::-;;;;;;;;;;;;;4700:23:4;219:134:0;;;;;;;4700:23:4;219:134:0;:::i;:::-;;;;;:::o;:::-;;:::i;:::-;;;;;;;-1:-1:-1;;;;;219:134:0;;:::o;:::-;-1:-1:-1;;;;;219:134:0;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;:::i;:::-;;;;;;;-1:-1:-1;;;;;219:134:0;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;:::i;:::-;4700:23:4;219:134:0;;;;;-1:-1:-1;;219:134:0;;;;4700:23:4;219:134:0;:::i;:::-;;;:::i;:::-;4700:23:4;219:134:0;:::o;:::-;;:::i;4005:1088:4:-;4076:281;;;;;;;;;4527:40;:36;4378;;;;:::i;:::-;4415:106;;;;4527:36;:::i;:40::-;4700:34;:23;219:134:0;4700:34:4;:::i;:::-;4735:110;;;;4854:17;;;4850:204;;4005:1088;5059:27;;;;:::i;4850:204::-;4999:40;219:134:0;4904:34:4;4999:48;4904:34;;:::i;:::-;219:134:0;;;:::i;:::-;4946:45:4;:30;;;;:::i;:::-;:45;;:::i;:::-;4999:40;:::i;:48::-;4850:204;;;;219:134:0;3781:23:4;219:134:0;;;;;;;;;;;;;;3781:23:4;219:134:0;3781:23:4;219:134:0;:::i;3390:470:4:-;3817:38;3390:470;3456:281;;;;;;;;;3742:69;3781:23;219:134:0;3742:36:4;;;:::i;:69::-;3817:38;:::i",
+                "storageLayout": {
+                    "storage": [
+                        {
+                            "astId": 295,
+                            "contract": "/home/manoel/projeto/GasOptimizationCatalog/case-study/conf/.certora_internal/25_11_07_16_34_29_058/.certora_sources/Harness/PoolAddressesProviderRegistry/RegistryOptimized.sol:RegistryOptimized",
+                            "descriptor": {
+                                "annotations": [
+                                    {
+                                        "numberOfBytes": "20",
+                                        "type": "StorageAnnotation"
+                                    }
+                                ],
+                                "primitiveName": "address",
+                                "type": "Primitive"
+                            },
+                            "label": "_owner",
+                            "offset": 0,
+                            "slot": "0",
+                            "type": "t_address"
+                        },
+                        {
+                            "astId": 38,
+                            "contract": "/home/manoel/projeto/GasOptimizationCatalog/case-study/conf/.certora_internal/25_11_07_16_34_29_058/.certora_sources/Harness/PoolAddressesProviderRegistry/RegistryOptimized.sol:RegistryOptimized",
+                            "descriptor": {
+                                "annotations": [
+                                    {
+                                        "numberOfBytes": "32",
+                                        "type": "StorageAnnotation"
+                                    }
+                                ],
+                                "mappingKeyType": {
+                                    "annotations": [
+                                        {
+                                            "numberOfBytes": "20",
+                                            "type": "StorageAnnotation"
+                                        }
+                                    ],
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                },
+                                "mappingValueType": {
+                                    "annotations": [
+                                        {
+                                            "numberOfBytes": "32",
+                                            "type": "StorageAnnotation"
+                                        }
+                                    ],
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                },
+                                "type": "Mapping"
+                            },
+                            "label": "_addressesProviderToId",
+                            "offset": 0,
+                            "slot": "1",
+                            "type": "t_mapping(t_address,t_uint256)"
+                        },
+                        {
+                            "astId": 42,
+                            "contract": "/home/manoel/projeto/GasOptimizationCatalog/case-study/conf/.certora_internal/25_11_07_16_34_29_058/.certora_sources/Harness/PoolAddressesProviderRegistry/RegistryOptimized.sol:RegistryOptimized",
+                            "descriptor": {
+                                "annotations": [
+                                    {
+                                        "numberOfBytes": "32",
+                                        "type": "StorageAnnotation"
+                                    }
+                                ],
+                                "mappingKeyType": {
+                                    "annotations": [
+                                        {
+                                            "numberOfBytes": "32",
+                                            "type": "StorageAnnotation"
+                                        }
+                                    ],
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                },
+                                "mappingValueType": {
+                                    "annotations": [
+                                        {
+                                            "numberOfBytes": "20",
+                                            "type": "StorageAnnotation"
+                                        }
+                                    ],
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                },
+                                "type": "Mapping"
+                            },
+                            "label": "_idToAddressesProvider",
+                            "offset": 0,
+                            "slot": "2",
+                            "type": "t_mapping(t_uint256,t_address)"
+                        },
+                        {
+                            "astId": 45,
+                            "contract": "/home/manoel/projeto/GasOptimizationCatalog/case-study/conf/.certora_internal/25_11_07_16_34_29_058/.certora_sources/Harness/PoolAddressesProviderRegistry/RegistryOptimized.sol:RegistryOptimized",
+                            "descriptor": {
+                                "annotations": [
+                                    {
+                                        "numberOfBytes": "32",
+                                        "type": "StorageAnnotation"
+                                    }
+                                ],
+                                "dynamicArrayBaseType": {
+                                    "annotations": [
+                                        {
+                                            "numberOfBytes": "20",
+                                            "type": "StorageAnnotation"
+                                        }
+                                    ],
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                },
+                                "type": "Array"
+                            },
+                            "label": "_addressesProvidersList",
+                            "offset": 0,
+                            "slot": "3",
+                            "type": "t_array(t_address)dyn_storage"
+                        },
+                        {
+                            "astId": 49,
+                            "contract": "/home/manoel/projeto/GasOptimizationCatalog/case-study/conf/.certora_internal/25_11_07_16_34_29_058/.certora_sources/Harness/PoolAddressesProviderRegistry/RegistryOptimized.sol:RegistryOptimized",
+                            "descriptor": {
+                                "annotations": [
+                                    {
+                                        "numberOfBytes": "32",
+                                        "type": "StorageAnnotation"
+                                    }
+                                ],
+                                "mappingKeyType": {
+                                    "annotations": [
+                                        {
+                                            "numberOfBytes": "20",
+                                            "type": "StorageAnnotation"
+                                        }
+                                    ],
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                },
+                                "mappingValueType": {
+                                    "annotations": [
+                                        {
+                                            "numberOfBytes": "32",
+                                            "type": "StorageAnnotation"
+                                        }
+                                    ],
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                },
+                                "type": "Mapping"
+                            },
+                            "label": "_addressesProvidersIndexes",
+                            "offset": 0,
+                            "slot": "4",
+                            "type": "t_mapping(t_address,t_uint256)"
+                        }
+                    ],
+                    "types": {
+                        "t_address": {
+                            "encoding": "inplace",
+                            "label": "address",
+                            "numberOfBytes": "20"
+                        },
+                        "t_array(t_address)dyn_storage": {
+                            "base": "t_address",
+                            "encoding": "dynamic_array",
+                            "label": "address[]",
+                            "numberOfBytes": "32"
+                        },
+                        "t_mapping(t_address,t_uint256)": {
+                            "encoding": "mapping",
+                            "key": "t_address",
+                            "label": "mapping(address => uint256)",
+                            "numberOfBytes": "32",
+                            "value": "t_uint256"
+                        },
+                        "t_mapping(t_uint256,t_address)": {
+                            "encoding": "mapping",
+                            "key": "t_uint256",
+                            "label": "mapping(uint256 => address)",
+                            "numberOfBytes": "32",
+                            "value": "t_address"
+                        },
+                        "t_uint256": {
+                            "encoding": "inplace",
+                            "label": "uint256",
+                            "numberOfBytes": "32"
+                        }
+                    }
+                },
+                "transientStorageLayout": null,
+                "varmap": ""
+            }
+        ],
+        "legacyStructLinking": {},
+        "library_addresses": [],
+        "origSourceDir": ".pre_autofinders.0",
+        "primary_contract": "RegistryOptimized",
+        "primary_contract_address": "00000000ce4604a0000000000000000000000005",
+        "prototypeFor": [],
+        "sdc_name": "RegistryOptimized.sol_0",
+        "sourceDir": ".post_autofinders.0",
+        "srclist": {
+            "0": "Harness/PoolAddressesProviderRegistry/RegistryOptimized.sol",
+            "1": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Context.sol",
+            "2": "aave-v3-origin-full-optimized/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+            "3": "aave-v3-origin-full-optimized/src/contracts/interfaces/IPoolAddressesProviderRegistry.sol",
+            "4": "aave-v3-origin-full-optimized/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+            "5": "aave-v3-origin-full-optimized/src/contracts/protocol/libraries/helpers/Errors.sol"
+        },
+        "state": {},
+        "structLinkingInfo": {}
+    },
+    "RegistryOriginal_00000000ce4604a000000000000000000000000f": {
+        "contracts": [
+            {
+                "address": "00000000ce4604a000000000000000000000000f",
+                "allMethods": [
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [],
+                        "isLibrary": false,
+                        "name": "constructor",
+                        "notpayable": true,
+                        "originalFile": "Harness/PoolAddressesProviderRegistry/RegistryOriginal.sol",
+                        "paramNames": [],
+                        "returns": [],
+                        "sighash": "0",
+                        "sourceBytes": {
+                            "begin": 269,
+                            "size": 66
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "constructor",
+                        "notpayable": true,
+                        "originalFile": "Harness/PoolAddressesProviderRegistry/RegistryOriginal.sol",
+                        "paramNames": [
+                            "owner"
+                        ],
+                        "returns": [],
+                        "sighash": "0",
+                        "sourceBytes": {
+                            "begin": 269,
+                            "size": 66
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "getAddressesProviderAddressById",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [
+                            "id"
+                        ],
+                        "returns": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "sighash": "57dc0566",
+                        "sourceBytes": {
+                            "begin": 2892,
+                            "size": 138
+                        },
+                        "stateMutability": "view",
+                        "visibility": "external"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "getAddressesProviderIdByAddress",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [
+                            "addressesProvider"
+                        ],
+                        "returns": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "sighash": "d0267be7",
+                        "sourceBytes": {
+                            "begin": 2663,
+                            "size": 176
+                        },
+                        "stateMutability": "view",
+                        "visibility": "external"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [],
+                        "isLibrary": false,
+                        "name": "getAddressesProvidersList",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [],
+                        "returns": [
+                            {
+                                "location": "memory",
+                                "typeDesc": {
+                                    "dynamicArrayBaseType": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    },
+                                    "type": "Array"
+                                }
+                            }
+                        ],
+                        "sighash": "365ccbbf",
+                        "sourceBytes": {
+                            "begin": 1414,
+                            "size": 128
+                        },
+                        "stateMutability": "view",
+                        "visibility": "external"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [],
+                        "isLibrary": false,
+                        "name": "owner",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                        "paramNames": [],
+                        "returns": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "sighash": "8da5cb5b",
+                        "sourceBytes": {
+                            "begin": 1019,
+                            "size": 71
+                        },
+                        "stateMutability": "view",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            },
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "registerAddressesProvider",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [
+                            "provider",
+                            "id"
+                        ],
+                        "returns": [],
+                        "sighash": "d258191e",
+                        "sourceBytes": {
+                            "begin": 1595,
+                            "size": 528
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "external"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [],
+                        "isLibrary": false,
+                        "name": "renounceOwnership",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                        "paramNames": [],
+                        "returns": [],
+                        "sighash": "715018a6",
+                        "sourceBytes": {
+                            "begin": 1602,
+                            "size": 135
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "transferOwnership",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                        "paramNames": [
+                            "newOwner"
+                        ],
+                        "returns": [],
+                        "sighash": "f2fde38b",
+                        "sourceBytes": {
+                            "begin": 1876,
+                            "size": 226
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "unregisterAddressesProvider",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [
+                            "provider"
+                        ],
+                        "returns": [],
+                        "sighash": "0de26707",
+                        "sourceBytes": {
+                            "begin": 2176,
+                            "size": 434
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "external"
+                    }
+                ],
+                "bytecode": "60806040526004361015610013575b610097565b5f3560e01c80630de2670714610092578063365ccbbf1461008d57806357dc056614610088578063715018a6146100835780638da5cb5b1461007e578063d0267be714610079578063d258191e146100745763f2fde38b0361000e57610297565b610280565b61023a565b61020d565b6101f7565b6101d2565b61017f565b6100d2565b5f80fd5b6001600160a01b0381160361009757565b35906100b78261009b565b565b602090600319011261000e576100cf60046100ac565b90565b3461000e576100e86100e3366100b9565b61060f565b005b5f90600319011261000e57565b60208082520190565b6026815260200190565b60209181520190565b6001600160a01b03169052565b9061012d81602093610113565b0190565b9060206101408351809361010a565b9201905f5b8181106101525750505090565b90919260206101646001928651610120565b9401929101610145565b9060206100cf928181520190610131565b3461000e5761018d366100ea565b6101a4610198610685565b6040519182918261016e565b0390f35b3590565b602090600319011261000e576100cf60046101a8565b6020810192916100b79190610113565b3461000e576101a46101eb6101e6366101ac565b61068f565b604051918291826101c2565b3461000e57610205366100ea565b6100e8610740565b3461000e5761021b366100ea565b6101a46101eb610748565b9052565b6020810192916100b79190610226565b3461000e576101a461025361024e366100b9565b61079d565b6040519182918261022a565b604090600319011261000e5761027560046100ac565b906100cf60246101a8565b3461000e576100e86102913661025f565b906108ad565b3461000e576100e86102a8366100b9565b610a0e565b6001600160a01b031690565b6100cf90546102ad565b7f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65729052565b6102f36020916100f7565b61012d816102c3565b60206100cf91818152016102e8565b1561031257565b60405162461bcd60e51b81528061032b600482016102fc565b0390fd5b6100b7906103616103405f546102ad565b61035061034b610a17565b6102ad565b6001600160a01b039091161461030b565b610561565b6001600160a01b03165f90815260016020526040902090565b6001600160a01b03165f90815260046020526040902090565b6100cf90546100cf565b601f01601f191690565b634e487b7160e01b5f52604160045260245ffd5b906103ca906103a2565b810190811067ffffffffffffffff8211176103e457604052565b6103ac565b906100b760405192836103c0565b67ffffffffffffffff81116103e45761012d6020916103a2565b61042361041e60016103f7565b6103e9565b9060018252565b61043761041e60026103f7565b9060028252565b603760f81b9052565b61044f610411565b906100b76020830161043e565b5f5b83811061046d5750505f910152565b818101518382015260200161045e565b61049561049e60209361012d9380519384809361010a565b9586910161045c565b6103a2565b9060206100cf92818152019061047d565b156104bc5750565b60405162461bcd60e51b815290819061032b90600483016104a3565b5f52600260205260405f2090565b6001600160a01b0319166001600160a01b039091161790565b61050a5f82546104e6565b9055565b6105195f80546104e6565b5f55565b5f54610519916001600160a01b0316906104e6565b9061050a9060018060a01b031682546104e6565b5090565b61050a5f8254610546565b9061050a908254610546565b61058561057561057083610366565b610398565b151561057f610447565b906104b4565b61059161057082610366565b90817fffffff6e4604afefe123321beef1b02fffffffffffffffffffffffff00000002526105c66105c1836104d8565b6104ff565b6105d76105d282610366565b61054a565b6105e081610b71565b6001600160a01b03167f254723080701bde71d562cad0e967cef23d86bb27ee842c190a2596820f3b2415f80a3565b6100b79061032f565b5f5260205f2090565b906106376106318354809361010a565b92610618565b905f5b8181106106475750505090565b9091926001610660819261065b87546102ad565b610120565b940192910161063a565b906100b761067e9260405193848092610621565b03836103c0565b6100cf600361066a565b61069b6100cf916104d8565b6102b9565b64f196e500147fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00140000525f7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00140001526100b76106fb6103405f546102ad565b6100b75f80546001600160a01b0390610713906102ad565b167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08280a36100b761050e565b6100b76106a0565b64f196e5000b7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000b0000525f7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000b0001526100cf5f546102ad565b6105706100cf91610366565b906100b7916107bb6103405f546102ad565b6107fd565b600760fb1b9052565b6107d1610411565b906100b7602083016107c0565b611c1b60f11b9052565b6107f061042a565b906100b7602083016107de565b6108106108086107c9565b8315156104b4565b6108316001600160a01b0361082761069b856104d8565b161561057f6107c9565b61085161084861084361057084610366565b6100cf565b1561057f6107e8565b6108638261085e83610366565b610555565b61087581610870846104d8565b610532565b61087e81610cbe565b6001600160a01b03167fc2e7cc813550ef0e7126cc0571281850ce5df2e9c400acf3589c38e4627f85f15f80a3565b906100b7916107a9565b6100b79064f196e500157fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff001500005260017fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0015000152807fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00151000526100b79061093b6103405f546102ad565b6109b7565b60206564647265737360d01b917f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206181520152565b61097f604091610100565b61012d81610940565b60206100cf9181815201610974565b1561099e57565b60405162461bcd60e51b81528061032b60048201610988565b6100b7906001600160a01b0381166109d0811515610997565b5f546001600160a01b03906109e4906102ad565b167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e05f80a361051d565b6100b7906108b7565b64f196e5000e7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000e0000525f7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000e0001523390565b634e487b7160e01b5f52601160045260245ffd5b5f19810191908211610a8857565b610a66565b634e487b7160e01b5f52603260045260245ffd5b600354811015610abb57610ab56003610618565b01905f90565b610a8d565b60039190911b1c6001600160a01b031690565b6001600160a01b0392831660039290921b91821b9290911b19161790565b905f61050a918354610ad3565b8054909261050a926001600160a01b0390911691610ad3565b634e487b7160e01b5f52603160045260245ffd5b8054821015610abb57610ab590610618565b906100b791610af1565b6003548015610b6c575f1901610b67610b61826003610b2b565b90610b3d565b600355565b610b17565b64f196e500137fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff001300005260017fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0013000152807fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0013100052610c1b6105d2610bf26105708461037f565b92837fffffff6e4604afefe123321beef1b02fffffffffffffffffffffffff000000035261037f565b610c26600354610a7a565b90817fffffff6e4604afefe123321beef1b02fffffffffffffffffffffffff0000000452818110610c5c575b50506100b7610b47565b61085e610c75610c6e610c8d94610aa1565b9054610ac0565b610c8881610c8285610aa1565b90610afe565b61037f565b5f80610c52565b60035490680100000000000000008210156103e457610c828260016100b794016003556003610b2b565b6100b79064f196e500127fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff001200005260017fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0012000152807fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0012100052610d4060035461085e8361037f565b610c9456fea2646970667358221220e2a97d65a89c015a28e4c0c61cd00c32220141254ba99285f542254579e8c12864736f6c634300081a0033",
+                "compilerName": "solc",
+                "compilerParameters": {
+                    "optimizerOn": true,
+                    "optimizerRuns": 200,
+                    "type": "SolcParameters",
+                    "viaIR": true
+                },
+                "compilerVersion": "0.8.26",
+                "constructorBytecode": "608060405234610028576100196100146100ba565b6100d8565b604051610d7b908161039f8239f35b5f80fd5b601f01601f191690565b634e487b7160e01b5f52604160045260245ffd5b906100549061002c565b81019081106001600160401b0382111761006d57604052565b610036565b90610080604051928361004a565b565b6001600160a01b0381160361002857565b519061008082610082565b908160209103126100b5576100b290610093565b90565b610028565b6100b261113a803803806100cd81610072565b92833981019061009e565b61008090610080906100e86100ed565b610358565b610080610133565b6001600160a01b031690565b6001600160a01b0319166001600160a01b039091161790565b5f5461012f916001600160a01b031690610101565b5f55565b61014361013e610361565b6100f5565b807c91b9fb50101edccde4110e4fd0000000000000000000000000fffffffe195261016d8161011a565b6001600160a01b03165f5f8051602061111a8339815191528180a3565b64f196e5001563ffeaffff6c048dcfda8080f6e66f2088727f60851b011952600163ffeafffe6c048dcfda8080f6e66f2088727f60851b01195263ffeaefff6c048dcfda8080f6e66f2088727f60851b01198190526100809061026b565b60208082520190565b6026815260200190565b7f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65729052565b61022b6020916101e8565b610234816101fb565b0190565b60206100b29181815201610220565b1561024e57565b60405162461bcd60e51b81528061026760048201610238565b0390fd5b6100809061029861027c5f546100f5565b61028761013e610361565b6001600160a01b0390911614610247565b610314565b60206564647265737360d01b917f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206181520152565b6102dc6040916101f1565b6102348161029d565b60206100b291818152016102d1565b156102fb57565b60405162461bcd60e51b815280610267600482016102e5565b610080906001600160a01b03811661032d8115156102f4565b5f546001600160a01b0390610341906100f5565b165f8051602061111a8339815191525f80a361011a565b6100809061018a565b64f196e5000e63fff1ffff6c048dcfda8080f6e66f2088727f60851b0119525f63fff1fffe6c048dcfda8080f6e66f2088727f60851b011952339056fe60806040526004361015610013575b610097565b5f3560e01c80630de2670714610092578063365ccbbf1461008d57806357dc056614610088578063715018a6146100835780638da5cb5b1461007e578063d0267be714610079578063d258191e146100745763f2fde38b0361000e57610297565b610280565b61023a565b61020d565b6101f7565b6101d2565b61017f565b6100d2565b5f80fd5b6001600160a01b0381160361009757565b35906100b78261009b565b565b602090600319011261000e576100cf60046100ac565b90565b3461000e576100e86100e3366100b9565b61060f565b005b5f90600319011261000e57565b60208082520190565b6026815260200190565b60209181520190565b6001600160a01b03169052565b9061012d81602093610113565b0190565b9060206101408351809361010a565b9201905f5b8181106101525750505090565b90919260206101646001928651610120565b9401929101610145565b9060206100cf928181520190610131565b3461000e5761018d366100ea565b6101a4610198610685565b6040519182918261016e565b0390f35b3590565b602090600319011261000e576100cf60046101a8565b6020810192916100b79190610113565b3461000e576101a46101eb6101e6366101ac565b61068f565b604051918291826101c2565b3461000e57610205366100ea565b6100e8610740565b3461000e5761021b366100ea565b6101a46101eb610748565b9052565b6020810192916100b79190610226565b3461000e576101a461025361024e366100b9565b61079d565b6040519182918261022a565b604090600319011261000e5761027560046100ac565b906100cf60246101a8565b3461000e576100e86102913661025f565b906108ad565b3461000e576100e86102a8366100b9565b610a0e565b6001600160a01b031690565b6100cf90546102ad565b7f4f776e61626c653a2063616c6c6572206973206e6f7420746865206f776e65729052565b6102f36020916100f7565b61012d816102c3565b60206100cf91818152016102e8565b1561031257565b60405162461bcd60e51b81528061032b600482016102fc565b0390fd5b6100b7906103616103405f546102ad565b61035061034b610a17565b6102ad565b6001600160a01b039091161461030b565b610561565b6001600160a01b03165f90815260016020526040902090565b6001600160a01b03165f90815260046020526040902090565b6100cf90546100cf565b601f01601f191690565b634e487b7160e01b5f52604160045260245ffd5b906103ca906103a2565b810190811067ffffffffffffffff8211176103e457604052565b6103ac565b906100b760405192836103c0565b67ffffffffffffffff81116103e45761012d6020916103a2565b61042361041e60016103f7565b6103e9565b9060018252565b61043761041e60026103f7565b9060028252565b603760f81b9052565b61044f610411565b906100b76020830161043e565b5f5b83811061046d5750505f910152565b818101518382015260200161045e565b61049561049e60209361012d9380519384809361010a565b9586910161045c565b6103a2565b9060206100cf92818152019061047d565b156104bc5750565b60405162461bcd60e51b815290819061032b90600483016104a3565b5f52600260205260405f2090565b6001600160a01b0319166001600160a01b039091161790565b61050a5f82546104e6565b9055565b6105195f80546104e6565b5f55565b5f54610519916001600160a01b0316906104e6565b9061050a9060018060a01b031682546104e6565b5090565b61050a5f8254610546565b9061050a908254610546565b61058561057561057083610366565b610398565b151561057f610447565b906104b4565b61059161057082610366565b90817fffffff6e4604afefe123321beef1b02fffffffffffffffffffffffff00000002526105c66105c1836104d8565b6104ff565b6105d76105d282610366565b61054a565b6105e081610b71565b6001600160a01b03167f254723080701bde71d562cad0e967cef23d86bb27ee842c190a2596820f3b2415f80a3565b6100b79061032f565b5f5260205f2090565b906106376106318354809361010a565b92610618565b905f5b8181106106475750505090565b9091926001610660819261065b87546102ad565b610120565b940192910161063a565b906100b761067e9260405193848092610621565b03836103c0565b6100cf600361066a565b61069b6100cf916104d8565b6102b9565b64f196e500147fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00140000525f7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00140001526100b76106fb6103405f546102ad565b6100b75f80546001600160a01b0390610713906102ad565b167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08280a36100b761050e565b6100b76106a0565b64f196e5000b7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000b0000525f7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000b0001526100cf5f546102ad565b6105706100cf91610366565b906100b7916107bb6103405f546102ad565b6107fd565b600760fb1b9052565b6107d1610411565b906100b7602083016107c0565b611c1b60f11b9052565b6107f061042a565b906100b7602083016107de565b6108106108086107c9565b8315156104b4565b6108316001600160a01b0361082761069b856104d8565b161561057f6107c9565b61085161084861084361057084610366565b6100cf565b1561057f6107e8565b6108638261085e83610366565b610555565b61087581610870846104d8565b610532565b61087e81610cbe565b6001600160a01b03167fc2e7cc813550ef0e7126cc0571281850ce5df2e9c400acf3589c38e4627f85f15f80a3565b906100b7916107a9565b6100b79064f196e500157fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff001500005260017fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0015000152807fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff00151000526100b79061093b6103405f546102ad565b6109b7565b60206564647265737360d01b917f4f776e61626c653a206e6577206f776e657220697320746865207a65726f206181520152565b61097f604091610100565b61012d81610940565b60206100cf9181815201610974565b1561099e57565b60405162461bcd60e51b81528061032b60048201610988565b6100b7906001600160a01b0381166109d0811515610997565b5f546001600160a01b03906109e4906102ad565b167f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e05f80a361051d565b6100b7906108b7565b64f196e5000e7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000e0000525f7fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff000e0001523390565b634e487b7160e01b5f52601160045260245ffd5b5f19810191908211610a8857565b610a66565b634e487b7160e01b5f52603260045260245ffd5b600354811015610abb57610ab56003610618565b01905f90565b610a8d565b60039190911b1c6001600160a01b031690565b6001600160a01b0392831660039290921b91821b9290911b19161790565b905f61050a918354610ad3565b8054909261050a926001600160a01b0390911691610ad3565b634e487b7160e01b5f52603160045260245ffd5b8054821015610abb57610ab590610618565b906100b791610af1565b6003548015610b6c575f1901610b67610b61826003610b2b565b90610b3d565b600355565b610b17565b64f196e500137fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff001300005260017fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0013000152807fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0013100052610c1b6105d2610bf26105708461037f565b92837fffffff6e4604afefe123321beef1b02fffffffffffffffffffffffff000000035261037f565b610c26600354610a7a565b90817fffffff6e4604afefe123321beef1b02fffffffffffffffffffffffff0000000452818110610c5c575b50506100b7610b47565b61085e610c75610c6e610c8d94610aa1565b9054610ac0565b610c8881610c8285610aa1565b90610afe565b61037f565b5f80610c52565b60035490680100000000000000008210156103e457610c828260016100b794016003556003610b2b565b6100b79064f196e500127fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff001200005260017fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0012000152807fffffff6e4604afefe123321beef1b01fffffffffffffffffffffffff0012100052610d4060035461085e8361037f565b610c9456fea2646970667358221220e2a97d65a89c015a28e4c0c61cd00c32220141254ba99285f542254579e8c12864736f6c634300081a00338be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+                "constructorSrcmap": "204:133:0:-:0;;;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;;;;;;;;;;;-1:-1:-1;;204:133:0;;:::o;:::-;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;-1:-1:-1;;;;;204:133:0;;;;;;;:::o;:::-;;:::i;:::-;;;;;;;;:::i;:::-;:::o;:::-;-1:-1:-1;;;;;204:133:0;;;;;:::o;:::-;;;;;;:::i;:::-;;;;;;;;;;;;:::i;:::-;;:::o;:::-;;:::i;:::-;;;;;;;;;;:::i;:::-;;;;;;;;:::i;269:66::-;;;1350:5:4;1299:62;;;:::i;:::-;1350:5;:::i;207:2215:3:-;;;:::i;204:133:0:-;-1:-1:-1;;;;;204:133:0;;:::o;:::-;-1:-1:-1;;;;;;204:133:0;-1:-1:-1;;;;;204:133:0;;;;;:::o;:::-;984:18:2;204:133:0;;;-1:-1:-1;;;;;204:133:0;;;:::i;:::-;984:18:2;204:133:0;:::o;816:245:2:-;836:32;856:12;;:::i;:::-;836:32;:::i;:::-;869:110;;;;984:18;;;:::i;:::-;-1:-1:-1;;;;;204:133:0;984:18:2;-1:-1:-1;;;;;;;;;;;984:18:2;;1013:43;816:245::o;2674:329::-;2717:281;-1:-1:-1;;;;;;2717:281:2;;-1:-1:-1;;;;;;2717:281:2;-1:-1:-1;;;;;;2717:281:2;;;2999:1;;;:::i;204:133:0:-;;;;;;;:::o;:::-;;;;;;;:::o;:::-;;;;:::o;:::-;;;;;:::i;:::-;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;:::i;:::-;;;;:::o;:::-;;;-1:-1:-1;;;204:133:0;;;;;;;;:::i;:::-;;;;1476:106:2;1576:1;1476:106;1503:67;204:133:0;1511:6:2;204:133:0;;:::i;:::-;1511:22:2;1521:12;;:::i;1511:22::-;-1:-1:-1;;;;;204:133:0;;;1511:22:2;1503:67;:::i;:::-;1576:1;:::i;204:133:0:-;;-1:-1:-1;;;204:133:0;;;;;;:::o;:::-;;;;;:::i;:::-;;;;:::i;:::-;;;;;;;;;:::i;:::-;;;;:::o;:::-;;;-1:-1:-1;;;204:133:0;;;;;;;;:::i;2425:249:2:-;2652:17;;-1:-1:-1;;;;;204:133:0;;2524:73:2;2532:22;;;2524:73;:::i;:::-;2552:1;204:133:0;-1:-1:-1;;;;;204:133:0;;;;:::i;:::-;;-1:-1:-1;;;;;;;;;;;2552:1:2;2608:38;;2652:17;:::i;2425:249::-;;;;:::i;588:303:1:-;659:196;-1:-1:-1;;;;;;659:196:1;;-1:-1:-1;;;;;;659:196:1;875:10;;588:303::o",
+                "extensionContracts": [],
+                "file": "Harness/PoolAddressesProviderRegistry/RegistryOriginal.sol",
+                "immutables": [],
+                "internalFunctions": {
+                    "0xf196e5000b": {
+                        "canonicalId": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol|RegistryOriginal",
+                        "declaringContract": "RegistryOriginal",
+                        "method": {
+                            "contractName": "RegistryOriginal",
+                            "fullArgs": [],
+                            "isLibrary": false,
+                            "name": "owner",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                            "paramNames": [],
+                            "returns": [
+                                {
+                                    "location": "stack",
+                                    "typeDesc": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    }
+                                }
+                            ],
+                            "sighash": "8da5cb5b",
+                            "sourceBytes": {
+                                "begin": 1019,
+                                "size": 71
+                            },
+                            "stateMutability": "view",
+                            "visibility": "public"
+                        }
+                    },
+                    "0xf196e5000c": {
+                        "canonicalId": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol|RegistryOriginal",
+                        "declaringContract": "RegistryOriginal",
+                        "method": {
+                            "contractName": "RegistryOriginal",
+                            "fullArgs": [],
+                            "isLibrary": false,
+                            "name": "renounceOwnership",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                            "paramNames": [],
+                            "returns": [],
+                            "sighash": "715018a6",
+                            "sourceBytes": {
+                                "begin": 1602,
+                                "size": 135
+                            },
+                            "stateMutability": "nonpayable",
+                            "visibility": "public"
+                        }
+                    },
+                    "0xf196e5000d": {
+                        "canonicalId": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol|RegistryOriginal",
+                        "declaringContract": "RegistryOriginal",
+                        "method": {
+                            "contractName": "RegistryOriginal",
+                            "fullArgs": [
+                                {
+                                    "location": "stack",
+                                    "typeDesc": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    }
+                                }
+                            ],
+                            "isLibrary": false,
+                            "name": "transferOwnership",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                            "paramNames": [
+                                "newOwner"
+                            ],
+                            "returns": [],
+                            "sighash": "f2fde38b",
+                            "sourceBytes": {
+                                "begin": 1876,
+                                "size": 226
+                            },
+                            "stateMutability": "nonpayable",
+                            "visibility": "public"
+                        }
+                    },
+                    "0xf196e5000e": {
+                        "canonicalId": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Context.sol|Context",
+                        "declaringContract": "Context",
+                        "method": {
+                            "contractName": "Context",
+                            "fullArgs": [],
+                            "isLibrary": false,
+                            "name": "_msgSender",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Context.sol",
+                            "paramNames": [],
+                            "returns": [
+                                {
+                                    "location": "stack",
+                                    "typeDesc": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    }
+                                }
+                            ],
+                            "sighash": "0",
+                            "sourceBytes": {
+                                "begin": 588,
+                                "size": 107
+                            },
+                            "stateMutability": "view",
+                            "visibility": "internal"
+                        }
+                    },
+                    "0xf196e5000f": {
+                        "canonicalId": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Context.sol|Context",
+                        "declaringContract": "Context",
+                        "method": {
+                            "contractName": "Context",
+                            "fullArgs": [],
+                            "isLibrary": false,
+                            "name": "_msgData",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Context.sol",
+                            "paramNames": [],
+                            "returns": [
+                                {
+                                    "location": "memory",
+                                    "typeDesc": {
+                                        "type": "PackedBytes"
+                                    }
+                                }
+                            ],
+                            "sighash": "0",
+                            "sourceBytes": {
+                                "begin": 699,
+                                "size": 220
+                            },
+                            "stateMutability": "view",
+                            "visibility": "internal"
+                        }
+                    },
+                    "0xf196e50010": {
+                        "canonicalId": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol|Ownable",
+                        "declaringContract": "Ownable",
+                        "method": {
+                            "contractName": "Ownable",
+                            "fullArgs": [
+                                {
+                                    "location": "stack",
+                                    "typeDesc": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    }
+                                }
+                            ],
+                            "isLibrary": false,
+                            "name": "transferOwnership",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                            "paramNames": [
+                                "newOwner"
+                            ],
+                            "returns": [],
+                            "sighash": "f2fde38b",
+                            "sourceBytes": {
+                                "begin": 1876,
+                                "size": 226
+                            },
+                            "stateMutability": "nonpayable",
+                            "visibility": "public"
+                        }
+                    },
+                    "0xf196e50011": {
+                        "canonicalId": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol|Ownable",
+                        "declaringContract": "Ownable",
+                        "method": {
+                            "contractName": "Ownable",
+                            "fullArgs": [],
+                            "isLibrary": false,
+                            "name": "renounceOwnership",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                            "paramNames": [],
+                            "returns": [],
+                            "sighash": "715018a6",
+                            "sourceBytes": {
+                                "begin": 1602,
+                                "size": 135
+                            },
+                            "stateMutability": "nonpayable",
+                            "visibility": "public"
+                        }
+                    },
+                    "0xf196e50012": {
+                        "canonicalId": "aave-v3-origin/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol|PoolAddressesProviderRegistry",
+                        "declaringContract": "PoolAddressesProviderRegistry",
+                        "method": {
+                            "contractName": "PoolAddressesProviderRegistry",
+                            "fullArgs": [
+                                {
+                                    "location": "stack",
+                                    "typeDesc": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    }
+                                }
+                            ],
+                            "isLibrary": false,
+                            "name": "_addToAddressesProvidersList",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                            "paramNames": [
+                                "provider"
+                            ],
+                            "returns": [],
+                            "sighash": "0",
+                            "sourceBytes": {
+                                "begin": 3170,
+                                "size": 189
+                            },
+                            "stateMutability": "nonpayable",
+                            "visibility": "internal"
+                        }
+                    },
+                    "0xf196e50013": {
+                        "canonicalId": "aave-v3-origin/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol|PoolAddressesProviderRegistry",
+                        "declaringContract": "PoolAddressesProviderRegistry",
+                        "method": {
+                            "contractName": "PoolAddressesProviderRegistry",
+                            "fullArgs": [
+                                {
+                                    "location": "stack",
+                                    "typeDesc": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    }
+                                }
+                            ],
+                            "isLibrary": false,
+                            "name": "_removeFromAddressesProvidersList",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                            "paramNames": [
+                                "provider"
+                            ],
+                            "returns": [],
+                            "sighash": "0",
+                            "sourceBytes": {
+                                "begin": 3504,
+                                "size": 591
+                            },
+                            "stateMutability": "nonpayable",
+                            "visibility": "internal"
+                        }
+                    },
+                    "0xf196e50014": {
+                        "canonicalId": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol|PoolAddressesProviderRegistry",
+                        "declaringContract": "PoolAddressesProviderRegistry",
+                        "method": {
+                            "contractName": "PoolAddressesProviderRegistry",
+                            "fullArgs": [],
+                            "isLibrary": false,
+                            "name": "renounceOwnership",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                            "paramNames": [],
+                            "returns": [],
+                            "sighash": "715018a6",
+                            "sourceBytes": {
+                                "begin": 1602,
+                                "size": 135
+                            },
+                            "stateMutability": "nonpayable",
+                            "visibility": "public"
+                        }
+                    },
+                    "0xf196e50015": {
+                        "canonicalId": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol|PoolAddressesProviderRegistry",
+                        "declaringContract": "PoolAddressesProviderRegistry",
+                        "method": {
+                            "contractName": "PoolAddressesProviderRegistry",
+                            "fullArgs": [
+                                {
+                                    "location": "stack",
+                                    "typeDesc": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    }
+                                }
+                            ],
+                            "isLibrary": false,
+                            "name": "transferOwnership",
+                            "notpayable": true,
+                            "originalFile": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                            "paramNames": [
+                                "newOwner"
+                            ],
+                            "returns": [],
+                            "sighash": "f2fde38b",
+                            "sourceBytes": {
+                                "begin": 1876,
+                                "size": 226
+                            },
+                            "stateMutability": "nonpayable",
+                            "visibility": "public"
+                        }
+                    }
+                },
+                "is_static_address": false,
+                "lang": "Solidity",
+                "localAssignments": {
+                    "1": {
+                        "lhs": "msgSender",
+                        "sourceLoc": {
+                            "begin": "836",
+                            "len": "32",
+                            "source": "2"
+                        }
+                    },
+                    "2": {
+                        "lhs": "oldId",
+                        "sourceLoc": {
+                            "begin": "2359",
+                            "len": "48",
+                            "source": "4"
+                        }
+                    },
+                    "3": {
+                        "lhs": "index",
+                        "sourceLoc": {
+                            "begin": "3580",
+                            "len": "52",
+                            "source": "4"
+                        }
+                    },
+                    "4": {
+                        "lhs": "lastIndex",
+                        "sourceLoc": {
+                            "begin": "3792",
+                            "len": "54",
+                            "source": "4"
+                        }
+                    }
+                },
+                "methods": [
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "constructor",
+                        "notpayable": true,
+                        "originalFile": "Harness/PoolAddressesProviderRegistry/RegistryOriginal.sol",
+                        "paramNames": [
+                            "owner"
+                        ],
+                        "returns": [],
+                        "sighash": "0",
+                        "sourceBytes": {
+                            "begin": 269,
+                            "size": 66
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [],
+                        "isLibrary": false,
+                        "name": "constructor",
+                        "notpayable": true,
+                        "originalFile": "Harness/PoolAddressesProviderRegistry/RegistryOriginal.sol",
+                        "paramNames": [],
+                        "returns": [],
+                        "sighash": "0",
+                        "sourceBytes": {
+                            "begin": 269,
+                            "size": 66
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "getAddressesProviderAddressById",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [
+                            "id"
+                        ],
+                        "returns": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "sighash": "57dc0566",
+                        "sourceBytes": {
+                            "begin": 2892,
+                            "size": 138
+                        },
+                        "stateMutability": "view",
+                        "visibility": "external"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "getAddressesProviderIdByAddress",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [
+                            "addressesProvider"
+                        ],
+                        "returns": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "sighash": "d0267be7",
+                        "sourceBytes": {
+                            "begin": 2663,
+                            "size": 176
+                        },
+                        "stateMutability": "view",
+                        "visibility": "external"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "unregisterAddressesProvider",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [
+                            "provider"
+                        ],
+                        "returns": [],
+                        "sighash": "0de26707",
+                        "sourceBytes": {
+                            "begin": 2176,
+                            "size": 434
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "external"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [],
+                        "isLibrary": false,
+                        "name": "renounceOwnership",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                        "paramNames": [],
+                        "returns": [],
+                        "sighash": "715018a6",
+                        "sourceBytes": {
+                            "begin": 1602,
+                            "size": 135
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "transferOwnership",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                        "paramNames": [
+                            "newOwner"
+                        ],
+                        "returns": [],
+                        "sighash": "f2fde38b",
+                        "sourceBytes": {
+                            "begin": 1876,
+                            "size": 226
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [],
+                        "isLibrary": false,
+                        "name": "owner",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+                        "paramNames": [],
+                        "returns": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "sighash": "8da5cb5b",
+                        "sourceBytes": {
+                            "begin": 1019,
+                            "size": 71
+                        },
+                        "stateMutability": "view",
+                        "visibility": "public"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                }
+                            },
+                            {
+                                "location": "stack",
+                                "typeDesc": {
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                }
+                            }
+                        ],
+                        "isLibrary": false,
+                        "name": "registerAddressesProvider",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [
+                            "provider",
+                            "id"
+                        ],
+                        "returns": [],
+                        "sighash": "d258191e",
+                        "sourceBytes": {
+                            "begin": 1595,
+                            "size": 528
+                        },
+                        "stateMutability": "nonpayable",
+                        "visibility": "external"
+                    },
+                    {
+                        "contractName": "RegistryOriginal",
+                        "fullArgs": [],
+                        "isLibrary": false,
+                        "name": "getAddressesProvidersList",
+                        "notpayable": true,
+                        "originalFile": "aave-v3-origin/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+                        "paramNames": [],
+                        "returns": [
+                            {
+                                "location": "memory",
+                                "typeDesc": {
+                                    "dynamicArrayBaseType": {
+                                        "primitiveName": "address",
+                                        "type": "Primitive"
+                                    },
+                                    "type": "Array"
+                                }
+                            }
+                        ],
+                        "sighash": "365ccbbf",
+                        "sourceBytes": {
+                            "begin": 1414,
+                            "size": 128
+                        },
+                        "stateMutability": "view",
+                        "visibility": "external"
+                    }
+                ],
+                "name": "RegistryOriginal",
+                "original_file": "Harness/PoolAddressesProviderRegistry/RegistryOriginal.sol",
+                "solidityTypes": [],
+                "sourceBytes": {
+                    "begin": 204,
+                    "size": 133
+                },
+                "srcmap": "204:133:0:-:0;;;;;;;;;-1:-1:-1;204:133:0;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;:::i;:::-;;:::i;:::-;;:::i;:::-;;:::i;:::-;;:::i;:::-;;:::i;:::-;;;;;-1:-1:-1;;;;;204:133:0;;;;;:::o;:::-;;;;;;:::i;:::-;:::o;:::-;;;;;;;;;;;;:::i;:::-;;:::o;:::-;;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;;;;;:::o;:::-;;;;;;;:::o;:::-;;;;;;;:::o;:::-;;;;;;;:::o;:::-;-1:-1:-1;;;;;204:133:0;;;:::o;:::-;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;:::i;:::-;;1507:30:4;;:::i;:::-;204:133:0;;;;;;;:::i;:::-;;;;;;;:::o;:::-;;;;;;;;;;;;:::i;:::-;;;;;;;;;;:::i;:::-;;;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;;:::i;:::-;;;;;;;:::i;:::-;;;:::i;:::-;;;;;;;:::i;:::-;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;:::i;:::-;;;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;;:::i;:::-;;;;;;;;;;;;:::i;:::-;;;;;:::i;:::-;;;;;;;;:::i;:::-;;;:::i;:::-;;;;;;;;:::i;:::-;;:::i;:::-;-1:-1:-1;;;;;204:133:0;;:::o;:::-;;;;;:::i;:::-;;;;:::o;:::-;;;;;:::i;:::-;;;;:::i;:::-;;;;;;;;;:::i;:::-;;;;:::o;:::-;;;-1:-1:-1;;;204:133:0;;;;;;;;:::i;:::-;;;;1476:106:2;1576:1;1476:106;1503:67;204:133:0;1511:6:2;204:133:0;;:::i;:::-;1511:22:2;1521:12;;:::i;:::-;1511:22;:::i;:::-;-1:-1:-1;;;;;204:133:0;;;1511:22:2;1503:67;:::i;:::-;1576:1;:::i;204:133:0:-;-1:-1:-1;;;;;204:133:0;;;;;;;;;;;;:::o;:::-;-1:-1:-1;;;;;204:133:0;;;;;4264:26:4;204:133:0;;;;;;:::o;:::-;;;;;:::i;:::-;;;-1:-1:-1;;204:133:0;;:::o;:::-;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;:::o;:::-;;:::i;:::-;;;;;;;;:::i;:::-;;;;;;;;;;:::i;:::-;;;;;:::i;:::-;;:::i;:::-;;;;;:::o;:::-;;;1103:3:5;204:133:0;:::i;:::-;;1103:3:5;204:133:0;;:::o;:::-;-1:-1:-1;;;204:133:0;;:::o;:::-;;;:::i;:::-;;;;;;;:::i;994:3:5:-;;;;;;;;-1:-1:-1;;994:3:5;;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;204:133:0;;994:3:5;;;;;:::i;:::-;;;;;;:::i;:::-;;:::i;:::-;;;;;;;;;;;:::i;:::-;;;;;:::o;:::-;204:133:0;;-1:-1:-1;;;994:3:5;;204:133:0;;;994:3:5;;;;;;:::i;:::-;;;2519:22:4;994:3:5;;;;;;:::o;:::-;-1:-1:-1;;;;;;994:3:5;-1:-1:-1;;;;;994:3:5;;;;;:::o;:::-;;204:133:0;994:3:5;;;:::i;:::-;;;:::o;:::-;;2009:6:2;994:3:5;;;:::i;:::-;2009:6:2;994:3:5;:::o;:::-;2552:1:2;994:3:5;;;-1:-1:-1;;;;;204:133:0;;994:3:5;:::i;:::-;;;;204:133:0;;;;;;994:3:5;;;:::i;:::-;;;:::o;:::-;;2309:1:4;994:3:5;;;:::i;:::-;;;;;;;:::i;2176:540:4:-;2265:88;2273:32;;;;:::i;:::-;;:::i;:::-;:37;;204:133:0;;:::i;:::-;2265:88:4;;:::i;:::-;2375:32;;;;:::i;:::-;2408:106;;;;2519:42;:29;;;:::i;:::-;:42;:::i;:::-;2567:36;:32;;;:::i;:::-;:36;:::i;:::-;2644:8;;;:::i;:::-;-1:-1:-1;;;;;204:133:0;2665:46:4;2309:1;;2665:46;2176:540::o;:::-;;;;:::i;204:133:0:-;;;;;;;:::o;:::-;;;;;;;;;:::i;:::-;;;:::i;:::-;;;;;;;;;;;;;:::o;:::-;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;:::i;:::-;;1514:23:4;204:133:0;:::i;2998:138:4:-;3105:26;;2998:138;3105:26;:::i;:::-;;:::i;2058:228:2:-;2085:196;;;;;;2282:1;1503:67;204:133:0;1511:6:2;204:133:0;;:::i;1503:67:2:-;1576:1;2009:6;204:133:0;;-1:-1:-1;;;;;204:133:0;;;;:::i;:::-;;1988:40:2;;;;2034:19;;:::i;1908:150::-;;;:::i;1129:267::-;1177:196;;;;;;204:133:0;1177:196:2;204:133:0;;:::i;2769:176:4:-;2899:41;;2769:176;2899:41;:::i;1476:106:2:-;;1576:1;1476:106;1503:67;204:133:0;1511:6:2;204:133:0;;:::i;1503:67:2:-;1576:1;:::i;204:133:0:-;-1:-1:-1;;;204:133:0;;:::o;:::-;;;:::i;:::-;;;;;;;:::i;1103:3:5:-;-1:-1:-1;;;1103:3:5;;:::o;:::-;;;:::i;:::-;;;;;;;:::i;1595:528:4:-;1694:54;204:133:0;;:::i;:::-;1702:7:4;;;1694:54;:::i;:::-;1754:87;-1:-1:-1;;;;;1762:26:4;;;;:::i;:::-;204:133:0;1762:40:4;204:133:0;;:::i;1754:87:4:-;1847;1855:37;:32;;;;:::i;:::-;:37;:::i;:::-;;1103:3:5;;:::i;1847:87:4:-;1941:37;:32;;;;:::i;:::-;:37;:::i;:::-;1984;:26;;;;:::i;:::-;:37;:::i;:::-;2057:8;;;:::i;:::-;-1:-1:-1;;;;;204:133:0;2077:41:4;1708:1;;2077:41;1595:528::o;:::-;;;;;:::i;2674:329:2:-;2999:1;2674:329;2717:281;;;;;;;;;1576:1;1476:106;1503:67;204:133:0;1511:6:2;204:133:0;;:::i;1503:67:2:-;1576:1;:::i;204:133:0:-;;-1:-1:-1;;;204:133:0;;;;;;:::o;:::-;;;;;:::i;:::-;;;;:::i;:::-;;;;;;;;;:::i;:::-;;;;:::o;:::-;;;-1:-1:-1;;;204:133:0;;;;;;;;:::i;2425:249:2:-;2652:17;;-1:-1:-1;;;;;204:133:0;;2524:73:2;2532:22;;;2524:73;:::i;:::-;2552:1;204:133:0;-1:-1:-1;;;;;204:133:0;;;;:::i;:::-;;2608:38:2;2552:1;2608:38;;2652:17;:::i;2425:249::-;;;;:::i;588:303:1:-;659:196;;;;;;875:10;588:303;:::o;204:133:0:-;;;;;;;;;;;;;-1:-1:-1;;204:133:0;;;;;;;;:::o;:::-;;:::i;:::-;;;;;;;;;;;;;4586:23:4;204:133:0;;;;;;;4586:23:4;204:133:0;:::i;:::-;;;;;:::o;:::-;;:::i;:::-;;;;;;;-1:-1:-1;;;;;204:133:0;;:::o;:::-;-1:-1:-1;;;;;204:133:0;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;;:::i;:::-;;;;;;;-1:-1:-1;;;;;204:133:0;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;:::i;:::-;4586:23:4;204:133:0;;;;;-1:-1:-1;;204:133:0;;;;4586:23:4;204:133:0;:::i;:::-;;;:::i;:::-;4586:23:4;204:133:0;:::o;:::-;;:::i;3891:1088:4:-;3962:281;;;;;;;;;4413:40;:36;4264;;;;:::i;:::-;4301:106;;;;4413:36;:::i;:40::-;4586:34;:23;204:133:0;4586:34:4;:::i;:::-;4621:110;;;;4740:17;;;4736:204;;3891:1088;4945:27;;;;:::i;4736:204::-;4885:40;204:133:0;4790:34:4;4885:48;4790:34;;:::i;:::-;204:133:0;;;:::i;:::-;4832:45:4;:30;;;;:::i;:::-;:45;;:::i;:::-;4885:40;:::i;:48::-;4736:204;;;;204:133:0;3667:23:4;204:133:0;;;;;;;;;;;;;;3667:23:4;204:133:0;3667:23:4;204:133:0;:::i;3276:470:4:-;3703:38;3276:470;3342:281;;;;;;;;;3628:69;3667:23;204:133:0;3628:36:4;;;:::i;:69::-;3703:38;:::i",
+                "storageLayout": {
+                    "storage": [
+                        {
+                            "astId": 295,
+                            "contract": "/home/manoel/projeto/GasOptimizationCatalog/case-study/conf/.certora_internal/25_11_07_16_34_29_058/.certora_sources/Harness/PoolAddressesProviderRegistry/RegistryOriginal.sol:RegistryOriginal",
+                            "descriptor": {
+                                "annotations": [
+                                    {
+                                        "numberOfBytes": "20",
+                                        "type": "StorageAnnotation"
+                                    }
+                                ],
+                                "primitiveName": "address",
+                                "type": "Primitive"
+                            },
+                            "label": "_owner",
+                            "offset": 0,
+                            "slot": "0",
+                            "type": "t_address"
+                        },
+                        {
+                            "astId": 32,
+                            "contract": "/home/manoel/projeto/GasOptimizationCatalog/case-study/conf/.certora_internal/25_11_07_16_34_29_058/.certora_sources/Harness/PoolAddressesProviderRegistry/RegistryOriginal.sol:RegistryOriginal",
+                            "descriptor": {
+                                "annotations": [
+                                    {
+                                        "numberOfBytes": "32",
+                                        "type": "StorageAnnotation"
+                                    }
+                                ],
+                                "mappingKeyType": {
+                                    "annotations": [
+                                        {
+                                            "numberOfBytes": "20",
+                                            "type": "StorageAnnotation"
+                                        }
+                                    ],
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                },
+                                "mappingValueType": {
+                                    "annotations": [
+                                        {
+                                            "numberOfBytes": "32",
+                                            "type": "StorageAnnotation"
+                                        }
+                                    ],
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                },
+                                "type": "Mapping"
+                            },
+                            "label": "_addressesProviderToId",
+                            "offset": 0,
+                            "slot": "1",
+                            "type": "t_mapping(t_address,t_uint256)"
+                        },
+                        {
+                            "astId": 36,
+                            "contract": "/home/manoel/projeto/GasOptimizationCatalog/case-study/conf/.certora_internal/25_11_07_16_34_29_058/.certora_sources/Harness/PoolAddressesProviderRegistry/RegistryOriginal.sol:RegistryOriginal",
+                            "descriptor": {
+                                "annotations": [
+                                    {
+                                        "numberOfBytes": "32",
+                                        "type": "StorageAnnotation"
+                                    }
+                                ],
+                                "mappingKeyType": {
+                                    "annotations": [
+                                        {
+                                            "numberOfBytes": "32",
+                                            "type": "StorageAnnotation"
+                                        }
+                                    ],
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                },
+                                "mappingValueType": {
+                                    "annotations": [
+                                        {
+                                            "numberOfBytes": "20",
+                                            "type": "StorageAnnotation"
+                                        }
+                                    ],
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                },
+                                "type": "Mapping"
+                            },
+                            "label": "_idToAddressesProvider",
+                            "offset": 0,
+                            "slot": "2",
+                            "type": "t_mapping(t_uint256,t_address)"
+                        },
+                        {
+                            "astId": 39,
+                            "contract": "/home/manoel/projeto/GasOptimizationCatalog/case-study/conf/.certora_internal/25_11_07_16_34_29_058/.certora_sources/Harness/PoolAddressesProviderRegistry/RegistryOriginal.sol:RegistryOriginal",
+                            "descriptor": {
+                                "annotations": [
+                                    {
+                                        "numberOfBytes": "32",
+                                        "type": "StorageAnnotation"
+                                    }
+                                ],
+                                "dynamicArrayBaseType": {
+                                    "annotations": [
+                                        {
+                                            "numberOfBytes": "20",
+                                            "type": "StorageAnnotation"
+                                        }
+                                    ],
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                },
+                                "type": "Array"
+                            },
+                            "label": "_addressesProvidersList",
+                            "offset": 0,
+                            "slot": "3",
+                            "type": "t_array(t_address)dyn_storage"
+                        },
+                        {
+                            "astId": 43,
+                            "contract": "/home/manoel/projeto/GasOptimizationCatalog/case-study/conf/.certora_internal/25_11_07_16_34_29_058/.certora_sources/Harness/PoolAddressesProviderRegistry/RegistryOriginal.sol:RegistryOriginal",
+                            "descriptor": {
+                                "annotations": [
+                                    {
+                                        "numberOfBytes": "32",
+                                        "type": "StorageAnnotation"
+                                    }
+                                ],
+                                "mappingKeyType": {
+                                    "annotations": [
+                                        {
+                                            "numberOfBytes": "20",
+                                            "type": "StorageAnnotation"
+                                        }
+                                    ],
+                                    "primitiveName": "address",
+                                    "type": "Primitive"
+                                },
+                                "mappingValueType": {
+                                    "annotations": [
+                                        {
+                                            "numberOfBytes": "32",
+                                            "type": "StorageAnnotation"
+                                        }
+                                    ],
+                                    "primitiveName": "uint256",
+                                    "type": "Primitive"
+                                },
+                                "type": "Mapping"
+                            },
+                            "label": "_addressesProvidersIndexes",
+                            "offset": 0,
+                            "slot": "4",
+                            "type": "t_mapping(t_address,t_uint256)"
+                        }
+                    ],
+                    "types": {
+                        "t_address": {
+                            "encoding": "inplace",
+                            "label": "address",
+                            "numberOfBytes": "20"
+                        },
+                        "t_array(t_address)dyn_storage": {
+                            "base": "t_address",
+                            "encoding": "dynamic_array",
+                            "label": "address[]",
+                            "numberOfBytes": "32"
+                        },
+                        "t_mapping(t_address,t_uint256)": {
+                            "encoding": "mapping",
+                            "key": "t_address",
+                            "label": "mapping(address => uint256)",
+                            "numberOfBytes": "32",
+                            "value": "t_uint256"
+                        },
+                        "t_mapping(t_uint256,t_address)": {
+                            "encoding": "mapping",
+                            "key": "t_uint256",
+                            "label": "mapping(uint256 => address)",
+                            "numberOfBytes": "32",
+                            "value": "t_address"
+                        },
+                        "t_uint256": {
+                            "encoding": "inplace",
+                            "label": "uint256",
+                            "numberOfBytes": "32"
+                        }
+                    }
+                },
+                "transientStorageLayout": null,
+                "varmap": ""
+            }
+        ],
+        "legacyStructLinking": {},
+        "library_addresses": [],
+        "origSourceDir": ".pre_autofinders.1",
+        "primary_contract": "RegistryOriginal",
+        "primary_contract_address": "00000000ce4604a000000000000000000000000f",
+        "prototypeFor": [],
+        "sdc_name": "RegistryOriginal.sol_1",
+        "sourceDir": ".post_autofinders.1",
+        "srclist": {
+            "0": "Harness/PoolAddressesProviderRegistry/RegistryOriginal.sol",
+            "1": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Context.sol",
+            "2": "aave-v3-origin/src/contracts/dependencies/openzeppelin/contracts/Ownable.sol",
+            "3": "aave-v3-origin/src/contracts/interfaces/IPoolAddressesProviderRegistry.sol",
+            "4": "aave-v3-origin/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol",
+            "5": "aave-v3-origin/src/contracts/protocol/libraries/helpers/Errors.sol"
+        },
+        "state": {},
+        "structLinkingInfo": {}
+    }
+}

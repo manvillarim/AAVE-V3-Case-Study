@@ -1,0 +1,14 @@
+{
+    "importFilesToOrigRelpaths": {
+        "specs/Structures/GhostsRewardsDistributor.spec": "specs/Structures/GhostsRewardsDistributor.spec"
+    },
+    "primary_contract": "RewardsDistributorOptimized",
+    "specfile": "specs/RewardsDistributor.spec",
+    "specfileOrigRelpath": "specs/RewardsDistributor.spec",
+    "specfilesToImportDecls": {
+        "specs/RewardsDistributor.spec": [
+            "Structures/GhostsRewardsDistributor.spec"
+        ]
+    },
+    "type": "spec"
+}

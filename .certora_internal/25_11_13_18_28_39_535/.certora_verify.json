@@ -1,0 +1,8 @@
+{
+    "importFilesToOrigRelpaths": {},
+    "primary_contract": "PoolOptimized",
+    "specfile": "specs/Pool.spec",
+    "specfileOrigRelpath": "specs/Pool.spec",
+    "specfilesToImportDecls": {},
+    "type": "spec"
+}

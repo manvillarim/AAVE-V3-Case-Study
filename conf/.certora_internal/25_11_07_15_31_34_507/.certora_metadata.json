@@ -1,0 +1,46 @@
+{
+    "CLI_package_name": "",
+    "CLI_version": "",
+    "branch": "main",
+    "certora_ci_client": null,
+    "conf": {
+        "files": [
+            "../Harness/PoolAddressesProviderRegistry/RegistryOriginal.sol",
+            "../Harness/PoolAddressesProviderRegistry/RegistryOptimized.sol"
+        ],
+        "msg": "PoolAddressesProviderRegistry - Equivalence check for gas optimizations",
+        "optimistic_hashing": true,
+        "optimistic_loop": true,
+        "packages": [
+            "Harness=../Harness",
+            "aave-v3-origin=../aave-v3-origin",
+            "aave-v3-origin-full-optimized=../aave-v3-origin-full-optimized",
+            "openzeppelin-contracts-upgradeable=../aave-v3-origin/lib/solidity-utils/lib/openzeppelin-contracts-upgradeable",
+            "openzeppelin-contracts=../aave-v3-origin/lib/solidity-utils/lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts",
+            "@openzeppelin=../aave-v3-origin/lib/solidity-utils/lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts"
+        ],
+        "process": "emv",
+        "prover_version": "master",
+        "rule_sanity": "basic",
+        "server": "production",
+        "solc_evm_version": "shanghai",
+        "solc_optimize": "200",
+        "solc_via_ir": true,
+        "verify": "RegistryOptimized:../specs/PoolAddressesProviderRegistry.spec"
+    },
+    "conf_path": "case-study/conf/PoolAddressesProviderRegistry.conf",
+    "cwd_relative": "case-study/conf",
+    "dirty": true,
+    "group_id": null,
+    "main_spec": "../specs/PoolAddressesProviderRegistry.spec",
+    "origin": "https://github.com/manvillarim/GasOptimization_Catalog.git",
+    "python_version": "3.13.9",
+    "raw_args": [
+        "/home/manoel/certora_builds/certoraRun.py",
+        "--prover_version",
+        "master",
+        "PoolAddressesProviderRegistry.conf"
+    ],
+    "revision": "dd88f0b283602a4660e3cab3b72c2299996b9cea",
+    "timestamp": "1762540294.705322"
+}

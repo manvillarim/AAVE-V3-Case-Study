@@ -1,0 +1,8 @@
+{
+    "importFilesToOrigRelpaths": {},
+    "primary_contract": "RewardsControllerOptimized",
+    "specfile": "specs/RewardsController.spec",
+    "specfileOrigRelpath": "specs/RewardsController.spec",
+    "specfilesToImportDecls": {},
+    "type": "spec"
+}

@@ -1,0 +1,13 @@
+Package path ../Harness does not exist or is not a directory
+Saving last configuration file to .certora_internal/25_11_13_17_42_44_753/run.conf
+There is no TAC file. Going to script CertoraProver/certoraBuild.py to main_with_args()
+Creating dir /home/manoel/projeto/GasOptimizationCatalog/case-study/.certora_internal/25_11_13_17_42_44_753/.certora_config
+In /home/manoel/projeto/GasOptimizationCatalog/case-study/specs/Collector.spec, found the imports: [('Structures/GhostCollector.spec', '1:1')]
+In /home/manoel/projeto/GasOptimizationCatalog/case-study/specs/Structures/GhostCollector.spec, found the imports: []
+copying spec file /home/manoel/projeto/GasOptimizationCatalog/case-study/specs/Collector.spec to /home/manoel/projeto/GasOptimizationCatalog/case-study/.certora_internal/25_11_13_17_42_44_753/.certora_sources/.0_Collector.spec.spec
+writing /home/manoel/projeto/GasOptimizationCatalog/case-study/.certora_internal/25_11_13_17_42_44_753/.certora_verify.json
+Failed to run Certora Prover locally. Please check the errors below for problems in the specifications (.spec files) or the prover_args defined in the .conf file.
+[main] ERROR ALWAYS - Found errors in specs/Collector.spec:
+[main] ERROR ALWAYS - Error in spec file (Collector.spec:3:1): Registered contract alias a more than once.
+[main] ERROR ALWAYS - Error in spec file (Collector.spec:4:1): Registered contract alias ao more than once.
+build failed

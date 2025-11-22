@@ -1,0 +1,8 @@
+{
+    "importFilesToOrigRelpaths": {},
+    "primary_contract": "PoolOptimized",
+    "specfile": "/home/manoel/projeto/GasOptimizationCatalog/case-study/specs/Pool.spec",
+    "specfileOrigRelpath": "specs/Pool.spec",
+    "specfilesToImportDecls": {},
+    "type": "spec"
+}

@@ -1,0 +1,6 @@
+Saving last configuration file to .certora_internal/25_11_13_17_39_18_999/run.conf
+There is no TAC file. Going to script CertoraProver/certoraBuild.py to main_with_args()
+Creating dir /home/manoel/projeto/GasOptimizationCatalog/case-study/conf/.certora_internal/25_11_13_17_39_18_999/.certora_config
+In /home/manoel/projeto/GasOptimizationCatalog/case-study/specs/Collector.spec, found the imports: [('Structures/GhostCollector.spec', '1:1')]
+In /home/manoel/projeto/GasOptimizationCatalog/case-study/specs/Structures/GhostCollector.spec, found the imports: []
+build failed

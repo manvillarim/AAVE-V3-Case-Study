@@ -1,0 +1,14 @@
+{
+    "importFilesToOrigRelpaths": {
+        "/home/manoel/projeto/GasOptimizationCatalog/case-study/specs/Structures/GhostsRewardsDistributor.spec": "specs/Structures/GhostsRewardsDistributor.spec"
+    },
+    "primary_contract": "RewardsDistributorOptimized",
+    "specfile": "/home/manoel/projeto/GasOptimizationCatalog/case-study/specs/RewardsDistributor.spec",
+    "specfileOrigRelpath": "specs/RewardsDistributor.spec",
+    "specfilesToImportDecls": {
+        "/home/manoel/projeto/GasOptimizationCatalog/case-study/specs/RewardsDistributor.spec": [
+            "Structures/GhostsRewardsDistributor.spec"
+        ]
+    },
+    "type": "spec"
+}

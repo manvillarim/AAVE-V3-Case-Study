@@ -1,0 +1,14 @@
+{
+    "importFilesToOrigRelpaths": {
+        "specs/Structures/GhostCollector.spec": "specs/Structures/GhostCollector.spec"
+    },
+    "primary_contract": "CollectorOptimized",
+    "specfile": "specs/Collector.spec",
+    "specfileOrigRelpath": "specs/Collector.spec",
+    "specfilesToImportDecls": {
+        "specs/Collector.spec": [
+            "Structures/GhostCollector.spec"
+        ]
+    },
+    "type": "spec"
+}

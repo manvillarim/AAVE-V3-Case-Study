@@ -1,0 +1,14 @@
+{
+    "importFilesToOrigRelpaths": {
+        "/home/manoel/projeto/GasOptimizationCatalog/case-study/specs/Structures/GhostRewardsController.spec": "specs/Structures/GhostRewardsController.spec"
+    },
+    "primary_contract": "RewardsControllerOptimized",
+    "specfile": "/home/manoel/projeto/GasOptimizationCatalog/case-study/specs/RewardsController.spec",
+    "specfileOrigRelpath": "specs/RewardsController.spec",
+    "specfilesToImportDecls": {
+        "/home/manoel/projeto/GasOptimizationCatalog/case-study/specs/RewardsController.spec": [
+            "Structures/GhostRewardsController.spec"
+        ]
+    },
+    "type": "spec"
+}

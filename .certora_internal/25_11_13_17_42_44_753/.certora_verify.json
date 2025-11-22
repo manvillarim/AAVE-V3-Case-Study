@@ -1,0 +1,14 @@
+{
+    "importFilesToOrigRelpaths": {
+        "/home/manoel/projeto/GasOptimizationCatalog/case-study/specs/Structures/GhostCollector.spec": "specs/Structures/GhostCollector.spec"
+    },
+    "primary_contract": "CollectorOptimized",
+    "specfile": "/home/manoel/projeto/GasOptimizationCatalog/case-study/specs/Collector.spec",
+    "specfileOrigRelpath": "specs/Collector.spec",
+    "specfilesToImportDecls": {
+        "/home/manoel/projeto/GasOptimizationCatalog/case-study/specs/Collector.spec": [
+            "Structures/GhostCollector.spec"
+        ]
+    },
+    "type": "spec"
+}

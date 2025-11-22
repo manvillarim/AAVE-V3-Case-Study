@@ -1,0 +1,46 @@
+{
+    "CLI_package_name": "",
+    "CLI_version": "",
+    "branch": "main",
+    "certora_ci_client": null,
+    "conf": {
+        "files": [
+            "../Harness/RewardsController/RewardsControllerOriginal.sol",
+            "../Harness/RewardsController/RewardsControllerOptimized.sol"
+        ],
+        "msg": "RewardsController - Equivalence check for gas optimizations",
+        "optimistic_hashing": true,
+        "optimistic_loop": true,
+        "packages": [
+            "Harness=../Harness",
+            "aave-v3-origin=../aave-v3-origin",
+            "aave-v3-origin-full-optimized=../aave-v3-origin-full-optimized",
+            "openzeppelin-contracts-upgradeable=../aave-v3-origin/lib/solidity-utils/lib/openzeppelin-contracts-upgradeable",
+            "openzeppelin-contracts=../aave-v3-origin/lib/solidity-utils/lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts",
+            "@openzeppelin=../aave-v3-origin/lib/solidity-utils/lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts"
+        ],
+        "process": "emv",
+        "prover_version": "master",
+        "rule_sanity": "basic",
+        "server": "production",
+        "solc_evm_version": "shanghai",
+        "solc_optimize": "200",
+        "solc_via_ir": true,
+        "verify": "RewardsControllerOptimized:../specs/RewardsController.spec"
+    },
+    "conf_path": "case-study/conf/RewardsController.conf",
+    "cwd_relative": "case-study/conf",
+    "dirty": true,
+    "group_id": null,
+    "main_spec": "../specs/RewardsController.spec",
+    "origin": "https://github.com/manvillarim/GasOptimization_Catalog.git",
+    "python_version": "3.13.9",
+    "raw_args": [
+        "/home/manoel/certora_builds/certoraRun.py",
+        "--prover_version",
+        "master",
+        "RewardsController.conf"
+    ],
+    "revision": "35ff9cea013421e5355a021d13eaa3779879f74c",
+    "timestamp": "1762255252.259775"
+}
