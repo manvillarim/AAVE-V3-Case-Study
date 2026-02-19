@@ -1,0 +1,15 @@
+Package path ../../aave-v3-origin does not exist or is not a directory
+Package path ../../aave-v3-origin/lib/solidity-utils/lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts does not exist or is not a directory
+Package path ../../aave-v3-origin/lib/solidity-utils/lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts does not exist or is not a directory
+Saving last configuration file to .certora_internal/26_02_18_16_37_46_418/run.conf
+contract name RegistryOptimized is the same as the file name and can be omitted from Harness/PoolAddressesProviderRegistry/RegistryOptimized.sol:RegistryOptimized
+contract name PoolAddressesProviderRegistry is the same as the file name and can be omitted from aave-v3-origin/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol:PoolAddressesProviderRegistry
+There is no TAC file. Going to script CertoraProver/certoraBuild.py to main_with_args()
+Creating dir /home/manoel/projeto/case-study/.certora_internal/26_02_18_16_37_46_418/.certora_config
+In /home/manoel/projeto/case-study/specs/PoolAddressesProviderRegistry.spec, found the imports: []
+copying spec file /home/manoel/projeto/case-study/specs/PoolAddressesProviderRegistry.spec to /home/manoel/projeto/case-study/.certora_internal/26_02_18_16_37_46_418/.certora_sources/.0_PoolAddressesProviderRegistry.spec.spec
+writing /home/manoel/projeto/case-study/.certora_internal/26_02_18_16_37_46_418/.certora_verify.json
+Failed to run Certora Prover locally. Please check the errors below for problems in the specifications (.spec files) or the prover_args defined in the .conf file.
+[main] ERROR ALWAYS - Unrecognized option: -copy_loop_unroll_warnings
+[main] ERROR ALWAYS - Unrecognized option: -copy_loop_unroll_warnings
+build failed

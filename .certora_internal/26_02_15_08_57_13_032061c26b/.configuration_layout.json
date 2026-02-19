@@ -1,0 +1,170 @@
+[
+    {
+        "card_title": "general",
+        "content_type": "COMPLEX",
+        "content": [
+            {
+                "inner_title": "CLI Version",
+                "content_type": "FLAG",
+                "content": "8.8.0",
+                "doc_link": "",
+                "tooltip": "",
+                "unsound": false
+            },
+            {
+                "inner_title": "branch",
+                "content_type": "FLAG",
+                "content": "master",
+                "doc_link": "",
+                "tooltip": "",
+                "unsound": false
+            },
+            {
+                "inner_title": "dirty",
+                "content_type": "FLAG",
+                "content": "true",
+                "doc_link": "",
+                "tooltip": "",
+                "unsound": false
+            },
+            {
+                "inner_title": "origin",
+                "content_type": "FLAG",
+                "content": "https://github.com/manvillarim/AAVE-V3-Case-Study.git",
+                "doc_link": "",
+                "tooltip": "",
+                "unsound": false
+            },
+            {
+                "inner_title": "revision",
+                "content_type": "FLAG",
+                "content": "5271a054a33ae59b6f3e52131143372e33cbb1b2",
+                "doc_link": "",
+                "tooltip": "",
+                "unsound": false
+            }
+        ]
+    },
+    {
+        "card_title": "files",
+        "content_type": "SIMPLE",
+        "content": [
+            {
+                "inner_title": "files",
+                "content_type": "SIMPLE",
+                "content": [
+                    "./Harness/PoolAddressesProviderRegistry/RegistryOptimized.sol",
+                    "./Harness/PoolAddressesProviderRegistry/RegistryOriginal.sol"
+                ],
+                "doc_link": "https://docs.certora.com/en/latest/docs/prover/cli/options.html#files",
+                "tooltip": "",
+                "unsound": false
+            }
+        ]
+    },
+    {
+        "card_title": "options",
+        "content_type": "COMPLEX",
+        "content": [
+            {
+                "inner_title": "verify",
+                "content_type": "FLAG",
+                "content": "RegistryOptimized:./specs/PoolAddressesProviderRegistry.spec",
+                "doc_link": "https://docs.certora.com/en/latest/docs/prover/cli/options.html#verify",
+                "tooltip": "",
+                "unsound": false
+            },
+            {
+                "inner_title": "msg",
+                "content_type": "FLAG",
+                "content": "PoolAddressesProviderRegistry - Equivalence check for gas optimizations",
+                "doc_link": "https://docs.certora.com/en/latest/docs/prover/cli/options.html#msg",
+                "tooltip": "",
+                "unsound": false
+            },
+            {
+                "inner_title": "optimistic_hashing",
+                "content_type": "FLAG",
+                "content": "true",
+                "doc_link": "https://docs.certora.com/en/latest/docs/prover/cli/options.html#optimistic-hashing",
+                "tooltip": "",
+                "unsound": true
+            },
+            {
+                "inner_title": "optimistic_loop",
+                "content_type": "FLAG",
+                "content": "true",
+                "doc_link": "https://docs.certora.com/en/latest/docs/prover/cli/options.html#optimistic-loop",
+                "tooltip": "",
+                "unsound": true
+            },
+            {
+                "inner_title": "rule_sanity",
+                "content_type": "FLAG",
+                "content": "basic",
+                "doc_link": "https://docs.certora.com/en/latest/docs/prover/cli/options.html#rule-sanity",
+                "tooltip": "",
+                "unsound": false
+            },
+            {
+                "inner_title": "server",
+                "content_type": "FLAG",
+                "content": "production",
+                "doc_link": "https://docs.certora.com/en/latest/docs/prover/cli/options.html#server",
+                "tooltip": "",
+                "unsound": false
+            }
+        ]
+    },
+    {
+        "card_title": "packages",
+        "content_type": "SIMPLE",
+        "content": [
+            {
+                "inner_title": "packages",
+                "content_type": "SIMPLE",
+                "content": [
+                    "@openzeppelin=./aave-v3-origin/lib/solidity-utils/lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts",
+                    "Harness=./Harness",
+                    "aave-v3-origin-full-optimized=./aave-v3-origin-liquidation-gas-fixes",
+                    "aave-v3-origin=./aave-v3-origin",
+                    "openzeppelin-contracts-upgradeable=./aave-v3-origin/lib/solidity-utils/lib/openzeppelin-contracts-upgradeable",
+                    "openzeppelin-contracts=./aave-v3-origin/lib/solidity-utils/lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts"
+                ],
+                "doc_link": "https://docs.certora.com/en/latest/docs/prover/cli/options.html#packages",
+                "tooltip": "",
+                "unsound": false
+            }
+        ]
+    },
+    {
+        "card_title": "solidity_compiler",
+        "content_type": "COMPLEX",
+        "content": [
+            {
+                "inner_title": "solc_evm_version",
+                "content_type": "FLAG",
+                "content": "shanghai",
+                "doc_link": "https://docs.certora.com/en/latest/docs/prover/cli/options.html#solc-evm-version",
+                "tooltip": "",
+                "unsound": false
+            },
+            {
+                "inner_title": "solc_optimize",
+                "content_type": "FLAG",
+                "content": 200,
+                "doc_link": "https://docs.certora.com/en/latest/docs/prover/cli/options.html#solc-optimize",
+                "tooltip": "",
+                "unsound": false
+            },
+            {
+                "inner_title": "solc_via_ir",
+                "content_type": "FLAG",
+                "content": "true",
+                "doc_link": "https://docs.certora.com/en/latest/docs/prover/cli/options.html#solc-via-ir",
+                "tooltip": "",
+                "unsound": false
+            }
+        ]
+    }
+]

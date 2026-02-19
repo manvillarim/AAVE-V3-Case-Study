@@ -2,7 +2,6 @@
 pragma solidity ^0.8.10;
 
 import {Ownable} from '../../dependencies/openzeppelin/contracts/Ownable.sol';
-import {Errors} from '../libraries/helpers/Errors.sol';
 import {IPoolAddressesProviderRegistry} from '../../interfaces/IPoolAddressesProviderRegistry.sol';
 
 /**
@@ -13,7 +12,7 @@ import {IPoolAddressesProviderRegistry} from '../../interfaces/IPoolAddressesPro
  * market it is connected with, for example with `1` for the Aave main market and `2` for the next created.
  */
 contract PoolAddressesProviderRegistry is Ownable, IPoolAddressesProviderRegistry {
-  // Custom Errors
+  // RULE 1 - Replace require with custom errors
   error InvalidAddressesProviderId();
   error AddressesProviderAlreadyAdded();
   error AddressesProviderNotRegistered();
@@ -31,7 +30,8 @@ contract PoolAddressesProviderRegistry is Ownable, IPoolAddressesProviderRegistr
    * @dev Constructor.
    * @param owner The owner address of this contract.
    */
-  constructor(address owner) {
+  // RULE 31 - Make Constructors Payable
+  constructor(address owner) payable {
     transferOwnership(owner);
   }
 
@@ -42,12 +42,11 @@ contract PoolAddressesProviderRegistry is Ownable, IPoolAddressesProviderRegistr
 
   /// @inheritdoc IPoolAddressesProviderRegistry
   function registerAddressesProvider(address provider, uint256 id) external override onlyOwner {
-    if (id == 0)
-      revert InvalidAddressesProviderId();
-    if (_idToAddressesProvider[id] != address(0))
-      revert InvalidAddressesProviderId();
-    if (_addressesProviderToId[provider] != 0)
-      revert AddressesProviderAlreadyAdded();
+    // RULE 1 - Replace require with custom errors
+    // Maintain exact same order as original for equivalence
+    if (id == 0) revert InvalidAddressesProviderId();
+    if (_idToAddressesProvider[id] != address(0)) revert InvalidAddressesProviderId();
+    if (_addressesProviderToId[provider] != 0) revert AddressesProviderAlreadyAdded();
 
     _addressesProviderToId[provider] = id;
     _idToAddressesProvider[id] = provider;
@@ -58,9 +57,10 @@ contract PoolAddressesProviderRegistry is Ownable, IPoolAddressesProviderRegistr
 
   /// @inheritdoc IPoolAddressesProviderRegistry
   function unregisterAddressesProvider(address provider) external override onlyOwner {
+    // RULE 1 - Replace require with custom errors
     uint256 oldId = _addressesProviderToId[provider];
-    if (oldId == 0)
-      revert AddressesProviderNotRegistered();
+    if (_addressesProviderToId[provider] == 0) revert AddressesProviderNotRegistered();
+    
     _idToAddressesProvider[oldId] = address(0);
     _addressesProviderToId[provider] = 0;
 
@@ -96,7 +96,6 @@ contract PoolAddressesProviderRegistry is Ownable, IPoolAddressesProviderRegistr
    */
   function _removeFromAddressesProvidersList(address provider) internal {
     uint256 index = _addressesProvidersIndexes[provider];
-
     _addressesProvidersIndexes[provider] = 0;
 
     // Swap the index of the last addresses provider in the list with the index of the provider to remove

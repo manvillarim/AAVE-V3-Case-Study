@@ -1,0 +1,272 @@
+1. PoolAdressesProviderRegistry
+
+link certora original-cyfrin: https://prover.certora.com/output/480394/04ca5be527e24c4796da16abaa7af2d1?anonymousKey=fabe24db0d43d5e6829d26f6130b916d575dbf1b
+link certora original-ours: https://prover.certora.com/output/480394/83241105da784f198c8257bc60690f07?anonymousKey=ae2e0fdc42ef16f9c5e3cb3d6e071d7744b24634
+
+gas results original 
+vider_middle() (gas: 425272)
+Suite result: FAILED. 0 passed; 13 failed; 0 skipped; finished in 11.52ms (5.62ms CPU time)
+| src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol:PoolAddressesProviderRegistry contract |                 |        |        |        |         |
+|---------------------------------------------------------------------------------------------------------------|-----------------|--------|--------|--------|---------|
+| Deployment Cost                                                                                               | Deployment Size |        |        |        |         |
+| 551239                                                                                                        | 2642            |        |        |        |         |
+| Function Name                                                                                                 | min             | avg    | median | max    | # calls |
+| getAddressesProviderAddressById                                                                               | 519             | 1519   | 1519   | 2519   | 2       |
+| getAddressesProviderIdByAddress                                                                               | 556             | 1556   | 1556   | 2556   | 2       |
+| getAddressesProvidersList                                                                                     | 1014            | 1749   | 1562   | 2671   | 3       |
+| registerAddressesProvider                                                                                     | 117084          | 118421 | 117084 | 119908 | 19      |
+| unregisterAddressesProvider                                                                                   | 38863           | 44257  | 44257  | 49652  | 4       |
+
+cyfrin gas
+| src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol:PoolAddressesProviderRegistry contract |                 |        |        |        |         |
+|---------------------------------------------------------------------------------------------------------------|-----------------|--------|--------|--------|---------|
+| Deployment Cost                                                                                               | Deployment Size |        |        |        |         |
+| 549492                                                                                                        | 2634            |        |        |        |         |
+| Function Name                                                                                                 | min             | avg    | median | max    | # calls |
+| getAddressesProviderAddressById                                                                               | 519             | 1519   | 1519   | 2519   | 2       |
+| getAddressesProviderIdByAddress                                                                               | 556             | 1556   | 1556   | 2556   | 2       |
+| getAddressesProvidersList                                                                                     | 1014            | 1749   | 1562   | 2671   | 3       |
+| registerAddressesProvider                                                                                     | 117084          | 118421 | 117084 | 119908 | 19      |
+| unregisterAddressesProvider                                                                                   | 38766           | 44160  | 44160  | 49556  | 4       |
+
+ours gas
+
+| src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol:PoolAddressesProviderRegistry contract |                 |        |        |        |         |
+|---------------------------------------------------------------------------------------------------------------|-----------------|--------|--------|--------|---------|
+| Deployment Cost                                                                                               | Deployment Size |        |        |        |         |
+| 511889                                                                                                        | 2449            |        |        |        |         |
+| Function Name                                                                                                 | min             | avg    | median | max    | # calls |
+| getAddressesProviderAddressById                                                                               | 519             | 1519   | 1519   | 2519   | 2       |
+| getAddressesProviderIdByAddress                                                                               | 556             | 1556   | 1556   | 2556   | 2       |
+| getAddressesProvidersList                                                                                     | 1014            | 1749   | 1562   | 2671   | 3       |
+| registerAddressesProvider                                                                                     | 116855          | 118192 | 116855 | 119679 | 19      |
+| unregisterAddressesProvider                                                                                   | 38806           | 44200  | 44200  | 49596  | 4       |
+
+1. RewardsController
+
+link certora original-cyfrin: https://prover.certora.com/output/480394/b892135b51124bc2ba3616346768252c?anonymousKey=9d0073a429fae0682c53e0ca1a24f59d66105135
+link certora original-ours: https://prover.certora.com/output/480394/e9f73bda864d4b24a0e7ebf01d7d2006?anonymousKey=331441ecf82671285c1d6d955cfede979a96d058
+
+original gas
+
+| src/contracts/rewards/RewardsController.sol:RewardsController contract |                 |        |        |         |         |
+|------------------------------------------------------------------------|-----------------|--------|--------|---------|---------|
+| Deployment Cost                                                        | Deployment Size |        |        |         |         |
+| 3097547                                                                | 14293           |        |        |         |         |
+| Function Name                                                          | min             | avg    | median | max     | # calls |
+| claimAllRewards                                                        | 58316           | 124558 | 124558 | 190801  | 2       |
+| claimAllRewardsOnBehalf                                                | 60983           | 127225 | 127225 | 193468  | 2       |
+| claimAllRewardsToSelf                                                  | 57759           | 124001 | 124001 | 190244  | 2       |
+| claimRewards                                                           | 53060           | 74100  | 74100  | 95141   | 2       |
+| claimRewardsOnBehalf                                                   | 55801           | 76841  | 76841  | 97882   | 2       |
+| claimRewardsToSelf                                                     | 52580           | 73620  | 73620  | 94661   | 2       |
+| configureAssets                                                        | 270168          | 438474 | 270168 | 1038327 | 20      |
+| getClaimer                                                             | 2625            | 2625   | 2625   | 2625    | 1       |
+| getRewardOracle                                                        | 649             | 649    | 649    | 649     | 1       |
+| getTransferStrategy                                                    | 648             | 648    | 648    | 648     | 1       |
+| handleAction                                                           | 32360           | 84206  | 59937  | 130417  | 25      |
+| initialize                                                             | 53154           | 53154  | 53154  | 53154   | 21      |
+| setClaimer                                                             | 46079           | 46079  | 46079  | 46079   | 5       |
+| setRewardOracle                                                        | 32030           | 32030  | 32030  | 32030   | 1       |
+| setTransferStrategy                                                    | 31643           | 31643  | 31643  | 31643   | 1       |
+
+
+| tests/gas/RewardsController.gas.t.sol:MockAggregator contract |                 |     |        |     |         |
+|---------------------------------------------------------------|-----------------|-----|--------|-----|---------|
+| Deployment Cost                                               | Deployment Size |     |        |     |         |
+| 175411                                                        | 594             |     |        |     |         |
+| Function Name                                                 | min             | avg | median | max | # calls |
+| latestAnswer                                                  | 203             | 203 | 203    | 203 | 53      |
+
+
+| tests/gas/RewardsController.gas.t.sol:MockScaledBalanceToken contract |                 |      |        |      |         |
+|-----------------------------------------------------------------------|-----------------|------|--------|------|---------|
+| Deployment Cost                                                       | Deployment Size |      |        |      |         |
+| 289283                                                                | 1030            |      |        |      |         |
+| Function Name                                                         | min             | avg  | median | max  | # calls |
+| decimals                                                              | 243             | 243  | 243    | 243  | 52      |
+| getScaledUserBalanceAndSupply                                         | 2547            | 2547 | 2547   | 2547 | 24      |
+| scaledTotalSupply                                                     | 368             | 1675 | 2368   | 2368 | 52      |
+
+cyfrin gas
+
+| src/contracts/rewards/RewardsController.sol:RewardsController contract |                 |        |        |         |         |
+|------------------------------------------------------------------------|-----------------|--------|--------|---------|---------|
+| Deployment Cost                                                        | Deployment Size |        |        |         |         |
+| 3063250                                                                | 14135           |        |        |         |         |
+| Function Name                                                          | min             | avg    | median | max     | # calls |
+| claimAllRewards                                                        | 58471           | 124793 | 124793 | 191116  | 2       |
+| claimAllRewardsOnBehalf                                                | 61138           | 127460 | 127460 | 193783  | 2       |
+| claimAllRewardsToSelf                                                  | 57914           | 124236 | 124236 | 190559  | 2       |
+| claimRewards                                                           | 53202           | 74397  | 74397  | 95593   | 2       |
+| claimRewardsOnBehalf                                                   | 55943           | 77138  | 77138  | 98334   | 2       |
+| claimRewardsToSelf                                                     | 52722           | 73917  | 73917  | 95113   | 2       |
+| configureAssets                                                        | 269831          | 437597 | 269831 | 1035294 | 20      |
+| getClaimer                                                             | 2625            | 2625   | 2625   | 2625    | 1       |
+| getRewardOracle                                                        | 649             | 649    | 649    | 649     | 1       |
+| getTransferStrategy                                                    | 648             | 648    | 648    | 648     | 1       |
+| handleAction                                                           | 32515           | 84325  | 60081  | 130489  | 25      |
+| initialize                                                             | 53154           | 53154  | 53154  | 53154   | 21      |
+| setClaimer                                                             | 46079           | 46079  | 46079  | 46079   | 5       |
+| setRewardOracle                                                        | 32030           | 32030  | 32030  | 32030   | 1       |
+| setTransferStrategy                                                    | 31643           | 31643  | 31643  | 31643   | 1       |
+
+
+| tests/gas/RewardsController.gas.t.sol:MockAggregator contract |                 |     |        |     |         |
+|---------------------------------------------------------------|-----------------|-----|--------|-----|---------|
+| Deployment Cost                                               | Deployment Size |     |        |     |         |
+| 175411                                                        | 594             |     |        |     |         |
+| Function Name                                                 | min             | avg | median | max | # calls |
+| latestAnswer                                                  | 203             | 203 | 203    | 203 | 53      |
+
+
+| tests/gas/RewardsController.gas.t.sol:MockScaledBalanceToken contract |                 |      |        |      |         |
+|-----------------------------------------------------------------------|-----------------|------|--------|------|---------|
+| Deployment Cost                                                       | Deployment Size |      |        |      |         |
+| 289283                                                                | 1030            |      |        |      |         |
+| Function Name                                                         | min             | avg  | median | max  | # calls |
+| decimals                                                              | 243             | 243  | 243    | 243  | 52      |
+| getScaledUserBalanceAndSupply                                         | 2547            | 2547 | 2547   | 2547 | 24      |
+| scaledTotalSupply                                                     | 368             | 1675 | 2368   | 2368 | 52      |
+
+ours gas
+
+Suite result: FAILED. 0 passed; 21 failed; 0 skipped; finished in 7.59ms (29.51ms CPU time)
+| src/contracts/rewards/RewardsController.sol:RewardsController contract |                 |        |        |         |         |
+|------------------------------------------------------------------------|-----------------|--------|--------|---------|---------|
+| Deployment Cost                                                        | Deployment Size |        |        |         |         |
+| 2938480                                                                | 13556           |        |        |         |         |
+| Function Name                                                          | min             | avg    | median | max     | # calls |
+| claimAllRewards                                                        | 58248           | 124320 | 124320 | 190393  | 2       |
+| claimAllRewardsOnBehalf                                                | 60915           | 126987 | 126987 | 193060  | 2       |
+| claimAllRewardsToSelf                                                  | 57691           | 123763 | 123763 | 189836  | 2       |
+| claimRewards                                                           | 52980           | 73949  | 73949  | 94919   | 2       |
+| claimRewardsOnBehalf                                                   | 55721           | 76690  | 76690  | 97660   | 2       |
+| claimRewardsToSelf                                                     | 52500           | 73469  | 73469  | 94439   | 2       |
+| configureAssets                                                        | 269802          | 437504 | 269802 | 1034945 | 20      |
+| getClaimer                                                             | 2625            | 2625   | 2625   | 2625    | 1       |
+| getRewardOracle                                                        | 649             | 649    | 649    | 649     | 1       |
+| getTransferStrategy                                                    | 648             | 648    | 648    | 648     | 1       |
+| handleAction                                                           | 32510           | 84317  | 60076  | 130476  | 25      |
+| initialize                                                             | 53154           | 53154  | 53154  | 53154   | 21      |
+| setClaimer                                                             | 46079           | 46079  | 46079  | 46079   | 5       |
+| setRewardOracle                                                        | 32030           | 32030  | 32030  | 32030   | 1       |
+| setTransferStrategy                                                    | 31631           | 31631  | 31631  | 31631   | 1       |
+
+
+| tests/gas/RewardsController.gas.t.sol:MockAggregator contract |                 |     |        |     |         |
+|---------------------------------------------------------------|-----------------|-----|--------|-----|---------|
+| Deployment Cost                                               | Deployment Size |     |        |     |         |
+| 175411                                                        | 594             |     |        |     |         |
+| Function Name                                                 | min             | avg | median | max | # calls |
+| latestAnswer                                                  | 203             | 203 | 203    | 203 | 53      |
+
+
+| tests/gas/RewardsController.gas.t.sol:MockScaledBalanceToken contract |                 |      |        |      |         |
+|-----------------------------------------------------------------------|-----------------|------|--------|------|---------|
+| Deployment Cost                                                       | Deployment Size |      |        |      |         |
+| 289283                                                                | 1030            |      |        |      |         |
+| Function Name                                                         | min             | avg  | median | max  | # calls |
+| decimals                                                              | 243             | 243  | 243    | 243  | 52      |
+| getScaledUserBalanceAndSupply                                         | 2547            | 2547 | 2547   | 2547 | 24      |
+| scaledTotalSupply                                                     | 368             | 1675 | 2368   | 2368 | 52      |
+
+
+1. RewardsDistributor
+
+link certora original-cyfrin: https://prover.certora.com/output/480394/78374d0a211c42ee9d278a155b071848?anonymousKey=91a3843fdd1d0051e7f02816bede9eeb87c59cc0
+link certora original-ours: https://prover.certora.com/output/480394/4ea224f3cb58437984b390b85b56ff48?anonymousKey=8d4f37d5bdfa90577c31b50d9bf4ab4a8c81d40d
+
+original gas
+
+| tests/gas/RewardsDistributor.gas.t.sol:MockRewardsDistributor contract |                 |        |        |        |         |
+|------------------------------------------------------------------------|-----------------|--------|--------|--------|---------|
+| Deployment Cost                                                        | Deployment Size |        |        |        |         |
+| 1834732                                                                | 8421            |        |        |        |         |
+| Function Name                                                          | min             | avg    | median | max    | # calls |
+| configureAssets                                                        | 213355          | 310033 | 213355 | 842771 | 17      |
+| getAllUserRewards                                                      | 7715            | 29761  | 29761  | 51808  | 2       |
+| getAssetDecimals                                                       | 633             | 633    | 633    | 633    | 1       |
+| getAssetIndex                                                          | 4436            | 4436   | 4436   | 4436   | 1       |
+| getDistributionEnd                                                     | 766             | 766    | 766    | 766    | 1       |
+| getEmissionManager                                                     | 224             | 224    | 224    | 224    | 1       |
+| getRewardsByAsset                                                      | 1569            | 2154   | 2154   | 2739   | 2       |
+| getRewardsData                                                         | 2954            | 2954   | 2954   | 2954   | 1       |
+| getRewardsList                                                         | 1044            | 1318   | 1318   | 1592   | 2       |
+| getUserAccruedRewards                                                  | 3596            | 6514   | 6514   | 9432   | 2       |
+| getUserAssetIndex                                                      | 2961            | 2961   | 2961   | 2961   | 1       |
+| getUserRewards                                                         | 6076            | 11136  | 11136  | 16197  | 2       |
+| setDistributionEnd                                                     | 30815           | 30815  | 30815  | 30815  | 1       |
+| setEmissionPerSecond                                                   | 41586           | 53696  | 53696  | 65806  | 2       |
+
+
+| tests/gas/RewardsDistributor.gas.t.sol:MockScaledBalanceToken contract |                 |      |        |      |         |
+|------------------------------------------------------------------------|-----------------|------|--------|------|---------|
+| Deployment Cost                                                        | Deployment Size |      |        |      |         |
+| 289283                                                                 | 1030            |      |        |      |         |
+| Function Name                                                          | min             | avg  | median | max  | # calls |
+| decimals                                                               | 243             | 243  | 243    | 243  | 35      |
+| scaledTotalSupply                                                      | 368             | 1568 | 2368   | 2368 | 5       |
+
+cyfrin gas
+
+| tests/gas/RewardsDistributor.gas.t.sol:MockRewardsDistributor contract |                 |        |        |        |         |
+|------------------------------------------------------------------------|-----------------|--------|--------|--------|---------|
+| Deployment Cost                                                        | Deployment Size |        |        |        |         |
+| 1807240                                                                | 8291            |        |        |        |         |
+| Function Name                                                          | min             | avg    | median | max    | # calls |
+| configureAssets                                                        | 213018          | 309339 | 213018 | 839738 | 17      |
+| getAllUserRewards                                                      | 7705            | 29716  | 29716  | 51728  | 2       |
+| getAssetDecimals                                                       | 633             | 633    | 633    | 633    | 1       |
+| getAssetIndex                                                          | 4436            | 4436   | 4436   | 4436   | 1       |
+| getDistributionEnd                                                     | 766             | 766    | 766    | 766    | 1       |
+| getEmissionManager                                                     | 224             | 224    | 224    | 224    | 1       |
+| getRewardsByAsset                                                      | 1558            | 2143   | 2143   | 2728   | 2       |
+| getRewardsData                                                         | 2954            | 2954   | 2954   | 2954   | 1       |
+| getRewardsList                                                         | 1044            | 1318   | 1318   | 1592   | 2       |
+| getUserAccruedRewards                                                  | 3500            | 6318   | 6318   | 9136   | 2       |
+| getUserAssetIndex                                                      | 2961            | 2961   | 2961   | 2961   | 1       |
+| getUserRewards                                                         | 6071            | 11126  | 11126  | 16182  | 2       |
+| setDistributionEnd                                                     | 30783           | 30783  | 30783  | 30783  | 1       |
+| setEmissionPerSecond                                                   | 41491           | 53506  | 53506  | 65521  | 2       |
+
+
+| tests/gas/RewardsDistributor.gas.t.sol:MockScaledBalanceToken contract |                 |      |        |      |         |
+|------------------------------------------------------------------------|-----------------|------|--------|------|---------|
+| Deployment Cost                                                        | Deployment Size |      |        |      |         |
+| 289283                                                                 | 1030            |      |        |      |         |
+| Function Name                                                          | min             | avg  | median | max  | # calls |
+| decimals                                                               | 243             | 243  | 243    | 243  | 35      |
+| scaledTotalSupply                                                      | 368             | 1568 | 2368   | 2368 | 5       |
+
+ours gas
+
+Suite result: FAILED. 0 passed; 19 failed; 0 skipped; finished in 4.37ms (12.29ms CPU time)
+| tests/gas/RewardsDistributor.gas.t.sol:MockRewardsDistributor contract |                 |        |        |        |         |
+|------------------------------------------------------------------------|-----------------|--------|--------|--------|---------|
+| Deployment Cost                                                        | Deployment Size |        |        |        |         |
+| 1613633                                                                | 7396            |        |        |        |         |
+| Function Name                                                          | min             | avg    | median | max    | # calls |
+| configureAssets                                                        | 211204          | 305799 | 211204 | 825286 | 17      |
+| getAllUserRewards                                                      | 7582            | 28895  | 28895  | 50209  | 2       |
+| getAssetDecimals                                                       | 633             | 633    | 633    | 633    | 1       |
+| getAssetIndex                                                          | 4436            | 4436   | 4436   | 4436   | 1       |
+| getDistributionEnd                                                     | 766             | 766    | 766    | 766    | 1       |
+| getEmissionManager                                                     | 224             | 224    | 224    | 224    | 1       |
+| getRewardsByAsset                                                      | 1558            | 2143   | 2143   | 2728   | 2       |
+| getRewardsData                                                         | 2954            | 2954   | 2954   | 2954   | 1       |
+| getRewardsList                                                         | 1044            | 1318   | 1318   | 1592   | 2       |
+| getUserAccruedRewards                                                  | 3500            | 6318   | 6318   | 9136   | 2       |
+| getUserAssetIndex                                                      | 2961            | 2961   | 2961   | 2961   | 1       |
+| getUserRewards                                                         | 5934            | 10844  | 10844  | 15755  | 2       |
+| setDistributionEnd                                                     | 30783           | 30783  | 30783  | 30783  | 1       |
+| setEmissionPerSecond                                                   | 41486           | 53491  | 53491  | 65496  | 2       |
+
+
+| tests/gas/RewardsDistributor.gas.t.sol:MockScaledBalanceToken contract |                 |      |        |      |         |
+|------------------------------------------------------------------------|-----------------|------|--------|------|---------|
+| Deployment Cost                                                        | Deployment Size |      |        |      |         |
+| 289283                                                                 | 1030            |      |        |      |         |
+| Function Name                                                          | min             | avg  | median | max  | # calls |
+| decimals                                                               | 243             | 243  | 243    | 243  | 35      |
+| scaledTotalSupply                                                      | 368             | 1568 | 2368   | 2368 | 5       |

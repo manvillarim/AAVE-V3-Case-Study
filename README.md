@@ -1,29 +1,84 @@
-# CASE STUDY
+# AAVE V3 Case Study
 
-Verification Links:
+This directory contains the artifacts for the AAVE V3 case study from the work *"Ensuring Gas Optimisation Correctness by Behavioural Equivalence"*.
 
-RewardsDistributor: 
+---
 
-1. Original-Cyfrin: https://prover.certora.com/output/480394/78374d0a211c42ee9d278a155b071848?anonymousKey=91a3843fdd1d0051e7f02816bede9eeb87c59cc0
+## Structure
 
-2. Original - Our: https://prover.certora.com/output/480394/209eccbb867944129a28c0e1bc54ed4a?anonymousKey=505f348e2580105fc8e5ef14f286045678cafe55
+```
+.
+├── aave-v3-origin/                       # Original AAVE V3 codebase (commit 464a0ea, v3.3)
+├── aave-v3-origin-liquidation-gas-fixes/ # Cyfrin-optimised variant
+├── aave-v3-origin-full-optimized/        # Our extended variant
+├── conf/                                 # Certora configuration files for this case study
+├── contracts/                            # Gas optimisation reports per contract
+│   ├── PoolAddressesProviderRegistry.md
+│   ├── RewardsController.md
+│   └── RewardsDistributor.md
+├── Harness/                              # Harness contracts for Certora verification
+├── specs/                                # CVL specifications for this case study
+└── license.txt
+```
 
-RewardsController: 
+---
 
-1. Original - Cyfrin: https://prover.certora.com/output/480394/b892135b51124bc2ba3616346768252c?anonymousKey=9d0073a429fae0682c53e0ca1a24f59d66105135
+## Contract Reports
 
-2. Original - Our: https://prover.certora.com/output/480394/922d0051f7c1463682289e30c8efda3a?anonymousKey=4e4dce58323a80f4473b044b0437b64135d747b0
+Detailed reports for each analysed contract — covering the transformations applied, code diffs, gas snapshots, and formal verification links — are available in `contracts/`:
 
-Collector: 
+| Contract | Report |
+|----------|--------|
+| `PoolAddressesProviderRegistry` | [contracts/PoolAddressesProviderRegistry.md](contracts/PoolAddressesProviderRegistry.md) |
+| `RewardsController` | [contracts/RewardsController.md](contracts/RewardsController.md) |
+| `RewardsDistributor` | [contracts/RewardsDistributor.md](contracts/RewardsDistributor.md) |
 
-1. Original - Cyfrin: https://prover.certora.com/output/480394/050db977579d4c208f97fdd8679e09f7?anonymousKey=66949b3dede83e892495bcab116a85795ad4a9ec
+---
 
-2. Original - Our:
+## Requirements
 
-PoolAddressesProviderRegistry: 
+1. [Certora Prover](https://www.certora.com/) (with a valid API key)
+2. [Foundry Framework](https://getfoundry.sh/)
 
-1. Original - Cyfrin https://prover.certora.com/output/480394/1713ccda03db4cf18665575da737a6ce?anonymousKey=d4edae775b829777b2267bf5300885329d41736d
+---
 
-2. Original - Our https://prover.certora.com/output/480394/3675a7d626334a18802a80ba60ad1737?anonymousKey=2efbf61989e1bf7b877bc584bd11d414b7354ec3
+## Formal Verification
 
-To see the gas analysis, click [here](GASREPORTS.md)
+Run from the **repository root**:
+
+```bash
+certoraRun.py --prover_version master conf/<NAME_OF_CONF_FILE>.conf
+```
+
+---
+
+## Gas Benchmarking
+
+Enter the folder of the variant you want to benchmark and run:
+
+```bash
+forge test --gas-report --match-contract <ContractName>_gas_Tests
+```
+
+For example:
+
+```bash
+cd aave-v3-origin
+forge test --gas-report --match-contract PoolAddressesProviderRegistry_gas_Tests
+```
+
+```bash
+cd aave-v3-origin-liquidation-gas-fixes
+forge test --gas-report --match-contract RewardsDistributor_gas_Tests
+```
+
+```bash
+cd aave-v3-origin-full-optimized
+forge test --gas-report --match-contract RewardsDistributor_gas_Tests
+```
+
+---
+
+## License
+
+This project is licensed under the MIT License. See [license.txt](license.txt) for details.

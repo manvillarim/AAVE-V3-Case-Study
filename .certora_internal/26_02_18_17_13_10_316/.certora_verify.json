@@ -1,0 +1,14 @@
+{
+    "importFilesToOrigRelpaths": {
+        "specs/Structures/GhostRegistry.spec": "specs/Structures/GhostRegistry.spec"
+    },
+    "primary_contract": "RegistryOptimized",
+    "specfile": "specs/PoolAddressesProviderRegistry.spec",
+    "specfileOrigRelpath": "specs/PoolAddressesProviderRegistry.spec",
+    "specfilesToImportDecls": {
+        "specs/PoolAddressesProviderRegistry.spec": [
+            "Structures/GhostRegistry.spec"
+        ]
+    },
+    "type": "spec"
+}
