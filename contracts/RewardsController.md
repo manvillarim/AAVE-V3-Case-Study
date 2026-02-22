@@ -307,38 +307,7 @@ View functions (`getClaimer`, `getRewardOracle`, `getTransferStrategy`) and pure
 
 ## 3. Formal Verification
 
-Behavioural equivalence for both optimised versions against the original was verified using the Certora Prover. Due to the complexity of the contract's state — which spans inherited storage from `RewardsDistributor` including nested mappings over assets, rewards, and users — the coupling invariant is defined over ghost variables that mirror the full persistent storage:
-
-```
-CouplingInv() ≡
-    a.EMISSION_MANAGER == ao.EMISSION_MANAGER                                        ∧
-    a.lastInitializedRevision == ao.lastInitializedRevision                          ∧
-    a.initializing == ao.initializing                                                ∧
-    (∀ user.    ghost_a_authorizedClaimers[user]  == ghost_ao_authorizedClaimers[user])  ∧
-    (∀ reward.  ghost_a_transferStrategy[reward]  == ghost_ao_transferStrategy[reward])  ∧
-    (∀ reward.  ghost_a_rewardOracle[reward]      == ghost_ao_rewardOracle[reward])      ∧
-    (∀ asset reward user.
-        ghost_a_userIndex[asset][reward][user]   == ghost_ao_userIndex[asset][reward][user]   ∧
-        ghost_a_userAccrued[asset][reward][user] == ghost_ao_userAccrued[asset][reward][user]) ∧
-    (∀ asset reward.
-        ghost_a_rewardIndex[asset][reward]         == ghost_ao_rewardIndex[asset][reward]         ∧
-        ghost_a_emissionPerSecond[asset][reward]   == ghost_ao_emissionPerSecond[asset][reward]   ∧
-        ghost_a_lastUpdateTimestamp[asset][reward] == ghost_ao_lastUpdateTimestamp[asset][reward] ∧
-        ghost_a_distributionEnd[asset][reward]     == ghost_ao_distributionEnd[asset][reward])    ∧
-    (∀ asset.
-        ghost_a_assetDecimals[asset]         == ghost_ao_assetDecimals[asset]         ∧
-        ghost_a_availableRewardsCount[asset] == ghost_ao_availableRewardsCount[asset]) ∧
-    (∀ asset idx.
-        idx < ghost_a_availableRewardsCount[asset] →
-        ghost_a_availableRewards[asset][idx] == ghost_ao_availableRewards[asset][idx]) ∧
-    (∀ reward. ghost_a_isRewardEnabled[reward] == ghost_ao_isRewardEnabled[reward])  ∧
-    ghost_a_rewardsListLength == ghost_ao_rewardsListLength                          ∧
-    (∀ idx. idx < ghost_a_rewardsListLength →
-        ghost_a_rewardsListAt[idx] == ghost_ao_rewardsListAt[idx])                   ∧
-    ghost_a_assetsListLength == ghost_ao_assetsListLength                            ∧
-    (∀ idx. idx < ghost_a_assetsListLength →
-        ghost_a_assetsListAt[idx] == ghost_ao_assetsListAt[idx])
-```
+Behavioural equivalence for both optimised versions against the original was verified using the Certora Prover. Due to the complexity of the contract's state — which spans inherited storage from `RewardsDistributor` including nested mappings over assets, rewards, and users — the coupling invariant is defined over ghost variables that mirror the full persistent storage.
 
 The coupling invariant spans the entire observable state of both `RewardsController` and its parent `RewardsDistributor`, including all per-asset, per-reward, and per-user data structures. Ghost functions were required for `getScaledUserBalanceAndSupply` to resolve HAVOC states caused by the prover's inability to summarise the external `IScaledBalanceToken` calls. Ghost variables paired with `Sload`/`Sstore` hooks maintain consistency between ghost state and concrete EVM storage throughout symbolic execution.
 
