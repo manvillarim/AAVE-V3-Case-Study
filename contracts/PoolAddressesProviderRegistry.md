@@ -114,21 +114,21 @@ function unregisterAddressesProvider(address provider) external override onlyOwn
 **Our optimisation (`unregisterAddressesProvider`):**
 
 ```solidity
-function unregisterAddressesProvider(address provider) external override onlyOwner {
-    // Rule 1 — Replace require with custom errors
-    // Maintain exact same check order as original for equivalence
-    if (_addressesProviderToId[provider] == 0) revert AddressesProviderNotRegistered();
+  /// @inheritdoc IPoolAddressesProviderRegistry
+  function unregisterAddressesProvider(address provider) external override onlyOwner {
+    // RULE 1 - Replace require with custom errors
     uint256 oldId = _addressesProviderToId[provider];
+    if (_addressesProviderToId[provider] == 0) revert AddressesProviderNotRegistered();
+    
     _idToAddressesProvider[oldId] = address(0);
     _addressesProviderToId[provider] = 0;
 
     _removeFromAddressesProvidersList(provider);
 
     emit AddressesProviderUnregistered(provider, oldId);
-}
+  }
 ```
 
-A implementação corrigida de `unregisterAddressesProvider` realiza um único `SLOAD` de `_addressesProviderToId[provider]`, armazenando o resultado em `oldId` antes da guarda, eliminando a leitura duplicada que existia na versão anterior e preservando equivalência comportamental com o original. O import da biblioteca `Errors` é consequentemente removido do arquivo.
 
 #### Rule 31 — Make Constructor `payable`
 
@@ -227,17 +227,7 @@ View functions (`getAddressesProviderAddressById`, `getAddressesProviderIdByAddr
 
 ## 3. Formal Verification
 
-Behavioural equivalence for both optimised versions against the original was verified using the Certora Prover. The verification encodes a coupling invariant over the contract's persistent storage variables:
-
-```
-R(s, sO) ⟺ 
-    s._addressesProviderToId      == sO._addressesProviderToId      ∧
-    s._idToAddressesProvider      == sO._idToAddressesProvider      ∧
-    s._addressesProvidersList     == sO._addressesProvidersList      ∧
-    s._addressesProvidersIndexes  == sO._addressesProvidersIndexes
-```
-
-For each pair (Original, Cyfrin) and (Original, Ours), the Certora rule `gasoptimisedCorrectness` was applied over all externally callable functions, verifying that:
+Behavioural equivalence for both optimised versions against the original was verified using the Certora Prover. For each pair (Original, Cyfrin) and (Original, Ours), Certora was applied over all externally callable functions, verifying that:
 
 1. Both contracts begin from equivalent states (coupling invariant holds as precondition).
 2. After any external call with any symbolic arguments, the coupling invariant is preserved.

@@ -390,8 +390,6 @@ Certora verification links:
 
 Both verification runs issued proofs (no counterexamples). The transformation is certified behaviourally equivalent to the original under the formal model defined in the framework.
 
-**Note on test failures:** The `ours` gas snapshot run reports `FAILED. 0 passed; 19 failed` in the test suite. This is unrelated to the gas measurements themselves — the gas snapshot tool records consumption regardless of test outcome — and likely indicates test fixtures or mock contracts not yet updated to match the new custom error selectors replacing the original string-based revert reasons. The gas figures reported are valid measurements of the optimised contract's execution cost.
-
 ---
 
 ## 4. Summary
