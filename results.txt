@@ -270,3 +270,161 @@ Suite result: FAILED. 0 passed; 19 failed; 0 skipped; finished in 4.37ms (12.29m
 | Function Name                                                          | min             | avg  | median | max  | # calls |
 | decimals                                                               | 243             | 243  | 243    | 243  | 35      |
 | scaledTotalSupply                                                      | 368             | 1568 | 2368   | 2368 | 5       |
+
+
+4. collector
+
+link certora original-cyfrin: https://prover.certora.com/output/480394/3f3ed9dc5f824324a0fe23f6592d44b4?anonymousKey=714208d30234cc9fd303e82e8447ff20b8e62365
+link certora original-ours:  https://prover.certora.com/output/480394/7f3f6286ce2e4c3eac2b822f7d83a0ab?anonymousKey=0dd998cc6cd8c880441e33ded527e306ac787e81
+
+original
+
+| lib/solidity-utils/lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/proxy/ERC1967/ERC1967Proxy.sol:ERC1967Proxy contract |                 |        |        |        |         |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|--------|--------|--------|---------|
+| Deployment Cost                                                                                                                                     | Deployment Size |        |        |        |         |
+| 218343                                                                                                                                              | 1159            |        |        |        |         |
+| Function Name                                                                                                                                       | min             | avg    | median | max    | # calls |
+| ETH_MOCK_ADDRESS                                                                                                                                    | 5144            | 5144   | 5144   | 5144   | 1       |
+| FUNDS_ADMIN_ROLE                                                                                                                                    | 629             | 629    | 629    | 629    | 20      |
+| approve                                                                                                                                             | 57343           | 57343  | 57343  | 57343  | 1       |
+| balanceOf                                                                                                                                           | 4342            | 19614  | 24645  | 24823  | 4       |
+| cancelStream                                                                                                                                        | 67657           | 87563  | 94171  | 94256  | 4       |
+| createStream                                                                                                                                        | 216829          | 230499 | 233917 | 233917 | 25      |
+| deltaOf                                                                                                                                             | 2215            | 15961  | 22833  | 22836  | 3       |
+| getNextStreamId                                                                                                                                     | 7210            | 7210   | 7210   | 7210   | 1       |
+| getStream                                                                                                                                           | 22825           | 22825  | 22825  | 22825  | 1       |
+| grantRole                                                                                                                                           | 56333           | 56333  | 56333  | 56333  | 20      |
+| isFundsAdmin                                                                                                                                        | 7696            | 7696   | 7696   | 7696   | 1       |
+| transfer                                                                                                                                            | 29849           | 46274  | 46274  | 62700  | 2       |
+| withdrawFromStream                                                                                                                                  | 90181           | 90561  | 90383  | 91300  | 4       |
+
+
+| src/contracts/treasury/Collector.sol:Collector contract |                 |        |        |        |         |
+|---------------------------------------------------------|-----------------|--------|--------|--------|---------|
+| Deployment Cost                                         | Deployment Size |        |        |        |         |
+| 1484479                                                 | 6716            |        |        |        |         |
+| Function Name                                           | min             | avg    | median | max    | # calls |
+| ETH_MOCK_ADDRESS                                        | 260             | 260    | 260    | 260    | 1       |
+| FUNDS_ADMIN_ROLE                                        | 245             | 245    | 245    | 245    | 20      |
+| approve                                                 | 30450           | 30450  | 30450  | 30450  | 1       |
+| balanceOf                                               | 3952            | 15849  | 19755  | 19933  | 4       |
+| cancelStream                                            | 58480           | 83366  | 91628  | 91729  | 4       |
+| createStream                                            | 189617          | 203297 | 206717 | 206717 | 25      |
+| deltaOf                                                 | 1828            | 12574  | 17946  | 17949  | 3       |
+| getNextStreamId                                         | 2326            | 2326   | 2326   | 2326   | 1       |
+| getStream                                               | 17902           | 17902  | 17902  | 17902  | 1       |
+| grantRole                                               | 29754           | 29754  | 29754  | 29754  | 20      |
+| initialize                                              | 96440           | 96440  | 96440  | 96440  | 20      |
+| isFundsAdmin                                            | 2809            | 2809   | 2809   | 2809   | 1       |
+| transfer                                                | 2964            | 19385  | 19385  | 35807  | 2       |
+| withdrawFromStream                                      | 66687           | 72074  | 66889  | 87831  | 4       |
+
+
+| tests/gas/Collector.t.gas.sol:MockERC20 contract |                 |       |        |       |         |
+|--------------------------------------------------|-----------------|-------|--------|-------|---------|
+| Deployment Cost                                  | Deployment Size |       |        |       |         |
+| 487752                                           | 2583            |       |        |       |         |
+| Function Name                                    | min             | avg   | median | max   | # calls |
+| mint                                             | 68298           | 68298 | 68298  | 68298 | 20      |
+
+
+cyfrin
+
+| lib/solidity-utils/lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/proxy/ERC1967/ERC1967Proxy.sol:ERC1967Proxy contract |                 |        |        |        |         |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|--------|--------|--------|---------|
+| Deployment Cost                                                                                                                                     | Deployment Size |        |        |        |         |
+| 218343                                                                                                                                              | 1159            |        |        |        |         |
+| Function Name                                                                                                                                       | min             | avg    | median | max    | # calls |
+| ETH_MOCK_ADDRESS                                                                                                                                    | 5144            | 5144   | 5144   | 5144   | 1       |
+| FUNDS_ADMIN_ROLE                                                                                                                                    | 629             | 629    | 629    | 629    | 20      |
+| approve                                                                                                                                             | 57347           | 57347  | 57347  | 57347  | 1       |
+| balanceOf                                                                                                                                           | 3304            | 18576  | 23617  | 23766  | 4       |
+| cancelStream                                                                                                                                        | 65414           | 85217  | 91812  | 91830  | 4       |
+| createStream                                                                                                                                        | 216667          | 230337 | 233755 | 233755 | 25      |
+| deltaOf                                                                                                                                             | 1311            | 8372   | 11899  | 11908  | 3       |
+| getNextStreamId                                                                                                                                     | 7210            | 7210   | 7210   | 7210   | 1       |
+| getStream                                                                                                                                           | 22825           | 22825  | 22825  | 22825  | 1       |
+| grantRole                                                                                                                                           | 56333           | 56333  | 56333  | 56333  | 20      |
+| isFundsAdmin                                                                                                                                        | 7696            | 7696   | 7696   | 7696   | 1       |
+| transfer                                                                                                                                            | 29849           | 46274  | 46274  | 62700  | 2       |
+| withdrawFromStream                                                                                                                                  | 88324           | 88654  | 88355  | 89584  | 4       |
+
+
+| src/contracts/treasury/Collector.sol:Collector contract |                 |        |        |        |         |
+|---------------------------------------------------------|-----------------|--------|--------|--------|---------|
+| Deployment Cost                                         | Deployment Size |        |        |        |         |
+| 1371815                                                 | 6195            |        |        |        |         |
+| Function Name                                           | min             | avg    | median | max    | # calls |
+| ETH_MOCK_ADDRESS                                        | 260             | 260    | 260    | 260    | 1       |
+| FUNDS_ADMIN_ROLE                                        | 245             | 245    | 245    | 245    | 20      |
+| approve                                                 | 30454           | 30454  | 30454  | 30454  | 1       |
+| balanceOf                                               | 2914            | 14811  | 18727  | 18876  | 4       |
+| cancelStream                                            | 55676           | 80433  | 88680  | 88696  | 4       |
+| createStream                                            | 189455          | 203135 | 206555 | 206555 | 25      |
+| deltaOf                                                 | 924             | 4985   | 7012   | 7021   | 3       |
+| getNextStreamId                                         | 2326            | 2326   | 2326   | 2326   | 1       |
+| getStream                                               | 17902           | 17902  | 17902  | 17902  | 1       |
+| grantRole                                               | 29754           | 29754  | 29754  | 29754  | 20      |
+| initialize                                              | 96440           | 96440  | 96440  | 96440  | 20      |
+| isFundsAdmin                                            | 2809            | 2809   | 2809   | 2809   | 1       |
+| transfer                                                | 2964            | 19385  | 19385  | 35807  | 2       |
+| withdrawFromStream                                      | 64830           | 70059  | 64861  | 85686  | 4       |
+
+
+| tests/gas/Collector.t.gas.sol:MockERC20 contract |                 |       |        |       |         |
+|--------------------------------------------------|-----------------|-------|--------|-------|---------|
+| Deployment Cost                                  | Deployment Size |       |        |       |         |
+| 487752                                           | 2583            |       |        |       |         |
+| Function Name                                    | min             | avg   | median | max   | # calls |
+| mint                                             | 68298           | 68298 | 68298  | 68298 | 20      |
+
+ours
+
+| lib/solidity-utils/lib/openzeppelin-contracts-upgradeable/lib/openzeppelin-contracts/contracts/proxy/ERC1967/ERC1967Proxy.sol:ERC1967Proxy contract |                 |        |        |        |         |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|--------|--------|--------|---------|
+| Deployment Cost                                                                                                                                     | Deployment Size |        |        |        |         |
+| 218343                                                                                                                                              | 1159            |        |        |        |         |
+| Function Name                                                                                                                                       | min             | avg    | median | max    | # calls |
+| ETH_MOCK_ADDRESS                                                                                                                                    | 5144            | 5144   | 5144   | 5144   | 1       |
+| FUNDS_ADMIN_ROLE                                                                                                                                    | 629             | 629    | 629    | 629    | 20      |
+| approve                                                                                                                                             | 57336           | 57336  | 57336  | 57336  | 1       |
+| balanceOf                                                                                                                                           | 3323            | 18590  | 23630  | 23778  | 4       |
+| cancelStream                                                                                                                                        | 65444           | 84283  | 89927  | 91836  | 4       |
+| createStream                                                                                                                                        | 216656          | 230326 | 233744 | 233744 | 25      |
+| deltaOf                                                                                                                                             | 1311            | 8372   | 11899  | 11908  | 3       |
+| getNextStreamId                                                                                                                                     | 7210            | 7210   | 7210   | 7210   | 1       |
+| getStream                                                                                                                                           | 22825           | 22825  | 22825  | 22825  | 1       |
+| grantRole                                                                                                                                           | 56333           | 56333  | 56333  | 56333  | 20      |
+| isFundsAdmin                                                                                                                                        | 7696            | 7696   | 7696   | 7696   | 1       |
+| transfer                                                                                                                                            | 29838           | 46263  | 46263  | 62689  | 2       |
+| withdrawFromStream                                                                                                                                  | 85989           | 87007  | 86835  | 88368  | 4       |
+
+
+| src/contracts/treasury/Collector.sol:Collector contract |                 |        |        |        |         |
+|---------------------------------------------------------|-----------------|--------|--------|--------|---------|
+| Deployment Cost                                         | Deployment Size |        |        |        |         |
+| 1368383                                                 | 6179            |        |        |        |         |
+| Function Name                                           | min             | avg    | median | max    | # calls |
+| ETH_MOCK_ADDRESS                                        | 260             | 260    | 260    | 260    | 1       |
+| FUNDS_ADMIN_ROLE                                        | 245             | 245    | 245    | 245    | 20      |
+| approve                                                 | 30443           | 30443  | 30443  | 30443  | 1       |
+| balanceOf                                               | 2933            | 14825  | 18740  | 18888  | 4       |
+| cancelStream                                            | 55714           | 79266  | 86324  | 88703  | 4       |
+| createStream                                            | 189444          | 203124 | 206544 | 206544 | 25      |
+| deltaOf                                                 | 924             | 4985   | 7012   | 7021   | 3       |
+| getNextStreamId                                         | 2326            | 2326   | 2326   | 2326   | 1       |
+| getStream                                               | 17902           | 17902  | 17902  | 17902  | 1       |
+| grantRole                                               | 29754           | 29754  | 29754  | 29754  | 20      |
+| initialize                                              | 96440           | 96440  | 96440  | 96440  | 20      |
+| isFundsAdmin                                            | 2809            | 2809   | 2809   | 2809   | 1       |
+| transfer                                                | 2953            | 19374  | 19374  | 35796  | 2       |
+| withdrawFromStream                                      | 62495           | 68293  | 63684  | 83308  | 4       |
+
+
+| tests/gas/Collector.gas.t.sol:MockERC20 contract |                 |       |        |       |         |
+|--------------------------------------------------|-----------------|-------|--------|-------|---------|
+| Deployment Cost                                  | Deployment Size |       |        |       |         |
+| 487752                                           | 2583            |       |        |       |         |
+| Function Name                                    | min             | avg   | median | max   | # calls |
+| mint                                             | 68298           | 68298 | 68298  | 68298 | 20      |
+

@@ -32,7 +32,7 @@ Detailed reports for each analysed contract — covering the transformations app
 | `PoolAddressesProviderRegistry` | [contracts/PoolAddressesProviderRegistry.md](contracts/PoolAddressesProviderRegistry.md) |
 | `RewardsController` | [contracts/RewardsController.md](contracts/RewardsController.md) |
 | `RewardsDistributor` | [contracts/RewardsDistributor.md](contracts/RewardsDistributor.md) |
-
+| `Collector` | [contracts/Collector.md](contracts/Collector.md) |
 ---
 
 ## Requirements
