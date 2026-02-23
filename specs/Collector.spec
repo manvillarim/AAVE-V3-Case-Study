@@ -3,7 +3,7 @@ import "Structures/GhostCollector.spec";
 methods {
     function _.approve(address, uint256) external => ALWAYS(true);
     
-    function _.transfer(address, uint256) external => ghostTransferSuccess[calledContract] expect bool;
+    function _.transfer(address, uint256) external => NONDET ALL;
     
     function _.transferFrom(address, address, uint256) external => ghostTransferFromSuccess[calledContract] expect bool ALL;
     
@@ -25,7 +25,8 @@ methods {
 
 definition couplingInv() returns bool =
     ghost_a_nextStreamId == ghost_ao_nextStreamId &&
-    
+    ghost_a_reentrancyStatus == ghost_ao_reentrancyStatus &&
+
     (forall uint256 i. i < 53 => ghost_a_gap[i] == ghost_ao_gap[i]) &&
     
     (forall uint256 streamId.
@@ -46,10 +47,6 @@ function gasOptimizationCorrectness(method f, method g) {
     calldataarg args;
     
     require eA == eAo && couplingInv();
-    require forall address token. 
-        ghostTransferSuccess[token] == ghostTransferSuccess[token];
-    require forall address token.
-        ghostTransferFromSuccess[token] == ghostTransferFromSuccess[token];
 
     a.f@withrevert(eA, args);
     bool a_reverted = lastReverted;

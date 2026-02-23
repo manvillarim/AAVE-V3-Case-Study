@@ -32,13 +32,6 @@ contract Collector is AccessControlUpgradeable, ReentrancyGuardUpgradeable, ICol
   /// @inheritdoc ICollector
   bytes32 public constant FUNDS_ADMIN_ROLE = 'FUNDS_ADMIN';
 
-  // Reserved storage space to account for deprecated inherited storage
-  // 0 was lastInitializedRevision
-  // 1-50 were the ____gap
-  // 51 was the reentrancy guard _status
-  // 52 was the _fundsAdmin
-  // On some networks the layout was shifted by 1 due to `initializing` being on slot 1
-  // The upgrade proposal would in this case manually shift the storage layout to properly align the networks
   uint256[53] private ______gap;
 
   /**
@@ -57,9 +50,8 @@ contract Collector is AccessControlUpgradeable, ReentrancyGuardUpgradeable, ICol
    * @dev Throws if the caller does not have the FUNDS_ADMIN role
    */
   modifier onlyFundsAdmin() {
-    if (_onlyFundsAdmin() == false) {
-      revert OnlyFundsAdmin();
-    }
+    // RULE 17 - Write values directly: == false → !
+    if (!_onlyFundsAdmin()) revert OnlyFundsAdmin();
     _;
   }
 
@@ -144,14 +136,8 @@ contract Collector is AccessControlUpgradeable, ReentrancyGuardUpgradeable, ICol
     (uint256 startTime, uint256 stopTime) = (stream.startTime, stream.stopTime);
 
     if (block.timestamp <= startTime) return 0;
-    if (block.timestamp < stopTime) {
-
-        return block.timestamp - startTime;
-
-    }
-
-      return stopTime - startTime;
-
+    if (block.timestamp < stopTime) return block.timestamp - startTime;
+    return stopTime - startTime;
   }
 
   /// @inheritdoc ICollector
@@ -169,20 +155,12 @@ contract Collector is AccessControlUpgradeable, ReentrancyGuardUpgradeable, ICol
      * streamed until now.
      */
     if (stream.deposit > stream.remainingBalance) {
-      // Unchecked Arithmetic: deposit > remainingBalance is validated above
-      unchecked {
-        uint256 withdrawalAmount = stream.deposit - stream.remainingBalance;
-        recipientBalance = recipientBalance - withdrawalAmount;
-      }
+      uint256 withdrawalAmount = stream.deposit - stream.remainingBalance;
+      recipientBalance = recipientBalance - withdrawalAmount;
     }
 
     if (who == stream.recipient) balance = recipientBalance;
-    else if (who == stream.sender) {
-      // Unchecked Arithmetic: remainingBalance >= recipientBalance by design
-      unchecked {
-        balance = stream.remainingBalance - recipientBalance;
-      }
-    }
+    else if (who == stream.sender) balance = stream.remainingBalance - recipientBalance;
   }
 
   /*** Public Effects & Interactions Functions ***/
@@ -212,12 +190,14 @@ contract Collector is AccessControlUpgradeable, ReentrancyGuardUpgradeable, ICol
    *      Allows more gas-efficient caller functions than using a modifier
    * @param recipient The stream recipient to match against
    */
-  function _onlyAdminOrRecipient(address recipient) internal view {
-    if (!_onlyFundsAdmin() && msg.sender != recipient) {
-      revert OnlyFundsAdminOrRecipient();
+function _onlyAdminOrRecipient(address recipient) internal view {
+    // RULE 17 - Write values directly: !_onlyFundsAdmin() instead of _onlyFundsAdmin() == false
+    // RULE 16 - Use short-circuiting: cheaper comparison (msg.sender != recipient)
+    // evaluated first to avoid SLOAD from hasRole when caller is the recipient
+    if (msg.sender != recipient && !_onlyFundsAdmin()) {
+        revert OnlyFundsAdminOrRecipient();
     }
-  }
-
+}
   /// @inheritdoc ICollector
   /**
    * @dev Throws if the recipient is the zero address, the contract itself or the caller.
@@ -246,34 +226,24 @@ contract Collector is AccessControlUpgradeable, ReentrancyGuardUpgradeable, ICol
     if (startTime < block.timestamp) revert InvalidStartTime();
     if (stopTime <= startTime) revert InvalidStopTime();
 
-    // Unchecked Arithmetic: stopTime > startTime is validated above
-    uint256 duration;
-    unchecked {
-      duration = stopTime - startTime;
-    }
+    uint256 duration = stopTime - startTime;
 
-    /* Without this, the rate per second would be zero. */
     if (deposit < duration) revert DepositSmallerTimeDelta();
-
-    /* This condition avoids dealing with remainders */
     if (deposit % duration > 0) revert DepositNotMultipleTimeDelta();
 
     uint256 ratePerSecond = deposit / duration;
 
-
-      streamId = _nextStreamId++;
-      
-    // Rule 0.6: Struct Packing - fields in optimized order
+    streamId = _nextStreamId++;
     _streams[streamId] = Stream({
-      sender: address(this),
-      recipient: recipient,
-      tokenAddress: tokenAddress,
-      isEntity: true,
-      deposit: deposit,
       remainingBalance: deposit,
+      deposit: deposit,
+      isEntity: true,
       ratePerSecond: ratePerSecond,
+      recipient: recipient,
+      sender: address(this),
       startTime: startTime,
-      stopTime: stopTime
+      stopTime: stopTime,
+      tokenAddress: tokenAddress
     });
 
     emit CreateStream(
@@ -299,7 +269,7 @@ contract Collector is AccessControlUpgradeable, ReentrancyGuardUpgradeable, ICol
     uint256 amount
   ) external nonReentrant streamExists(streamId) returns (bool) {
     if (amount == 0) revert InvalidZeroAmount();
-    Stream storage stream = _streams[streamId]; 
+    Stream storage stream = _streams[streamId];
 
     address recipient = stream.recipient;
     _onlyAdminOrRecipient(recipient);
@@ -307,15 +277,10 @@ contract Collector is AccessControlUpgradeable, ReentrancyGuardUpgradeable, ICol
     uint256 balance = balanceOf(streamId, recipient);
     if (balance < amount) revert BalanceExceeded();
 
-    // cache here as stream could be deleted if 0 remaining balance
     address tokenAddress = stream.tokenAddress;
 
-    // Unchecked Arithmetic: balance >= amount is validated above
-    uint256 newBalance;
-    unchecked {
-      newBalance = stream.remainingBalance - amount;
-    }
-    if(newBalance == 0) delete _streams[streamId];
+    uint256 newBalance = stream.remainingBalance - amount;
+    if (newBalance == 0) delete _streams[streamId];
     else stream.remainingBalance = newBalance;
 
     IERC20(tokenAddress).safeTransfer(recipient, amount);
@@ -337,6 +302,7 @@ contract Collector is AccessControlUpgradeable, ReentrancyGuardUpgradeable, ICol
     address recipient = stream.recipient;
     _onlyAdminOrRecipient(recipient);
 
+    // RULE 24 - Cache array member variables: avoid repeated storage reads of stream fields
     (address sender, address tokenAddress) = (stream.sender, stream.tokenAddress);
     uint256 senderBalance = balanceOf(streamId, sender);
     uint256 recipientBalance = balanceOf(streamId, recipient);
