@@ -4,6 +4,19 @@ This directory contains the artifacts for the AAVE V3 case study from the work *
 
 ---
 
+
+## Authors
+
+Manoel Felipe Araújo Villarim[0009-0005-6045-4519] - mfav@cin.ufpe.br
+
+Juliano Manabu Iyoda[0000-0001-7137-8287] - jmi@cin.ufpe.br
+
+Márcio Lopes Cornélio[0000-0002-9801-4659] - mlc2@cin.ufpe.br
+
+Alexandre Cabral Mota[0000-0003-4416-8123] - acm@cin.ufpe.br
+
+
+
 ## Structure
 
 ```
@@ -25,7 +38,7 @@ This directory contains the artifacts for the AAVE V3 case study from the work *
 
 ## Contract Reports
 
-Detailed reports for each analysed contract — covering the transformations applied, code diffs, gas snapshots, and formal verification links — are available in `contracts/`:
+Detailed reports for each analysed contract, covering the transformations applied, code diffs, gas snapshots, and formal verification links, are available in `contracts/`:
 
 | Contract | Report |
 |----------|--------|
