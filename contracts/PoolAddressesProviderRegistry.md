@@ -51,7 +51,7 @@ The Cyfrin version retains the original `require`-with-string-literal error hand
 
 ### 1.2 Our Extended Optimisation
 
-Our variant was applied on top of Cyfrin's codebase and introduced three additional catalogue rules: **Rule 1 (Replace `require` with Custom Errors)**, **Rule 24 (Cache Array Members)**, and **Rule 26 (Pre-increment)**. Of these, the materially significant transformation for this contract is **Rule 1**.
+Our variant was applied on top of Cyfrin's codebase and introduced three additional catalogue rules: **Rule 1 (Replace `require` with Custom Errors)**, **Rule 24 (Cache Array Members)**, **Rule 26 (Pre-increment)** and **Rule 30 (payable constructor)**. Of these, the materially significant transformation for this contract is **Rule 1**.
 
 #### Rule 1 — Replace `require` with Custom Errors
 
@@ -130,7 +130,7 @@ function unregisterAddressesProvider(address provider) external override onlyOwn
 ```
 
 
-#### Rule 31 — Make Constructor `payable`
+#### Rule 30 — Make Constructor `payable`
 
 ```solidity
 // Original
@@ -244,12 +244,13 @@ Both verification runs issued proofs (no counterexamples). The transformation is
 
 ## 4. Summary
 
-| Metric                  | Cyfrin vs. Original | Ours vs. Original | Ours vs. Cyfrin |
-|-------------------------|---------------------|-------------------|-----------------|
-| Deploy cost (gas)       | −1,747 (−0.32%)     | −39,350 (−7.14%)  | −37,603 (−6.84%)|
-| Deploy size (bytes)     | −8 (−0.30%)         | −193 (−7.31%)     | −185 (−7.03%)   |
-| `registerAddressesProvider` avg | 0           | −229              | −229            |
-| `unregisterAddressesProvider` avg | −97       | −57               | +40             |
-| Formally verified       | Yes                 | Yes               | —               |
+| Metric | Cyfrin vs. Original | Ours vs. Original | Ours vs. Cyfrin |
+|--------|---------------------|-------------------|-----------------|
+| Deploy cost (gas) | −1,747 (−0.32%) | −41,078 (−7.45%) | −39,331 (−7.16%) |
+| Deploy size (bytes) | −8 (−0.30%) | −201 (−7.61%) | −193 (−7.33%) |
+| Avg Fn. Gas | −13 (−0.02%) | −165 (−0.20%) | −153 (−0.19%) |
+| `registerAddressesProvider` avg | 0 | −229 | −229 |
+| `unregisterAddressesProvider` avg | −97 | −153 | −56 |
+| Formally verified | Yes | Yes | — |
 
 The principal source of savings in our variant is Rule 1 (Custom Errors), which removes string-literal storage from the bytecode. Runtime savings on write functions are secondary and modest in absolute terms, consistent with the general characterisation of this rule in Table 2 of the paper (0.00%–0.05% average function savings). The deployment cost reduction of approximately 7% is the primary practical benefit for this contract.
