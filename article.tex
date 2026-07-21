@@ -1,0 +1,2203 @@
+%% TOSEM submission
+%% ACM acmart class, manuscript (single-column) format
+\documentclass[manuscript,screen,review]{acmart}
+
+%% --- ACM Journal / Rights block (to be filled on acceptance) ---
+\acmJournal{TOSEM}
+
+%% ---------- Packages ----------
+\usepackage{adjustbox}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{multirow}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{minted}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{siunitx}
+\usepackage{orcidlink}
+\usepackage{hyperref}
+\renewcommand\UrlFont{\color{blue}\rmfamily}
+\urlstyle{rm}
+
+%% ---------- Author commands ----------
+\newcommand{\mfav}[1]{\textcolor{red}{#1}}
+%% Revision markup: text added or rewritten in this revision round.
+%% Replace the two definitions below by no-ops for the camera-ready.
+\newcommand{\revised}[1]{\textcolor{red}{#1}}
+\newenvironment{revisedblock}{\color{red}}{}
+\newcommand{\marcio}[1]{\textcolor{magenta}{Márcio}: \textcolor{magenta}{#1}}
+\newcommand{\authorcomment}[1]{\textcolor{blue}{#1}}
+
+%% ---------- Theorem environments ----------
+\newtheorem{refact}{Refactoring}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newenvironment{Refactoring}[1]
+   {\begin{refact} \normalfont \lawName{#1} \\ \noindent}
+   {\hfill $\Box$\end{refact}}
+\newcommand{\refactName}[1]{\mbox{$\langle${#1}$\rangle$}}
+
+%% ---------- Listings / Solidity ----------
+\usepackage{listings}
+\definecolor{verylightgray}{rgb}{0.97,0.97,0.97}
+\lstdefinelanguage{Solidity}{
+	keywords=[1]{anonymous, assembly, assert, balance, break, call, callcode, case, catch, class, constant, continue, constructor, contract, debugger, default, delegatecall, delete, do, else, emit, event, experimental, export, external, false, finally, for, function, gas, if, implements, import, in, indexed, instanceof, interface, internal, is, length, library, log0, log1, log2, log3, log4, memory, modifier, new, payable, pragma, private, protected, public, pure, push, require, return, returns, revert, selfdestruct, send, solidity, storage, struct, suicide, super, switch, then, this, throw, transfer, true, try, typeof, using, value, view, while, with, addmod, ecrecover, keccak256, mulmod, ripemd160, sha256, sha3},
+	keywordstyle=[1]\color{blue}\bfseries,
+	keywords=[2]{address, bool, byte, bytes, bytes1, bytes2, bytes3, bytes4, bytes5, bytes6, bytes7, bytes8, bytes9, bytes10, bytes11, bytes12, bytes13, bytes14, bytes15, bytes16, bytes17, bytes18, bytes19, bytes20, bytes21, bytes22, bytes23, bytes24, bytes25, bytes26, bytes27, bytes28, bytes29, bytes30, bytes31, bytes32, enum, int, int8, int16, int24, int32, int40, int48, int56, int64, int72, int80, int88, int96, int104, int112, int120, int128, int136, int144, int152, int160, int168, int176, int184, int192, int200, int208, int216, int224, int232, int240, int248, int256, mapping, string, uint, uint8, uint16, uint24, uint32, uint40, uint48, uint56, uint64, uint72, uint80, uint88, uint96, uint104, uint112, uint120, uint128, var, void, ether, finney, szabo, wei, days, hours, minutes, seconds, weeks, years},
+	keywordstyle=[2]\color{teal}\bfseries,
+	keywords=[3]{block, blockhash, coinbase, difficulty, gaslimit, number, timestamp, msg, data, gas, sender, sig, value, now, tx, gasprice, origin},
+	keywordstyle=[3]\color{violet}\bfseries,
+	identifierstyle=\color{black},
+	sensitive=false,
+	comment=[l]{//},
+	morecomment=[s]{/*}{*/},
+	commentstyle=\color{gray}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	morestring=[b]',
+	morestring=[b]"
+}
+
+\lstset{
+	language=Solidity,
+	backgroundcolor=\color{verylightgray},
+	extendedchars=true,
+	basicstyle=\footnotesize\ttfamily,
+	showstringspaces=false,
+	showspaces=false,
+	numbers=left,
+	numberstyle=\footnotesize,
+	numbersep=9pt,
+	tabsize=2,
+	breaklines=true,
+	showtabs=false,
+	captionpos=b
+}
+
+%% ---------- Refactoring float ----------
+\floatstyle{ruled}
+\newfloat{refactoring}{thp}{lorefact}[section]
+\floatplacement{refactoring}{thp}
+\floatname{refactoring}{Rule}
+\newlength{\ruleboxwidth}
+\setlength{\ruleboxwidth}{6.5cm}
+
+%% ============================================================
+%%  FRONT MATTER
+%% ============================================================
+\begin{document}
+
+\title{Ensuring Gas Optimisation Correctness by Behavioural Equivalence}
+
+\author{Manoel Villarim}
+\orcid{0009-0005-6045-4519}
+\email{mfav@cin.ufpe.br}
+\affiliation{%
+  \institution{Centro de Informática, Universidade Federal de Pernambuco}
+  \city{Recife}
+  \state{PE}
+  \country{Brazil}
+  \postcode{}
+}
+
+\author{Juliano Iyoda}
+\orcid{0000-0001-7137-8287}
+\email{jmi@cin.ufpe.br}
+\affiliation{%
+  \institution{Centro de Informática, Universidade Federal de Pernambuco}
+  \city{Recife}
+  \state{PE}
+  \country{Brazil}
+}
+
+\author{Márcio Cornélio}
+\orcid{0000-0002-9801-4659}
+\email{mlc2@cin.ufpe.br}
+\affiliation{%
+  \institution{Centro de Informática, Universidade Federal de Pernambuco}
+  \city{Recife}
+  \state{PE}
+  \country{Brazil}
+}
+
+\author{Alexandre Mota}
+\orcid{0000-0003-4416-8123}
+\email{acm@cin.ufpe.br}
+\affiliation{%
+  \institution{Centro de Informática, Universidade Federal de Pernambuco}
+  \city{Recife}
+  \state{PE}
+  \country{Brazil}
+}
+
+\begin{CCSXML}
+<ccs2012>
+   <concept>
+       <concept_id>10011007.10011006.10011066</concept_id>
+       <concept_desc>Software and its engineering~Development frameworks and environments</concept_desc>
+       <concept_significance>100</concept_significance>
+   </concept>
+   <concept>
+       <concept_id>10011007.10011074.10011099.10011692</concept_id>
+       <concept_desc>Software and its engineering~Formal software verification</concept_desc>
+       <concept_significance>500</concept_significance>
+   </concept>
+   <concept>
+       <concept_id>10011007.10011074.10011099.10011693</concept_id>
+       <concept_desc>Software and its engineering~Empirical software validation</concept_desc>
+       <concept_significance>500</concept_significance>
+   </concept>
+</ccs2012>
+\end{CCSXML}
+\ccsdesc[100]{Software and its engineering~Development frameworks and environments}
+\ccsdesc[500]{Software and its engineering~Formal software verification}
+\ccsdesc[500]{Software and its engineering~Empirical software validation}
+
+
+\begin{abstract}
+Gas consumption has a financial impact on executing Ethereum smart contracts, making gas optimisation an essential development concern. Although several optimisation techniques exist, applying them can alter contract behaviour, compromising correctness or introducing vulnerabilities. This work introduces a formal verification framework ensuring gas-optimised contracts remain behaviourally equivalent to their originals. Our approach relies on the Certora Prover to mechanise correctness checking: a transformation rule is selected from our catalogue, applied to a Solidity contract, and verified in Certora. If an optimisation violates equivalence, counterexamples guide rule diagnosis and correction. To support practical adoption, we compiled a catalogue of 30 gas-saving transformation rules, each featuring a formal pattern or example alongside a Certora specification for automated verification. Building this catalogue revealed that two previously published optimisations require updates for Solidity 0.8.0 or superior. To evaluate practical applicability, we conducted a case study on the widely-adopted AAVE V3 DeFi protocol, applying our refinement-based methodology to formally prove the behavioural equivalence of optimised versions against the original. Although not fully automated, the framework is entirely mechanisable. Our results demonstrate that combining formal verification with gas-optimisation strategies is both feasible and effective for real-world smart contracts.
+\end{abstract}
+
+\keywords{Smart Contracts, Solidity, gas optimisation, Certora Prover}
+
+\maketitle
+
+%------------------------------------
+\section{Introduction}
+\label{sec:introduction}
+
+Ethereum extends the blockchain concept into a distributed computing platform~\cite{AW19}. It maintains a global state that includes both account balances and executable code. Smart contracts --- typically written in the high-level programming language Solidity~\cite{SKH19} --- are self-executing programs with predefined logic that enables automated agreements and transactions without intermediaries. The Ethereum Virtual Machine (EVM) is a deterministic runtime environment that executes all state transitions based on network consensus. This design turns the blockchain into a "world computer" for building decentralized applications (dApps). In order to cover the computational cost of executing transactions and smart contracts, users must pay a fee, called {\em gas\/}.
+
+Minimizing gas consumption in Ethereum smart contracts is crucial to enhance economic efficiency and transaction throughput. Many studies have proposed optimisations aimed at reducing gas consumption~\cite{KA24,NBL21,ZLS23}. However, applying such optimisations can be risky because they may change the contract behaviour. These changes can compromise the contract correctness and introduce vulnerabilities.
+
+In this work, we apply formal methods to reduce the gas consumption of Solidity smart contracts without changing their intended behaviour. We introduce a refinement-based verification approach using the Certora Prover~\cite{certora2023}. Figure~\ref{fig:architecture} depicts the architecture of our verification framework. Rounded boxes are activities, rectangles denote artifacts and small squares are input/output gates.
+
+\begin{figure}[htb]
+\centering
+\includegraphics[width=\columnwidth]{architecture.pdf}
+\caption{The architecture of our verification framework.}
+\label{fig:architecture}
+\end{figure}
+
+A transformation rule converts a smart contract into a more gas-efficient version. We start at the \textsf{Find a Pattern Match} activity that takes a \textsf{Catalogue of Rules} and a particular contract (\textsf{Contract~A}) and returns a single transformation rule (\textsf{Rule}).  If no rule is applicable (i.e. \textsf{Rule = None}), then the process ends. Otherwise, \textsf{Contract A} is transformed into its gas-optimised version, namely, \textsf{Contract~A$_{\mathrm{O}}$} by the activity \textsf{ApplyRule}. The \textsf{Run the Certora Prover} activity formally verifies whether \textsf{Contract~A} and \textsf{Contract~A$_{\mathrm{O}}$} are equivalent. First, the \textsf{Generate CVL} activity produces the formal specification in the Certora Verification Language (CVL). Then the \textsf{Call the Certora Prover} activity runs Certora and outputs the verdict. If the transformation has not preserved the behaviour of \textsf{Contract~A}, then we carry out an analysis of the correctness of \textsf{Rule} using the counter-example generated by Certora. The crucial artefact on this architecture is the \textsf{Catalogue of Rules}: each transformation rule must be formalised in the Certora Verification Language by defining a coupling invariant that compares the state of \textsf{Contract~A} and \textsf{Contract~A$_{\mathrm{O}}$}. This way, Certora is able to verify whether the states of both contracts remain consistent before and after their executions.
+
+Extensive research exists on gas optimisation~\cite{GASOL,brent2020ethainter,chen2017under,grech2018madmax,khanzadeh2023optimizing,nelaturu2023refinement},
+formal verification~\cite{amani2018towards,Beillahi2020,scribble2020,hajdu2019solc,KEVM,hirai2017defining,mueller2018smashing,permenev2020verx,so2020verismart,tsankov2018securify}, and EVM semantics~\cite{albert2018ethir,grech2019gigahorse,grishchenko2018semantic,luu2016making}. However, they do not address optimisation and verification in combination. A more closely related work has explored refinement-based gas optimisation~\cite{NBL21}. However, this work address a restricted set of rules without a centralised, mechanically verified catalogue covering a broad range of source-level Solidity transformations for version 0.8.0 or above. 
+
+To the best of our knowledge, no prior work combines all these elements. Gas optimisations have been proposed with no proof of correctness or, at best, with informal proofs. Moreover, no previous work has put them all together in a centralised catalogue. In addition, powerful verification techniques for smart contracts have been developed but not aimed at gas optimisation. Our contribution complements and bridges these gaps, thus demonstrating that formal, mechanised verification for gas optimisation is both feasible and practical for real-world smart contracts.
+
+This paper offers the following contributions.
+\begin{itemize}
+\item We compiled a catalogue of 30 gas-efficient transformation rules, each with a running example and a formal specification in CVL. This collection includes the formalisation and inclusion in a verified catalog of three novel rules and two updates for Solidity $\geq$ 0.8.0;
+\item We propose a systematic encoding to formally specify transformation rules for gas reduction;
+\item We introduce a mechanisable verification framework (Figure~\ref{fig:architecture}) that abstracts formal complexity, enabling developers to simultaneously optimise gas consumption and verify correctness;
+\item We demonstrate the practical applicability of our methodology through a comprehensive case study on AAVE V3, where we verify the behavioural equivalence for both Cyfrin's optimised version and our extended variant, which instantiates 11 distinct transformation rules from our catalogue across the four analysed contracts.
+\end{itemize}
+
+This paper is organised as follows. Section~\ref{sec:background} describes background concepts used in this work. Section~\ref{sec:formalising_gas_optimisations} formalises a transformation rule and its verification in CVL. The catalogue of gas optimisations is introduced in Section~\ref{sec:catalogue_gas_optimisations}. Section~\ref{sec:empirical} describes our case study. Section~\ref{sec:threats_validity} presents the threats to validity.
+Related work is summarised in Section~\ref{sec:related_work} and Section~\ref{sec:conclusion} concludes.
+
+%------------------------------------
+\section{Background}
+\label{sec:background}
+
+This section describes the main features of the Solidity language, the gas optimisation rules, and the Certora Prover.
+
+%------------------------------------
+\subsection{Solidity}
+\label{sec:solidity}
+
+Solidity is a high-level, statically-typed programming language designed for writing smart contracts on blockchain platforms, most notably Ethereum~\cite{SKH19}. Its purpose is to enable the creation of applications with self-enforcing business logic, leaving an authoritative and non-repudiable record of all transactions. The language is fundamentally contract-oriented, where contracts are analogous to classes in object-oriented programming. The ``SwapNumbers'' contract in Listing~\ref{lst:contract_example} demonstrates core blockchain programming concepts.
+
+\begin{listing}[htb]
+\begin{scriptsize}
+\begin{minted}{Solidity}
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract SwapNumbers {
+    uint256 private A;
+    uint256 private B;
+    event numbersUpdated(address indexed updater, uint256 A, uint256 B);
+
+    constructor(uint256 initialA, uint256 initialB) {
+        A = initialA;
+        B = initialB;
+    }
+
+    function getNumbers() public view returns (uint256, uint256) {
+        return (A, B);
+    }
+
+    function updateNumbers(uint256 newA, uint256 newB) public {
+        A = newA;
+        B = newB;
+        emit numbersUpdated(msg.sender, A, B);
+    }
+
+    function swapValues() public {
+        uint256 temp;
+        temp = A;
+        A = B;
+        B = temp;
+        emit numbersUpdated(msg.sender, A, B);
+    }
+}
+\end{minted}
+\end{scriptsize}
+\caption{A contract example.}
+\label{lst:contract_example}
+\end{listing}
+
+This contract highlights several key principles. The \texttt{A} and \texttt{B} state variables are stored persistently and globally on the Ethereum blockchain. State-modifying functions like \texttt{updateNumbers()} consume gas when invoked in a transaction. \texttt{View} functions like \texttt{getNumbers()} do not consume gas when called off-chain (e.g., via a local node query); however, if invoked from within a transaction---for instance, by another contract---they do contribute to the transaction's gas cost. Calling a function that changes the state initiates a transaction that, once validated by the network and included in a block, permanently updates the contract state. The event called \texttt{numbersUpdated} creates a searchable log on the blockchain, allowing external applications to efficiently monitor state changes. The global variable \texttt{msg.sender} holds the address that initiated the transaction.
+
+%------------------------------------
+\subsection{Gas Optimisation}
+\label{sec:gas_optimisation}
+
+Solidity transformation rules for gas optimisations are usually introduced in the literature via examples as shown in Listing~\ref{lst:line_swap_original}, where only the optimised version is presented.
+
+\begin{listing}[htb]
+\begin{scriptsize}
+\begin{minted}[linenos]{Solidity}
+contract SingleLineSwap {
+   uint a = 10;
+   uint b = 20;
+   function swap() public {
+   // Swap the values of a and bin a single line without using a temporary variable
+      (a , b) = (b , a);
+   }
+}
+\end{minted}
+\end{scriptsize}
+\caption{Line swap gas optimisation as introduced by Khanzadeh~{\em et al.\/}~\cite{khanzadeh2023optimizing}.}
+\label{lst:line_swap_original}
+\end{listing}
+
+Table~\ref{tab:optimisation} shows side-by-side how such a transformation can be applied to a particular example. Identifying opportunities to apply an optimisation is the task of the \textsf{Find a Pattern Match} activity depicted in Figure~\ref{fig:architecture}.
+
+\begin{table}[htb]
+\caption{An example of a gas optimisation transformation rule.}
+\label{tab:optimisation}
+\begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
+\hline
+\rowcolor[HTML]{EFEFEF}
+\textbf{SwapNumbers} & \textbf{SwapNumbers$_{\mathrm{O}}$} \\ \hline
+\adjustbox{valign=t}{%
+\begin{minipage}{0.43\textwidth}
+\begin{minted}[fontsize=\scriptsize]{Solidity}
+
+function swapValues() public {
+   // Swap using a temporary variable
+   uint256 temp;
+   temp = A;
+   A = B;
+   B = temp;
+   emit numbersUpdated(msg.sender, A, B);
+}
+\end{minted}
+\end{minipage}}
+&
+\adjustbox{valign=t}{%
+\begin{minipage}{0.43\textwidth}
+\begin{minted}[fontsize=\scriptsize]{Solidity}
+
+function swapValues() public {
+   // Single-line swap using tuple assignment
+   (A, B) = (B, A);
+   emit numbersUpdated(msg.sender, A, B);
+}
+\end{minted}
+\end{minipage}}
+\\ \hline
+\end{tabular}
+\end{table}
+Most operations in Solidity consume gas, including storage writes and reads, computation (arithmetic, logic, loops), and data storage. Table~\ref{tab:optimisation} shows a transformation rule that makes usage of the tuple assignment to save gas. The column \texttt{SwapNumbers} shows the \texttt{swapValues()} function of the original contract introduced in Listing~\ref{lst:contract_example}. The column \texttt{SwapNumbers$_{\mathrm{O}}$} shows the \texttt{swapValues()} function transformed to optimise gas. In Section~\ref{sec:formalising_gas_optimisations}, we show how to generalise this transformation for any function and any contract.
+
+%------------------------------------
+\section{Formalising Gas Optimisations}
+\label{sec:formalising_gas_optimisations}
+
+This section presents how an optimisation is formalised as a transformation rule.
+
+Rule~\ref{rule:swap} shows two contracts. In the left-hand side, a swap is performed using an intermediate variable $\mathit{tmp}$. In the right-hand side, the swap is done via tuple assignment. Programs $P$ and $Q$ can occur during the left-hand side swap, provided that they neither use nor change the values of $\mathit{tmp}$, $\mathit{varA}$ and $\mathit{varB}$. This rule can also be applied from right to left (in terms of correctness). However, this direction makes the contract consume more gas.
+
+%---------- Rule swap -----------
+\begin{refactoring}[htb]
+\begin{footnotesize}
+\begin{tabular}{lll}
+   \framebox[0.46\textwidth]{
+      \begin{scriptsize}
+      \begin{tabular}{l}
+         $[\ldots]$\\
+         \texttt{contract} $\langle A\rangle$ \texttt{\{}\\
+         \hspace{0.5cm} $[\ldots]$\\
+         \hspace{0.5cm} \texttt{function} $\langle f\rangle$\texttt{(}$\langle\mathit{parameters}\rangle$\texttt{)} $[\ldots]$ \texttt{\{}\\
+         \hspace{1cm} $[\ldots]$\\
+         \hspace{1cm} $\langle \mathit{tmp}\rangle$ \texttt{=} $\langle\mathit{varA}\rangle$\\
+         \hspace{1cm} $\langle P\rangle$\\
+         \hspace{1cm} $\langle\mathit{varA}\rangle$ \texttt{=} $\langle\mathit{varB}\rangle$\\
+         \hspace{1cm} $\langle Q\rangle$\\
+         \hspace{1cm} $\langle\mathit{varB}\rangle$ \texttt{=} $\langle\mathit{tmp}\rangle$\\
+         \hspace{1cm} $[\ldots]$\\
+         $\hspace{0.5cm} \texttt{\}}$\\
+         $\hspace{0.5cm} [\ldots]$\\
+         \texttt{\}}$\\
+         $[\ldots]$\\
+      \end{tabular}
+      \end{scriptsize}
+   }
+
+   & $=$&
+
+   \framebox[0.5\textwidth]{
+      \begin{scriptsize}
+      \begin{tabular}{l}
+         $[\ldots]$\\
+         \texttt{contract} $\langle A\rangle$ \texttt{\{}\\
+         \hspace{0.5cm} $[\ldots]$\\
+         \hspace{0.5cm} \texttt{function} $\langle f\rangle$\texttt{(}$\langle\mathit{parameters}\rangle$\texttt{)} $[\ldots]$ \texttt{\{}\\
+         \hspace{1cm} $[\ldots]$\\
+         \hspace{1cm} \texttt{(}$\langle\mathit{varA}\rangle$, $\langle\mathit{varB}\rangle$\texttt{)} \texttt{=} \texttt{(}$\langle\mathit{varB}\rangle$, $\langle\mathit{varA}\rangle$\texttt{)}\\
+         \hspace{1cm} $\langle P\rangle$\\
+         \hspace{1cm} $\langle Q\rangle$\\
+         \hspace{1cm} $[\ldots]$\\
+         $\hspace{0.5cm} \texttt{\}}$\\
+         $\hspace{0.5cm} [\ldots]$\\
+         \texttt{\}}$\\
+         $[\ldots]$
+         \\[5.5ex]
+      \end{tabular}
+      \end{scriptsize}
+   }
+\end{tabular}
+
+\noindent \textbf{where} $A$, $f$, $\mathit{tmp}$, $\mathit{varA}$ and $\mathit{varB}$ are identifiers, $\mathit{parameters}$ is a list of identifiers, $P$ and $Q$ are Solidity commands, and $[\ldots]$ denote Solidity constructs;
+
+\noindent \textbf{provided} $\mathit{tmp}$, $\mathit{varA}$ and $\mathit{varB}$ do not occur in both $P$ and $Q$.
+
+\caption{Single Line Swap}
+\label{rule:swap}
+\end{footnotesize}
+\end{refactoring}
+
+%---------------------------------
+\subsection{Contract as a Labelled Transition System}
+
+In what follows, we call the left-hand side contract of an optimisation rule as $A$ and the right-hand contract as $A_O$ (optimised). We model the behaviour of a contract as a Labelled Transition System (LTS).
+
+\begin{definition}[Contract as an LTS]
+A smart contract $A$ is modelled as an LTS given by the tuple \( C = (S, s_0, \Sigma, \rightarrow) \) as follows:
+\begin{itemize}
+  \item \(S\) is the set of all possible states. A state \(s \in S\) is a tuple capturing the contract's entire context, including persistent storage, volatile memory, the execution stack, program counter,
+  and emitted logs;
+  \item \(s_0\in S\) is the initial state upon deployment;
+  \item \(\Sigma = \Sigma_{int} \cup \Sigma_{ext}\) is the set of transition labels or actions, partitioned into:
+    \begin{itemize}
+        \item \(\Sigma_{int}\): internal, unobservable actions ($\tau$-steps) corresponding to command executions;
+        \item \(\Sigma_{ext}\): external, observable actions, such as public function calls and reverts;
+    \end{itemize}
+  \item The relation $\to\ \subseteq\ (S \times \Sigma \times S)$ models the execution of action $\alpha$ as $s \xrightarrow{\alpha} s'$, capturing state updates and \texttt{revert}-induced rollbacks.
+\end{itemize}
+\end{definition}
+
+%----------------------------------
+\subsection{Behavioural Equivalence}
+
+In order to verify that an optimisation is correct, we must show that the optimised contract's observable behaviour is identical to the original's.
+
+\begin{definition}[Trace and Observable Behaviour]
+\label{def:trace}
+A \emph{trace} of a contract \(C\) is a finite sequence $\sigma = s_0\!\xrightarrow{\alpha_0}s_1\!\xrightarrow{\alpha_1} \ldots s_{n{-}1}\!\xrightarrow{\alpha_{n{-}1}}s_n$ corresponding to a valid path of transitions in its LTS. The \emph{observable projection} of a trace, \(\text{obs}(\sigma)\), is the sub-trace containing only states and external actions from \(\Sigma_{ext}\).
+\[
+\begin{aligned}
+\mathit{obs}(\langle\rangle) &= \langle\rangle \\
+\mathit{obs}(s\xrightarrow{\alpha} \sigma') &= \text{if } \alpha \in \Sigma_{\mathrm{ext}} \text{ then } \langle s\xrightarrow{\alpha}\rangle \mathbin{::} \mathit{obs}(\sigma') \text{ else } \mathit{obs}(\sigma')
+\end{aligned}
+\]
+where $\langle\rangle$ is the empty trace and $::$ is the concatenation operator for traces. \revised{The observable projection is taken up to a fixed abstraction $\alpha$ on external actions: $\alpha$ retains each action together with its arguments and the \emph{fact} of a revert, while forgetting gas consumption and the error data a revert carries. We keep the notation $\mathit{obs}$ for this abstracted projection, so that behavioural equivalence below is understood modulo $\alpha$; Section~\ref{sec:observable_encoding} justifies each component that $\alpha$ discards.}
+The set of all observable traces of \(C\) is denoted \(\mathit{Obs}(C)\).
+
+\begin{definition}[Behavioural Equivalence]
+An optimised contract $A_O$ is \emph{behaviourally equivalent} to an original contract $A$ if, under the assumption of identical initial states and environment variables, their sets of observable traces are identical: \(\mathit{Obs}(A) = \mathit{Obs}(A_O)\).
+\end{definition}
+
+\paragraph{Formal Correspondence and Observable Traces.}
+For any trace $\sigma = s_0 \xrightarrow{\alpha_0} s_1 \xrightarrow{\alpha_1} \ldots s_n$ in $A$, the verification ensures a corresponding trace $\sigma_O$ in $A_O$ such that $\mathcal{R}(s_i, s_{O_i})$ for all positions $i$, and observable actions remain identical: $\alpha_i \in \Sigma_{\text{ext}} \iff \alpha_{O_i} \in \Sigma_{\text{ext}}$ with $\alpha_i = \alpha_{O_i}$. By exploring all execution paths via symbolic execution, the Certora Prover establishes that $\mathit{Obs}(A) = \mathit{Obs}(A_O)$.
+
+\begin{theorem}[Soundness of Coupling Verification]
+\label{thm:soundness}
+\!Let $A\! =\! (S_A, s_{0_A}, \!\Sigma, \to_A\!)$ and $A_O = (S_{A_O}, s_{0_{A_O}}, \Sigma, \to_{A_O})$ be the LTSs of the original and optimised contracts, respectively. Let $\mathcal{R} \subseteq S_A \times S_{A_O}$ be a coupling relation verified by the Certora Prover such that:
+\begin{enumerate}
+    \item \textbf{Initialization:} $\mathcal{R}(s_{0_A}, s_{0_{A_O}})$ holds;
+    \item \textbf{Step-wise Simulation:} For all states $s, s_O$ such that $\mathcal{R}(s, s_O)$ and for any input $i$ triggering action $\alpha \in \Sigma_{ext}$, if $s \xrightarrow{\alpha} s'$ and $s_O \xrightarrow{\alpha} s'_O$, then $\mathcal{R}(s', s'_O)$ holds;
+    \item \textbf{Revert Equivalence:} For all coupled states $(s, s_O)$ and action $\mathit{revert}$, $s \xrightarrow{\mathit{revert}} s' \iff s_O \xrightarrow{\mathit{revert}} s'_O$ \\
+    (Revert equivalence is observable because a revert fails the transaction, rolls back state, and --- in the presence of \texttt{try/catch} --- alters the caller's control flow. Ensuring that both contracts revert under exactly the same conditions therefore prevents silent behavioural divergences in composed or upgrading contracts);
+    \item \textbf{Deterministic Observability:} For any $\alpha \in \Sigma_{ext}$, the observable output is functionally determined by the state and the input.
+\end{enumerate}
+Then, the optimised contract is behaviourally equal to the original contract, i.e., $Obs(A_O) = Obs(A)$.
+\end{theorem}
+
+\begin{proof}[Sketch]
+The proof proceeds by induction on the length of the traces. \revised{The single-step conditions establish a simulation in \emph{both} directions: Conditions~2--3 force $A$ and $A_O$ to take the same external action, or to revert together, on each input, and Condition~4 (Lemma~\ref{lem:determinacy}) makes that action a deterministic function of the coupled state. A symmetric single-step simulation between systems that are deterministic per action is a bisimulation, so the relation lifts from single transitions to equality of the observable trace sets $\mathit{Obs}(A) = \mathit{Obs}(A_O)$ over unbounded sequences.}
+
+\noindent \textbf{Base Case ($k=0$):} Both contracts are deployed to initial states $s_{0A}$ and $s_{0AO}$. By Condition 1, $\mathcal{R}(s_{0A}, s_{0AO})$ holds. Since the empty trace $\langle \rangle$ is observable in both, the base case holds.
+
+\noindent \textbf{Inductive Step ($k \to k+1$):} Assume that for any trace $\sigma$ of length $k$, the resulting states $s_k$ and $s_{Ok}$ satisfy $\mathcal{R}(s_k, s_{Ok})$. We must show that for any extension $\sigma' = \sigma :: \langle \alpha \rangle$, the relation is preserved.
+Crucially, the Certora rule \texttt{gasoptimisedCorrectness} (Listing~\ref{lst:specification}) mechanises this inductive step:
+\begin{itemize}
+    \item The command \texttt{require couplingInvariant()} enforces the induction hypothesis: it constrains the symbolic pre-states to be any pair $(s, s_O)$ satisfying $\mathcal{R}$;
+    \item The Prover symbolically executes the transition $\xrightarrow{\alpha}$ (via methods \texttt{f} and \texttt{g}) for all possible inputs \texttt{args};
+    \item If execution succeeds, the \texttt{assert couplingInvariant()} confirms that the post-states satisfy $\mathcal{R}$;
+    \item If execution reverts, the \texttt{assert a\_reverted == ao\_reverted} ensures Condition 3.
+\end{itemize}
+
+\noindent \textbf{Conclusion:} Since the Prover verifies that the coupling invariant is preserved for \emph{any} arbitrary transition starting from \emph{any} valid coupled state, the property holds inductively for traces of arbitrary length. Thus, every valid observable trace in $A$ has a corresponding identical trace in $A_O$.
+\end{proof}
+
+\begin{revisedblock}
+Theorem~\ref{thm:soundness} is deliberately stated as a conditional result.
+Conditions~1--3 are discharged mechanically by the Certora Prover, whereas
+Condition~4 is a hypothesis about the contract and its environment that the
+prover does not itself establish. Furthermore, the conclusion is relative to
+the observability relation fixed in Definition~\ref{def:trace}, which abstracts
+some aspects of a transaction --- notably gas consumption and the payload
+carried by a revert --- by construction (the abstraction $\alpha$ of
+Definition~\ref{def:trace}).
+Section~\ref{sec:observable_encoding} makes the encoding of each class of
+observable behaviour explicit, and Section~\ref{sec:tcb} states the trust
+assumptions under which the mechanised part of the argument is warranted.
+\end{revisedblock}
+
+%--------------------------------
+\subsubsection*{Gas optimisation verification with the Certora Prover.}
+
+The Certora Prover~\cite{certora2023} is a tool that verifies Solidity contract correctness by translating source code and specifications into logical formulas checked by an SMT solver. Although the Certora Prover was originally released as a proprietary system, it has recently become open-source, thus providing publicly auditable code that strengthens the transparency and accountability of its verification workflow. Developers specify correctness properties using the Certora Verification Language (CVL). A concise CVL specification for the \texttt{SwapNumbers} contract (Listing~\ref{lst:contract_example}) and its optimisation (Table~\ref{tab:optimisation}) is shown in Listing~\ref{lst:specification}.
+
+\paragraph{Mapping CVL to the LTS Model.}
+To explicitly connect the abstract model (Definition~1) to the concrete verification (Listing~\ref{lst:specification}), we map the CVL constructs to the LTS tuple components as follows:
+\begin{itemize}
+    \item \textbf{States ($S$):} The \texttt{couplingInvariant()} (lines 5--7) defines the equivalence relation $\mathcal{R}$ over the persistent storage portion of $S$. The \texttt{env} variables (lines 9--10) capture the execution context (block number, timestamp, sender), ensuring that the volatile components of $S$ are identical at the start of the transition;
+    \item \textbf{Actions ($\Sigma_{ext}$):} The variables \texttt{method f} and \texttt{method g} (lines 22--23) represent symbolic handles to functions. By iterating over these handles (lines 22-23), the Prover verifies the property for every possible external action $\alpha \in \Sigma_{ext}$;
+    \item \textbf{Transitions ($\to$):} The syntax \texttt{a.f@withrevert(...)} represents the execution of the transition relation $s \xrightarrow{\alpha} s'$;
+    \item \textbf{Traces ($\sigma$):} The sequence of pre-condition check, function execution, and post-condition check models a single step in a trace. By proving this step holds for \emph{any} symbolic initial state satisfying the invariant, Certora inductively proves equivalence for all valid traces $\sigma$.
+\end{itemize}
+
+\begin{listing}[htb]
+\begin{scriptsize}
+\begin{minted}[linenos]{Solidity}
+using SwapNumbers as a;
+using SwapNumbers_o as ao;
+methods {
+}
+definition couplingInvariant() returns bool =
+    a.A == ao.A &&
+    a.B == ao.B;
+function gasoptimisationCorrectness(method f, method g) {
+    env eA;
+    env eAo;
+    calldataarg args;
+    require eA == eAo && couplingInvariant();
+    a.f@withrevert(eA, args);
+    bool a_reverted = lastReverted;
+    ao.g@withrevert(eAo, args);
+    bool ao_reverted = lastReverted;
+    assert a_reverted == ao_reverted;
+    assert couplingInvariant();
+}
+rule gasoptimisedCorrectnessOfSwapValues(method f, method g)
+filtered {
+    f -> f.selector == sig:a.swapValues().selector,
+    g -> g.selector == sig:ao.swapValues().selector
+} {
+    gasoptimisationCorrectness(f, g);
+}
+\end{minted}
+\end{scriptsize}
+\caption{An example of a CVL specification.}
+\label{lst:specification}
+\end{listing}
+
+In what follows we detail how Listing~\ref{lst:specification} is executed by the Certora Prover.
+
+The coupling invariant (lines 5--7) of Listing \ref{lst:specification} establishes state equivalence between the original and optimised contracts. For any states $s \in S_A$ and $s_O \in S_{A_O}$, the coupling relation $\mathcal{R}(s, s_O)$ holds when:
+\[\mathcal{R}(s, s_O) \iff \forall v \in \textit{StateVars}: s.v = s_O.v\]
+where $\textit{StateVars}$ is the set of persistent storage variables. This relation bridges the abstract LTS model to concrete contract storage. The invariant covers all persistent state variables of \texttt{SwapNumbers}. Ether balances are omitted because no value transfers occur in
+this contract; for contracts that handle Ether, the condition that
+\texttt{address(a).balance == address(ao).balance} should be added as an
+additional conjunct.
+
+Lines 9--10 declare \texttt{eA} and \texttt{eAo} as type \texttt{env}, representing the blockchain execution environment (e.g., \texttt{msg.sender}, \texttt{block.timestamp}). This enables reasoning about the contract behaviour under specific, controlled conditions, here ensuring identical environments for comparing two contract instances. Line 11 declares \texttt{args} as type \texttt{calldataarg}, representing arbitrary function arguments. This is used to prove a function correctness for all possible inputs. Here, \texttt{args} are passed to methods \texttt{f} and \texttt{g}, thus guaranteeing that they run with the same arbitrary arguments.
+
+Lines~13--18 verify that both contracts exhibit identical failure behaviour. The \texttt{@withrevert} annotation (lines 13 and 15) executes functions allowing them to revert. And \texttt{lastReverted} (lines 14 and 16) stores the revert status of the last CVL call. This mechanism directly corresponds to distinguishing between successful transitions and revert actions in our LTS model. Specifically:
+\begin{itemize}
+    \item If \texttt{a\_reverted} is $\mathit{false}$, then the transition $s \xrightarrow{f} s'$ in $A$ (or in $A_O$) corresponds to an external action in $\Sigma_{\textit{ext}}$ that successfully modifies state $s$;
+    \item If \texttt{a\_reverted} is $\mathit{true}$, then the attempted transition results in a revert action that returns to the previous state without modification.
+\end{itemize}
+
+The assertion \texttt{a\_reverted == ao\_reverted} ensures that, for every possible input, both contracts either succeed together or fail together, guaranteeing that their observable behaviours remain synchronised.
+
+The complete verification function (lines~8--19) establishes behavioural equality through two key mechanisms working in concert:
+
+\begin{enumerate}
+    \item \textbf{Precondition} (line 12): Both contracts start from equivalent states with identical execution environments, ensuring $\mathcal{R}(s_0, s_{0_O})$.
+    \item \textbf{Postcondition} (lines 17--18): The coupling invariant must hold after execution, preserving the relation across transitions.
+\end{enumerate}
+
+Together, these conditions establish a simulation relation~\cite{milner1989communication}: revert equivalence ensures transitions match structurally, while coupling invariant preservation ensures equivalent states after successful transitions.
+
+%----------------------------------
+\begin{revisedblock}
+\subsection{Systematic Encoding of Observable Behaviours}
+\label{sec:observable_encoding}
+
+Definition~\ref{def:trace} equates two contracts when their sets of observable
+traces coincide, yet the rule of Listing~\ref{lst:specification} asserts only
+two properties explicitly: equality of revert status and preservation of the
+coupling invariant. Taken in isolation, the rule is therefore weaker than the
+definition it is meant to discharge. This subsection closes that gap by
+stating, for each class of observable behaviour, the mechanism through which it
+is discharged and the hypothesis on which that mechanism rests
+(Table~\ref{tab:observables}). Two classes --- revert payloads and gas --- are
+deliberately abstracted; we make the quotient explicit rather than leave it
+implicit, so that Definition~\ref{def:trace} is neither stronger nor weaker
+than what is verified.
+
+The following lemma discharges every observable that is a function of the state
+read by a transition. It is the formal content of Condition~4 of
+Theorem~\ref{thm:soundness}.
+
+\begin{lemma}[Determinacy of observable outputs]
+\label{lem:determinacy}
+Let $f$ be a function of $A$ and $g$ the corresponding function of $A_O$.
+Assume: (i) $\mathcal{R}(s,s_O)$ holds and $\mathcal{R}$ relates every storage
+location read by $f$ or $g$; (ii) the execution environments and the calldata
+coincide; (iii) neither $f$ nor $g$ consults a source of nondeterminism outside
+$(\textit{storage}, \mathit{env}, \mathit{args})$ --- in particular, every
+external call is resolved by a summary that is a deterministic function of
+ghost state shared by the two instances. Then every output of $f$ that is a
+function of the state it reads --- its return value and the argument vector of
+every event it emits --- equals the corresponding output of $g$.
+\end{lemma}
+
+\begin{proof}
+Under (iii) the output is a total function $\varphi$ of the tuple
+$(\textit{storage}, \mathit{env}, \mathit{args})$ read by the transition. By
+(i) the storage projections related by $\mathcal{R}$ agree on every location in
+the domain of $\varphi$, and by (ii) the remaining two components agree. Hence
+$\varphi$ is applied to equal arguments in both contracts.
+\end{proof}
+
+\begin{table}[htb]
+\centering
+\color{red}
+\caption{\revised{Encoding of each class of observable behaviour, the CVL
+  mechanism that discharges it, and the hypothesis on which the discharge
+  depends.}}
+\label{tab:observables}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{0.2\textwidth} p{0.36\textwidth} p{0.36\textwidth}@{}}
+\toprule
+\textbf{Observable} & \textbf{CVL encoding} & \textbf{Hypothesis} \\
+\midrule
+Persistent storage &
+  \texttt{assert couplingInvariant()} &
+  $\mathcal{R}$ covers every persistent variable, including inherited and
+  namespaced slots \\
+\addlinespace
+Revert status &
+  \texttt{assert a\_reverted == ao\_reverted} &
+  --- (discharged mechanically) \\
+\addlinespace
+Return values &
+  Compared through the invariant: \texttt{envfree} getters as conjuncts of
+  $\mathcal{R}$; any other return persisted by a harness wrapper into a state
+  variable and compared as a slot &
+  Reachable from persistent state (Lemma~\ref{lem:determinacy}), or made
+  reachable by harness instrumentation \\
+\addlinespace
+Event logs &
+  Side condition on the rules: no rule of the catalogue creates, deletes,
+  reorders or alters an \texttt{emit}, so emission points are syntactically
+  identical; arguments agree by Lemma~\ref{lem:determinacy} &
+  The side condition is checked syntactically when the rule is applied \\
+\addlinespace
+Ether balances &
+  Conjunct \texttt{address(a).balance == address(ao).balance} in $\mathcal{R}$ &
+  Required whenever the contract is \texttt{payable} or performs
+  \texttt{call\{value:\}} \\
+\addlinespace
+External-call traces &
+  Both instances are constrained by the \emph{same} summary over shared ghost
+  state, so the external environment is one symbolic object, not two &
+  Fidelity of the summary to the callee's interface
+  (Section~\ref{sec:tcb}) \\
+\addlinespace
+Revert payloads &
+  \emph{Abstracted.} Equivalence is taken modulo the error data: the
+  \emph{fact} of reverting is observable, its payload is not &
+  Applicability condition of Rule~1: no client branches on the content of the
+  error data \\
+\addlinespace
+Gas consumption &
+  \emph{Abstracted by construction:} gas $\notin \Sigma_{ext}$ &
+  Fails for contracts whose control flow depends on \texttt{gasleft()} or on
+  the 2300-gas stipend of \texttt{transfer}/\texttt{send} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Return values.}
+Lemma~\ref{lem:determinacy} shows that return equality \emph{follows} from the
+coupling invariant whenever hypotheses (i)--(iii) hold. Relying on the lemma
+alone is nevertheless fragile: hypothesis (i) fails silently when $\mathcal{R}$
+omits a location the function reads, and a rule that never inspects a returned
+value cannot detect the omission. The effect is most pronounced for read-only
+functions, whose bodies write no storage and for which the invariant assertion
+is consequently vacuous. The remedy, within a fixed template, is to make the
+observable a conjunct of $\mathcal{R}$: every \texttt{envfree} getter is
+compared inside \texttt{couplingInv()} itself. Because the template asserts the
+invariant after \emph{every} transition, one conjunct strengthens every rule at
+once. This is not a new device --- it is the mechanism already used by ten
+entries of our catalogue.
+
+A value produced by the transition itself --- a claimed-rewards amount, or a
+balance computed from several fields --- is exposed by no parameterless getter,
+and CVL cannot bind it through a symbolic \texttt{method} handle: the return type
+is not known statically and a \texttt{calldataarg} cannot be destructured. Rather
+than leave such a value outside the observable state, we make it reachable by
+\emph{instrumenting the harness}. The case-study harnesses are already introduced
+by inheritance (Section~\ref{sec:methodology}), and the same device records any
+return: a thin wrapper calls the function and persists its result in a fresh
+state variable --- for instance \texttt{deltaOf\_instr(id)} stores
+\texttt{deltaOf(id)} into \texttt{lastDeltaOfReturn} --- after which the single
+conjunct \texttt{a.lastDeltaOfReturn == ao.lastDeltaOfReturn} makes the coupling
+invariant compare it like any other slot. The wrapper lies outside the
+transformed code and is textually identical in both harnesses, so it alters
+neither contract's behaviour; and because the template asserts the invariant
+after every transition, the return is compared with no new rule and no departure
+from the uniform encoding. This is the same move as the ghost-variable hooks:
+bringing into the observable state what the prover does not reach natively.
+
+We applied it to every case-study function whose return is a computed value not
+already captured by $\mathcal{R}$: \texttt{deltaOf} and \texttt{balanceOf} in the
+\texttt{Collector}; \texttt{getUserRewards}, \texttt{getAssetIndex} and
+\texttt{getAllUserRewards} --- the last returning an
+\texttt{address[]}/\texttt{uint256[]} pair, compared element-wise --- in the
+\texttt{RewardsDistributor}; and all six
+\texttt{claimRewards}/\texttt{claimAllRewards} variants in the
+\texttt{RewardsController}. Each was verified within the contract's coupling
+proof (Section~\ref{sec:general_results}), the state-changing claim functions
+being reached through their internal \texttt{\_claimRewards} and
+\texttt{\_claimAllRewards} helpers so that the wrapper preserves
+\texttt{msg.sender}; array returns are stored and compared element-wise. The
+residual entry of Table~\ref{tab:observables} is thereby emptied for these
+contracts: the returned value no longer lies outside the observable state, and
+the only hypothesis that remains is that the instrumentation is applied --- an
+obligation satisfiable by construction for any return that matters.
+
+\paragraph{Revert payloads.}
+Rule~1 (custom errors) deliberately changes the data carried by a revert: where
+the original propagates a string literal, the optimised contract propagates a
+four-byte error selector. A caller inspecting the error data inside a
+\texttt{try/catch} block can therefore distinguish the two contracts. Rather
+than treating this as a defect of the encoding, we make it part of the
+statement: equivalence is asserted modulo an abstraction of the revert payload,
+and Rule~1 carries the explicit applicability condition that no client branches
+on the content of the error data. This is the situation for the AAVE~V3
+contracts we analysed, whose reverts propagate to externally owned accounts
+rather than to on-chain handlers, but it is a genuine proviso.
+
+\paragraph{Gas.}
+Gas is excluded from $\Sigma_{ext}$ by construction: the purpose of the
+transformations is to change gas consumption while preserving everything else,
+so a notion of observability that included gas would make every rule of the
+catalogue unsound by fiat. The honest limit of this choice is that gas is not
+always semantically inert. A contract whose control flow branches on
+\texttt{gasleft()}, or that relies on the fixed 2300-gas stipend forwarded by
+\texttt{transfer} and \texttt{send}, can change functional behaviour as a
+consequence of a change in cost. Such contracts fall outside the applicability
+of the framework, and we record this in Section~\ref{sec:threats_validity}.
+
+%----------------------------------
+\subsection{Trust Assumptions and the Verification TCB}
+\label{sec:tcb}
+
+The inductive step of Theorem~\ref{thm:soundness} is discharged by the Certora
+Prover, so it is legitimate to ask when that delegation is warranted. The three
+mechanisms our verification relies on --- \texttt{HAVOC}, ghost function
+summaries, and the two-instance encoding --- do not affect confidence in the
+same way, because they approximate in different directions.
+
+\paragraph{\texttt{HAVOC} is an over-approximation.}
+When the prover cannot determine the effect of a call precisely, it havocs the
+affected state, admitting \emph{any} reachable successor. The set of behaviours
+analysed is thus a superset of those the real system exhibits, and a
+\texttt{HAVOC} can never yield an unsound proof: if the prover reports
+\textsc{verified} despite havocking, the property holds \emph{a fortiori} of
+the concrete system. What \texttt{HAVOC} threatens is completeness, by
+producing counterexamples that no real execution realises. This is exactly how
+it manifested in our case study, where havocking appeared as an obstacle to be
+eliminated through ghost functions (Section~\ref{sec:methodology}), never as a
+source of doubtful verdicts.
+
+\paragraph{Ghost function summaries are assumptions.}
+A summary replaces the semantics of an external function by a hand-written
+specification, and an unfaithful summary yields a proof about a hypothetical
+system. This is a genuine soundness assumption, and we bound it in three ways.
+First, it is \emph{symmetric}: the same summary constrains both instances, so
+what is established is equivalence relative to a common external environment
+--- for every environment $E$ satisfying the summary, $A$ and $A_O$ agree under
+$E$. Because the transformations under study lie in the concretely verified
+code and not in the summarised callees, an imprecise summary narrows the set of
+environments covered but cannot make two contracts that diverge through their
+own transformed logic appear equivalent. Second, the summaries are justified
+against the callee's interface rather than invented:
+\texttt{getScaledUserBalanceAndSupply}, for instance, is a \texttt{view}
+function whose \texttt{IScaledBalanceToken} interface already guarantees that
+its result is a function of the token's state, and the ghost mirror maintained
+by \texttt{Sload}/\texttt{Sstore} hooks reproduces precisely that dependency.
+Third, we record summary fidelity as an explicit threat to construct validity
+in Section~\ref{sec:threats_validity}.
+
+\paragraph{The symbolic-address divergence is an encoding artefact.}
+The counterexample reported for \texttt{createStream}
+(Section~\ref{sssec:formal_verification}) is not a prover defect but an artefact
+of the two-instance encoding. To compare the contracts,
+\texttt{CollectorOriginal} and \texttt{CollectorOptimized} coexist as distinct
+objects and are assigned distinct symbolic addresses; the encoding cannot express
+that a real deployment substitutes one contract for the other rather than
+instantiating both. Wherever a contract observes its own \texttt{address(this)},
+the two instances observe different values; in \texttt{Collector} the reported
+counterexample is precisely this, as \texttt{createStream} stores
+\texttt{address(this)} into the \texttt{sender} field and the two instances write
+their respective addresses. This pins the divergence class down exactly: it is
+the set of observations whose value derives from \texttt{address(this)}, and
+nothing else. That exactness is what
+makes the dismissal principled rather than ad hoc: the criterion is fixed in
+advance and is checkable, so a counterexample that does not reduce to an
+\texttt{address(this)} difference falls outside the class and is treated as a
+genuine violation. In any real deployment a single address exists, so
+$\mathit{addr}(A) = \mathit{addr}(A_O)$ and every divergence in this class
+vanishes by construction. A decidable characterisation invites the question of
+why the class is not simply folded into the coupling invariant --- as an equality
+modulo \texttt{address(this)} --- and discharged mechanically. We keep it out
+deliberately: the contribution of the framework is a \emph{uniform} coupling
+invariant, a plain state-equality relation instantiated identically for every
+contract, and special-casing a single contract with a bespoke address quotient
+would trade that uniformity for a per-contract patch. Because the criterion is
+decidable and checked a priori, isolating the artefact by characterisation
+sacrifices no rigour while preserving the uniform encoding. We therefore record
+this residual divergence as a limitation of the encoding, not of the contracts
+(Section~\ref{sec:threats_validity}).
+
+\paragraph{The trusted computing base.}
+Beyond these mechanisms, the base of trust comprises the Solidity compiler ---
+shared by any source-level approach --- the translation from bytecode to the
+prover's intermediate representation and thence to SMT formulae, and the SMT
+solver. It is worth being explicit that a \textsc{verified} verdict corresponds
+to an \textsc{unsat} answer, which, unlike \textsc{sat}, carries no
+independently checkable witness: a counterexample can be replayed and
+inspected, a proof of unsatisfiability cannot. Three considerations bound this
+residual trust. The prover has recently been released as open source, so its
+translation pipeline is publicly auditable; it is used industrially in audits
+of high-value protocols, which constitutes continuous empirical validation;
+and, most directly, our specifications were exercised against known-divergent
+contract pairs. The two published rules that our framework found to be unsound
+under Solidity $\geq$~0.8.0 (Sections~\ref{sec:outdated_loops}
+and~\ref{sec:outdated_mappings}) are the strongest evidence available here: a
+pipeline that assented indiscriminately would not have flagged them.
+
+Accordingly, Theorem~\ref{thm:soundness} should be read as conditional on the
+correctness of the prover's translation and on the fidelity of the summaries
+employed. This is the standard epistemic position of tool-based verification
+--- a Coq development trusts its kernel, a \textsc{solc-verify} proof trusts
+Boogie and Z3 --- and we state it explicitly rather than leave it implicit.
+\end{revisedblock}
+
+%------------------------------------
+\section{Catalogue of Gas Optimisations}
+\label{sec:catalogue_gas_optimisations}
+
+The literature on smart contract optimisation has identified numerous program transformations aimed at reducing gas consumption. This work builds upon and extends the comprehensive studies by Khanzadeh {\em et al.\/}~\cite{khanzadeh2023optimizing} and Nelaturu {\em et al.\/}~\cite{Nelaturu2021}, which have systematically catalogued gas-saving techniques. However, such optimisations are usually presented in the form of an example (as shown in Listing~\ref{lst:line_swap_original}). Our catalogue assembles and structures the transformations to include: (i) a formal definition of the transformation rule using the notation introduced in Section~\ref{sec:formalising_gas_optimisations}; (ii) its corresponding CVL specification; and (iii) the rule's provenance with appropriate citations. The complete catalogue, including all transformation definitions, CVL specification, and source references, is publicly available on GitHub\footnote{\url{https://github.com/manvillarim/GasOptimization_Catalog}}.
+
+We have catalogued 30 transformation rules: 27 derived from existing literature~\cite{khanzadeh2023optimizing,Nelaturu2021} and the formalisation and inclusion in a verified catalog of 3 novel transformations.
+
+From now on we outline the three optimisations proposed in this work.
+
+%----------------------------------
+\subsection{Replacing a \texttt{require} statement with Custom Errors}
+
+Custom errors (Solidity $\ge$ 0.8.4) offer a lightweight alternative to \texttt{require} statements by avoiding error string storage, thus reducing both deployment and runtime costs. Rule~\ref{rule:require} illustrates this optimisation.
+
+%---------- Rule Require -> Custom Error ------
+\begin{refactoring}[htb]
+\begin{footnotesize}
+\begin{tabular}{lll}
+   \framebox[0.46\textwidth]{
+      \begin{scriptsize}
+      \begin{tabular}{l}
+         $[\ldots]$\\
+         \texttt{contract} $\langle A\rangle$ \texttt{\{}\\
+         \hspace{0.5cm} $[\ldots]$\\
+         \hspace{0.5cm} \texttt{function} $\langle f\rangle$\texttt{(}$\langle\mathit{parameters}\rangle$\texttt{)} $[\ldots]$ \texttt{\{}\\
+         \hspace{1cm} $[\ldots]$\\
+         \hspace{1cm} \texttt{require(}$\mathit{\langle B\rangle, \langle M\rangle}$\texttt{)} \\
+         \hspace{1cm} $[\ldots]$\\
+         $\hspace{0.5cm} \texttt{\}}$\\
+         $\hspace{0.5cm} [\ldots]$\\
+         \texttt{\}}$\\
+         $[\ldots]$\\
+         \\[4.5ex]
+      \end{tabular}
+      \end{scriptsize}
+   }
+
+   & $=$&
+
+   \framebox[0.5\textwidth]{
+      \begin{scriptsize}
+      \begin{tabular}{l}
+         $[\ldots]$\\
+         \texttt{contract} $\langle A\rangle$ \texttt{\{}\\
+         \hspace{0.5cm} $[\ldots]$\\
+         \hspace{0.5cm} \texttt{error} $\mathit{\langle E\rangle}$\texttt{();}\\
+         \hspace{0.5cm} \texttt{function} $\langle f\rangle$\texttt{(}$\langle\mathit{parameters}\rangle$\texttt{)} $[\ldots]$ \texttt{\{}\\
+         \hspace{1cm} $[\ldots]$\\
+         \hspace{1cm} \texttt{if (!}$\mathit{\langle B\rangle}$\texttt{) \{} \\
+         \hspace{1.5cm} \texttt{revert} $\langle E\rangle$\texttt{();}\\
+         \hspace{1cm} \texttt{\}}\\
+         \hspace{1cm} $[\ldots]$\\
+         $\hspace{0.5cm} \texttt{\}}$\\
+         $\hspace{0.5cm} [\ldots]$\\
+         \texttt{\}}$\\
+         $[\ldots]$
+      \end{tabular}
+      \end{scriptsize}
+   }
+\end{tabular}
+
+\noindent \textbf{where} $A$, $f$ and $E$ are identifiers, $B$ is a Boolean expression, $M$ is a string stating an error message, $\mathit{parameters}$ is a list of identifiers, and $[\ldots]$ denotes Solidity constructs;
+
+\noindent \textbf{provided} $E$ occurs only where explicitly shown.
+
+\caption{Replace \texttt{require} with Custom Error.}
+\label{rule:require}
+\end{footnotesize}
+\end{refactoring}
+
+Ideally, for readability and maintainability, $\mathit{E}$ should be a valid Solidity identifier converted from $M$. For instance,  $E = \texttt{"InsufficientBalance"}$ should be the result from converting $M = \texttt{"Insufficient Balance"}$ into an identifier (when applying Rule~\ref{rule:require} from left to right). And, ideally, $M$ should be the human-readable version of $E$ (when applying Rule~\ref{rule:require} from right to left). However, from the standpoint of correctness, $M$ and $E$ do not need to be related.
+
+%----------------------------------
+\subsection{Use Unchecked Arithmetic for Validated Operations}
+
+In Solidity, the \texttt{unchecked\{\}} block allows developers to bypass automatic overflow and underflow check and revert actions. In scenarios where such validations are redundant --- for instance, when a prior condition has already guaranteed the safety of the operation --- the \texttt{unchecked\{\}} eliminates unnecessary computational overhead (see Rule~\ref{rule:unchecked}). On the left-hand side of this rule, the condition $B$ checks that the command $C$ neither overflows nor underflows. Also, commands in $P$ do not change any free variable that appears in $B$. When applying this rule from left to right, we introduce an \texttt{unchecked\{\}} block over the command~$C$. The application from right to left removes the \texttt{unchecked\{\}} block.
+
+
+\begin{refactoring}[H]
+\begin{footnotesize}
+\begin{tabular}{lll}
+   \framebox[0.48\textwidth]{
+      \begin{scriptsize}
+      \begin{tabular}{l}
+         $[\ldots]$\\
+         \texttt{contract} $\langle A\rangle$ \texttt{\{}\\
+         \hspace{0.5cm} $[\ldots]$\\
+         \hspace{0.5cm} \texttt{function} $\langle f\rangle$\texttt{(}$\langle\mathit{parameters}\rangle$\texttt{)} $[\ldots]$ \texttt{\{}\\
+         \hspace{1cm} $[\ldots]$\\
+         \hspace{1cm} \texttt{require(}$\mathit{\langle B\rangle}$\texttt{);} \\
+         \hspace{1cm} $\langle P\rangle$\\
+         \hspace{1cm} $\langle C \rangle$\texttt{;}\\
+         \hspace{1cm} $[\ldots]$\\
+         $\hspace{0.5cm} \texttt{\}}$\\
+         $\hspace{0.5cm} [\ldots]$\\
+         \texttt{\}}$\\
+         $[\ldots]$\\
+         \\[2.5ex]
+      \end{tabular}
+      \end{scriptsize}
+   }
+
+   & $=$&
+
+   \framebox[0.48\textwidth]{
+      \begin{scriptsize}
+      \begin{tabular}{l}
+         $[\ldots]$\\
+         \texttt{contract} $\langle A\rangle$ \texttt{\{}\\
+         \hspace{0.5cm} $[\ldots]$\\
+         \hspace{0.5cm} \texttt{function} $\langle f\rangle$\texttt{(}$\langle\mathit{parameters}\rangle$\texttt{)} $[\ldots]$ \texttt{\{}\\
+         \hspace{1cm} $[\ldots]$\\
+         \hspace{1cm} \texttt{require(}$\mathit{\langle B\rangle}$\texttt{);}\\
+         \hspace{1cm} $\langle P\rangle$\\
+         \hspace{1cm} \texttt{unchecked \{}\\
+         \hspace{1.5cm} $\langle C \rangle$\texttt{;}\\
+         \hspace{1cm} \texttt{\}}\\
+         \hspace{1cm} $[\ldots]$\\
+         $\hspace{0.5cm} \texttt{\}}$\\
+         $\hspace{0.5cm} [\ldots]$\\
+         \texttt{\}}$\\
+         $[\ldots]$
+      \end{tabular}
+      \end{scriptsize}
+   }
+\end{tabular}
+
+\noindent \textbf{where} $A$ and $f$ are identifiers, $B$ is a Boolean expression, $P$ is a Solidity command, $C$ is a statement involving an arithmetic expression, $\mathit{parameters}$ is a list of identifiers, and $[\ldots]$ denotes Solidity constructs;
+
+\noindent \textbf{provided} Condition $B$ verifies that $C$ will neither overflow nor underflow; $P$ does not change any free variable that appears in $B$.
+
+\caption{Use \texttt{unchecked\{\}} for validated operations.}
+\label{rule:unchecked}
+\end{footnotesize}
+\end{refactoring}
+
+%--------------------------------
+\subsection{Make Constructors Payable}
+
+By default, Solidity constructors are non-payable, meaning they automatically include a check to ensure no Ether is sent during contract deployment. Making a constructor \texttt{payable} eliminates this \texttt{CALLVALUE} check, reducing deployment gas costs. Rule~\ref{rule:payable-constructor} demonstrates this transformation.
+
+%---------- Rule Make Constructor Payable ------
+\begin{refactoring}[h!]
+\begin{footnotesize}
+\begin{tabular}{lll}
+   \framebox[0.47\textwidth]{
+      \begin{scriptsize}
+      \begin{tabular}{l}
+         $[\ldots]$\\
+         \texttt{contract} $\langle A\rangle$ \texttt{\{}\\
+         \hspace{0.5cm} $[\ldots]$\\
+         \hspace{0.5cm} \texttt{constructor(}$\langle\mathit{parameters}\rangle$\texttt{)} $[\ldots]$ \texttt{\{}\\
+         \hspace{1cm} $\langle P\rangle$\\
+         \hspace{0.5cm} \texttt{\}}\\
+         \hspace{0.5cm} $[\ldots]$\\
+         \texttt{\}}$\\
+         $[\ldots]$\\
+         \\[4.5ex]
+      \end{tabular}
+      \end{scriptsize}
+   }
+
+   & $=$&
+
+\framebox[0.5\textwidth]{
+   \begin{scriptsize}
+   \begin{tabular}{l}
+      $[\ldots]$\\
+      \texttt{contract} $\langle A\rangle$ \texttt{\{}\\
+      \hspace{0.5cm} $[\ldots]$\\
+      \hspace{0.5cm} \texttt{constructor(}$\langle\mathit{parameters}\rangle$\texttt{)} \texttt{payable} $[\ldots]$ \texttt{\{}\\
+      \hspace{1cm} $\langle P\rangle$\\
+      \hspace{0.5cm} \texttt{\}}\\
+      \hspace{0.5cm} $[\ldots]$\\
+      \texttt{\}}\\
+      $[\ldots]$\\
+      \\[4ex]
+   \end{tabular}
+   \end{scriptsize}
+}
+\end{tabular}
+
+\noindent \textbf{where} $A$ is an identifier, $P$ is a Solidity command, $\mathit{parameters}$ is a list of identifiers, and $[\ldots]$ denotes Solidity constructs;
+
+\noindent \textbf{provided} $P$ does not read or depend on \texttt{msg.value}; and \texttt{msg.value == 0} holds at deployment time.
+
+\caption{Make Constructor \texttt{payable}.}
+\label{rule:payable-constructor}
+\end{footnotesize}
+\end{refactoring}
+
+When applying Rule~\ref{rule:payable-constructor} from left to right, the transformation adds the \texttt{payable} modifier to the constructor signature. However, this equivalence holds only under the assumption that \texttt{msg.value == 0} at deployment time; if Ether is sent to the constructor, the original reverts while the optimised version does not, constituting an observable behavioural difference.
+
+Previous literature surveys have not covered these three optimisation techniques (rules \ref{rule:require}, \ref{rule:unchecked}, \ref{rule:payable-constructor}). We validated them empirically using the gas snapshot functionality provided by the Foundry framework. We observed measurable improvements in gas consumption for all three transformation rules.
+
+Table~\ref{tab:compiler-vs-refactoring} presents the gas savings achieved by our three proposed gas optimisation rules across three metrics: deployment cost (column Deply Cost Savings), contract size (Deploy Size Savings), and average function execution cost (Avg Function Savings). Results are shown under two compiler configurations---Standard (no optimisation) and Via-IR (aggressive optimisation with 200 runs).
+
+\begin{table}[htb]
+\centering
+\caption{Gas savings from Proposed Rules.}
+\label{tab:compiler-vs-refactoring}
+\begin{tabular}{@{}llccc@{}}
+\toprule
+\textbf{Pattern} & \textbf{Compiler} & \textbf{Deploy Cost} & \textbf{Deploy Size} & \textbf{Avg Function} \\
+ & & \textbf{Savings (\%)} & \textbf{Savings (\%)} & \textbf{Savings (\%)} \\ \midrule
+\multirow{2}{*}{\textbf{Payable Constructor}}
+ & Standard & -0.06\% & -0.78\% & 0.00\% \\
+ & Via-IR & -0.04\% & -0.33\% & 0.00\% \\
+\addlinespace
+\multirow{2}{*}{\textbf{Custom Errors}}
+ & Standard & -19.86\% & -24.31\% & 0.00\% \\
+ & Via-IR & -24.96\% & -32.45\% & -0.05\% \\
+\addlinespace
+\multirow{2}{*}{\textbf{Unchecked Arithmetic}}
+ & Standard & -5.00\% & -6.49\% & -1.61\% \\
+ & Via-IR & -4.87\% & -6.76\% & -1.42\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+The results in Table~\ref{tab:compiler-vs-refactoring} demonstrate that semantic transformations operate orthogonally to compiler optimisations: savings remain substantial even under \textit{via-IR}, confirming that these source-level refactorings address fundamentally different optimisation opportunities that lie beyond the compiler's scope. \textbf{Custom Errors} achieves the largest reductions (>20\% deployment cost, >24\% size), \textbf{Unchecked Arithmetic} provides consistent runtime savings ($\approx$ 1.5\%) plus 5--6.5\% deployment reductions, while \textbf{Payable Constructor} offers marginal benefits (<1\%). Though small, such fractional savings scale to substantial economic value in high-throughput blockchains. Gas consumption varies with contract complexity and context; these percentages reflect specific instantiations and should not be interpreted as universal guarantees.
+
+%-------------------------------
+\subsection{Outdated Optimisations}
+
+During the construction of our catalogue, we specified in CVL and verified in Certora(version 8.4.1) one example for each of the 30 transformation rules.
+During this process, we have identified two transformations that are updated for the new versions of Solidity, both related to overflow and underflow. In Solidity versions earlier than 0.8.0, integer overflow and underflow did not trigger a revert. Instead, in those earlier versions of Solidity, arithmetic behaved like modular arithmetic (wrapping around).
+
+%------------------------------
+\subsubsection{Refactoring loops with repeated computations}
+\label{sec:outdated_loops}
+
+Table~\ref{tab:loop_refactoring} shows an example of the transformation ``Refactoring loops with repeated computations'' proposed by Nelaturu {\em et al.\/}~\cite{Nelaturu2021}. Columns {\bf $A$ (original)}, {\bf $A_O$ (outdated)} and {\bf $A_O$ (updated)} show the unoptimised contract, the optimisation proposed for earlier versions of Solidity, and our fix for the current versions of Solidity, respectively.
+
+\begin{table}[htb]
+\caption{Refactoring loops with repeated computations.}
+\label{tab:loop_refactoring}
+\centering
+\begin{footnotesize}
+\begin{tabular}{|p{0.31\textwidth}|p{0.31\textwidth}|p{0.31\textwidth}|}
+\hline
+\rowcolor[HTML]{EFEFEF}
+\textbf{$A$ (original)} & \textbf{$A_O$ (outdated)} & \textbf{$A_O$ (updated)} \\ \hline
+\vspace*{-0.5cm}
+\begin{minted}[fontsize=\tiny]{Solidity}
+
+
+
+contract A {
+    uint[] public tokens;
+    uint public limit;
+    uint public price;
+    
+    function distributeTokens() 
+        external {
+        uint length = tokens.length;
+        for (uint i = 0; 
+             i < length; 
+             i++) {
+            tokens[i] += limit * price;
+        }
+    }
+}
+\end{minted}
+&
+\vspace*{-0.5cm}
+\begin{minted}[fontsize=\tiny]{Solidity}
+
+
+
+contract Ao {
+    uint[] public tokens;
+    uint public limit;
+    uint public price;
+    
+    function distributeTokens() 
+        external {
+        uint length = tokens.length;
+        uint amount = limit * price;
+        for (uint i = 0; 
+             i < length; 
+             i++) {
+            tokens[i] += amount;
+        }
+    }
+}
+\end{minted}
+&
+\vspace*{-0.5cm}
+\begin{minted}[fontsize=\tiny]{Solidity}
+
+
+
+contract Ao {
+    uint[] public tokens;
+    uint public limit;
+    uint public price;
+    
+    function distributeTokens() 
+        external {
+        uint length = tokens.length;
+        if (length > 0) {
+            uint amount = limit * price;
+            for (uint i = 0; 
+                 i < length; 
+                 i++) {
+                tokens[i] += amount;
+            }
+        }
+    }
+}
+\end{minted}
+\\ \hline
+\end{tabular}
+\end{footnotesize}
+\end{table}
+
+The transformation shown in Table~\ref{tab:loop_refactoring} takes a repeated computation out of the loop (i.e. the expression \texttt{limit * price} is moved upwards and is assigned to \texttt{amount}).
+
+Suppose we use an earlier version of Solidity (earlier than 0.8.0). And suppose that \texttt{length} is zero and \texttt{limit * price} overflows. Then, {\bf $A$ (original)} would never enter the \texttt{for} loop (as \texttt{length} is zero) and, therefore, would never execute the overflow. {\bf $A_O$ (outdated)} would compute \texttt{amount = limit * price}, which would overflow and wrap around to the smallest \texttt{uint} value, namely zero. No revert exception would be raised. Then, as \texttt{length} equals zero, it would not enter the \texttt{for} loop either, just as {\bf $A$ (original)} did. And {\bf $A$ (original)} and {\bf $A_O$ (outdated)} would have the same behaviour.
+
+If, however, we use Solidity version 0.8.0 or superior, {\bf $A_O$ (outdated)} would revert during the calculation of \texttt{time * price}, thus presenting a different behaviour from {\bf $A$ (original)}. {\bf $A_O$ (updated)} fix this problem by using a guard, namely \texttt{if (length > 0)}, that prevents revert when \texttt{length} is zero and \texttt{time * price} overflows. Certora detected this problem\footnote{\url{ https://prover.certora.com/output/480394/ff85bbaa58e44c9c8fef109612fcc197?anonymousKey=d8c362d1309bde060797ec1174d1acf87db18120}} and also verified (for this particular example) that our fix preserves the equivalence between {\bf $A$ (original)} and {\bf $A_O$ (updated)}\footnote{\url{https://prover.certora.com/output/480394/c6610ed10e8f423c8de016ae01b34f63?anonymousKey=0a919f9290a00c87fe9c82a94aa3cfc282370ef1}}.
+
+Table~\ref{tab:loop-refactoring-savings} presents the gas savings achieved by $A_O$ (outdated) and $A_O$ (updated) relative to $A$ (original), measured across three array sizes $N$, where $N \in \{100, 1000, 5000\}$, under both compiler configurations.
+
+\begin{table}[htb]
+\centering
+\caption{Gas savings of $A_O$ (outdated) and $A_O$ (updated) relative to $A$ (original) for the Loop Refactoring pattern. Function savings are measured with \texttt{vm.pauseGasMetering} isolating \texttt{distributeTokens} from the array population cost.}
+\label{tab:loop-refactoring-savings}
+\begin{tabular}{@{}llrccc@{}}
+\toprule
+\textbf{Compiler} & \textbf{Version} & \textbf{$N$} & \textbf{Deploy Cost} & \textbf{Deploy Size} & \textbf{Function} \\
+ & & & \textbf{Savings (\%)} & \textbf{Savings (\%)} & \textbf{Savings (\%)} \\ \midrule
+\multirow{6}{*}{Standard}
+ & \multirow{3}{*}{$A_O$ (outdated)}
+   & 100  & \multirow{3}{*}{$-0.75\%$} & \multirow{3}{*}{$-1.03\%$} & $-1.22\%$ \\
+ & & 1,000 & & & $-1.26\%$ \\
+ & & 5,000 & & & $-1.26\%$ \\
+\addlinespace[2pt]
+ & \multirow{3}{*}{$A_O$ (updated)}
+   & 100  & \multirow{3}{*}{$+0.37\%$} & \multirow{3}{*}{$+0.51\%$} & $-1.23\%$ \\
+ & & 1,000 & & & $-1.26\%$ \\
+ & & 5,000 & & & $-1.26\%$ \\
+\addlinespace
+\hline
+\addlinespace
+\multirow{6}{*}{Via-IR}
+ & \multirow{3}{*}{$A_O$ (outdated)}
+   & 100  & \multirow{3}{*}{$+1.20\%$} & \multirow{3}{*}{$+1.68\%$} & $-1.27\%$ \\
+ & & 1,000 & & & $-1.29\%$ \\
+ & & 5,000 & & & $-1.29\%$ \\
+\addlinespace[2pt]
+ & \multirow{3}{*}{$A_O$ (updated)}
+   & 100  & \multirow{3}{*}{$+1.69\%$} & \multirow{3}{*}{$+2.38\%$} & $-1.26\%$ \\
+ & & 1,000 & & & $-1.29\%$ \\
+ & & 5,000 & & & $-1.29\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+The function savings are consistent across all three array sizes and both compiler configurations: taking \texttt{limit~*~price} out of the loop saves approximately $\mathbf{294}$~gas per iteration (measured at $N = 5000$), yielding a stable reduction of approximately $1.26\%$--$1.29\%$ regardless of $N$ or compiler pipeline.
+
+A key finding concerns the relationship between $A_O$ (outdated) and $A_O$ (updated). Both versions achieve virtually identical function savings (within 1~gas at $N = 5000$), thus confirming that the corrective guard \texttt{if (length > 0)} introduced in the updated rule incurs no measurable runtime overhead. The only cost of the correction is a marginal increase in deployment size ($+0.51\%$ Standard, $+2.38\%$ Via-IR), attributable to the additional bytecode for the guard. This demonstrates that our fix preserves the gas savings of the original optimisation while restoring behavioural equivalence under Solidity~$\geq$~0.8.0.
+
+Regarding deployment cost, the results are compiler-dependent. Under Standard, $A_O$ (outdated) achieves a slight reduction ($-0.75\%$), while under Via-IR both optimised versions are marginally more expensive to deploy ($+1.20\%$ and $+1.69\%$). This discrepancy arises because the Via-IR pipeline already performs aggressive loop optimisations at the IR level, partially offsetting the benefit of hoisting and leaving the additional guard as net overhead. In any case, the deployment differences are small ($< 2.5\%$) and do not affect the practical utility of the transformation, which is primarily a runtime optimisation.
+
+%----------------------------------
+\subsubsection{Use mappings instead of arrays for data lists}
+\label{sec:outdated_mappings}
+
+Table~\ref{tab:mapping_arrays} shows the transformation ``Use mappings instead of arrays for data lists'' proposed by Khanzadeh {\em et al.\/}~\cite{khanzadeh2023optimizing}.
+
+\begin{table}[htb]
+\caption{Use mappings instead of arrays.}
+\label{tab:mapping_arrays}
+\centering
+\begin{tabular}{|p{0.31\textwidth}|p{0.31\textwidth}|p{0.31\textwidth}|}
+\hline
+\rowcolor[HTML]{EFEFEF}
+\textbf{A (original)} & \textbf{A$_O$ (outdated)} & \textbf{A$_O$ (updated)} \\ \hline
+\vspace*{-0.5cm}
+\begin{minted}[fontsize=\tiny]{Solidity}
+
+
+contract A {
+    uint256[] public numbers;
+    
+    function addNumber(uint256 number) 
+        public {
+        numbers.push(number);
+    }
+    
+}
+\end{minted}
+&
+\vspace*{-0.5cm}
+\begin{minted}[fontsize=\tiny]{Solidity}
+
+
+contract Ao {
+    mapping(uint256 => uint256) 
+        public numbers;
+    uint256 public size;
+    
+    function addNumber(uint256 number) 
+        public {
+        numbers[size] = number;
+        size++;
+    }
+    
+}
+\end{minted}
+&
+\vspace*{-0.5cm}
+\begin{minted}[fontsize=\tiny]{Solidity}
+
+
+contract Ao {
+    mapping(uint256 => uint256) 
+        public numbers;
+    uint256 public size;
+    
+    function addNumber(uint256 number) 
+        public {
+        numbers[size] = number;
+        unchecked { size++; }
+    }
+    
+}
+\end{minted}
+\\ \hline
+\end{tabular}
+\end{table}
+
+In Solidity versions before 0.8.0, {\bf $A$ (original)} wraps on a \texttt{push()} overflow; \texttt{size++} overflows similarly, preserving consistent behaviour.
+
+For Solidity version 0.8.0 or superior, \texttt{push()} does not revert. And the block \texttt{unchecked\{\}} disables overflow and underflow checks for integer arithmetic inside the block. This way, in versions 0.8.0 or superior, an equivalent overflow behaviour between \texttt{push()} and \texttt{size++} is achieved using \texttt{unchecked\{size++;\}}. We have detected the outdated transformation using our framework\footnote{\url{https://prover.certora.com/output/480394/41f8207341864271ab9d4f89efeb5666?anonymousKey=bd54af45aebabb1cd029ed93458d7dd3e926d2cd}}. And, we have also verified that {\bf $A_O$ (updated)} preserves the {\bf $A$ (original)} behaviour\footnote{\url{https://prover.certora.com/output/480394/ef1248633ca54e528108da68d0d661c5?anonymousKey=9da2639b7912d859ca84a1abf05873fba466ac1e}}.
+
+Table~\ref{tab:mapping-array-savings} presents the gas savings achieved by both versions relative to $A$ (original) across multiple insertion scenarios.
+
+\begin{table}[htb]
+\centering
+\caption{Gas savings of $A_O$ (outdated) and $A_O$ (updated) relative to $A$ (original) for the Mapping Instead of Array pattern.}
+\label{tab:mapping-array-savings}
+\begin{tabular}{@{}lllccc@{}}
+\toprule
+\textbf{Compiler} & \textbf{Version} & \textbf{Scenario} & \textbf{Deploy Cost} & \textbf{Deploy Size} & \textbf{Function} \\
+ & & & \textbf{Savings (\%)} & \textbf{Savings (\%)} & \textbf{Savings (\%)} \\ \midrule
+\multirow{8}{*}{Standard}
+ & \multirow{4}{*}{$A_O$ (outdated)}
+   & Deployment   & $-12.70\%$ & $-20.72\%$ & ---        \\
+ & & Cold insert  & ---        & ---        & $+0.78\%$  \\
+ & & Warm insert  & ---        & ---        & $+0.11\%$  \\
+ & & Bulk ($N\!=\!2000$) & ---  & ---        & $-0.08\%$  \\
+\addlinespace[2pt]
+ & \multirow{4}{*}{$A_O$ (updated)}
+   & Deployment   & $-17.70\%$ & $-29.01\%$ & ---        \\
+ & & Cold insert  & ---        & ---        & $+0.32\%$  \\
+ & & Warm insert  & ---        & ---        & $-0.35\%$  \\
+ & & Bulk ($N\!=\!2000$) & ---  & ---        & $-0.13\%$  \\
+\addlinespace
+\hline
+\addlinespace
+\multirow{6}{*}{Via-IR}
+ & \multirow{4}{*}{$A_O$ (outdated)}
+   & Deployment   & $+6.29\%$  & $+10.96\%$ & ---        \\
+ & & Cold insert  & ---        & ---        & $+0.30\%$  \\
+ & & Warm insert  & ---        & ---        & $+0.46\%$  \\
+ & & Bulk ($N\!=\!2000$) & ---  & ---        & $+0.53\%$  \\
+\addlinespace[2pt]
+ & \multirow{4}{*}{$A_O$ (updated)}
+   & Deployment   & $-3.93\%$  & $-7.19\%$  & ---        \\
+ & & Cold insert  & ---        & ---        & $+0.28\%$  \\
+ & & Warm insert  & ---        & ---        & $-0.35\%$  \\
+ & & Bulk ($N\!=\!2000$) & ---  & ---        & $-0.22\%$  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The results shown in Table~\ref{tab:mapping-array-savings} reveal that the gas impact of this transformation is concentrated almost entirely in \emph{deployment}, not in function execution. The per-call savings across all insertion scenarios are below $1\%$ in absolute terms and exhibit no dependence on $N$: the cost of a single \texttt{addNumber} call is dominated by one cold \texttt{SSTORE}, whose price is identical regardless of whether the underlying structure is an array or a mapping. This confirms that the transformation does not provide a runtime advantage under the tested workload.
+
+The deployment savings, however, are substantial and strongly dependent on the compiler pipeline. Under Standard, $A_O$ (updated) reduces deployment cost by $17.70\%$ and bytecode size by $29.01\%$, because the array's internal length-tracking logic is replaced by an explicit counter. Under Via-IR, the picture is more nuanced: $A_O$ (outdated) is actually \emph{more expensive} to deploy ($+6.29\%$, $+10.96\%$), while $A_O$ (updated) recovers to a modest saving ($-3.93\%$, $-7.19\%$). This inversion occurs because the Via-IR pipeline applies aggressive bytecode-level optimisations to array operations that partially offset the structural advantage of the mapping. The corrective \texttt{unchecked\{size++;\}} in $A_O$ (updated) recovers some of this lost margin by removing the overflow-check instrumentation from the increment, bringing the Via-IR savings back into positive territory.
+
+Taken together, these results indicate that the ``Use mappings instead of arrays'' transformation is most beneficial in \emph{deployment-sensitive} contexts --- for instance, contracts that are instantiated frequently via factory patterns or that are subject to deployment cost budgets --- and offer little advantage for contracts where runtime insertion cost dominates. The Standard compiler configuration amplifies these deployment gains significantly, making source-level adoption of the updated rule particularly attractive for projects that do not rely on Via-IR.
+
+%------------------------------------
+\section{Empirical Analysis}
+\label{sec:empirical}
+
+%---------------------------------------
+\subsection{AAVE V3 Case Study}
+
+AAVE V3 is a prominent, widely-adopted Decentralized Finance (DeFi)\footnote{Decentralized Finance (DeFi) is a blockchain-based financial ecosystem that reduces the need for intermediaries such as brokerages, exchanges, or banks.} lending protocol where gas efficiency represents a critical optimisation objective. This case study investigates a comprehensive set of gas-saving transformations, including those recently audited by Cyfrin\footnote{\url{https://www.cyfrin.io/blog/aave-v3-3-public-goods-gas-optimisation-audit}},
+as well as our own optimisations applied on top of Cyfrin's optimised codebase.
+
+Cyfrin's audit for AAVE V3 optimisations utilised AAVE's internal invariant fuzzing test suite, which provides valuable probabilistic assurance by exploring a large number of execution scenarios. However, testing, by its nature, is a form of bounded exploration and does not constitute formal proof of correctness. Our research complements this approach by applying a refinement-based verification methodology with the Certora Prover. The goal is not to replace testing, but rather to provide a different and stronger type of assurance: a deductive proof that the optimisations preserve behavioural equivalence across all possible execution paths, something that is beyond the scope of fuzzing.
+
+Our analysis examined three versions of the AAVE V3 codebase: the original repository (\texttt{aave-v3-origin} at commit \texttt{464a0ea}, version~3.3), Cyfrin's optimised counterpart (\texttt{aave-v3-origin-liquidation-gas-fixes}), and our extended variant (\texttt{aave-v3-origin-full-optimized}), which combines optimisations from Cyfrin and our catalogue. We first measured and compared gas consumption across all three versions. For the formal verification, each contract file containing a transformation was identified and systematically mapped to its respective entry in our catalogue. We then applied the same verification methodology used for individual catalogue item checks to both optimised versions against the original. In this context, the original AAVE V3 contract file functions as the source contract~$A$, and the corresponding optimised file is the contract~$A_{O}$. Once this mapping was established, we enforced the coupling invariant defined over the internal state of the specific contract where the transformation occurred.
+
+In the following sections, we illustrate the practical application of the case study.
+
+\paragraph{Ethical Considerations.} This work analyses optimisation opportunities in AAVE V3 as a case study. We do not advocate deploying any optimised code without a comprehensive and independent security audit. The methodology presented here is intended to inform and complement, not replace, traditional security review processes. The AAVE case study modifications were not deployed to mainnet and serve solely as verification benchmarks for this research.
+
+%----------------------------------------------------
+\subsubsection{Methodology}
+\label{sec:methodology}
+
+This section describes the methodology applied in the case study. We analysed 4 contracts from the AAVE V3 project: Collector, PoolAddressesProviderRegistry, RewardsController and RewardsDistributor. The entire process depicted in Figure~\ref{fig:architecture} was employed to obtain an {\em extended optimised contract\/}: an optimised contract resultant from the application of both the Cyfrin and our catalogue of gas optimisations for each contract. Moreover, the extended optimised contract has also been verified with Certora.
+
+\paragraph{Using Harnesses to Differentiate Contracts.}
+
+When importing two contracts with the same name for use in Certora, the prover cannot differentiate between them, thus making direct verification via importation impossible. Renaming one of the contracts becomes unsustainable, as we would need to modify the name in all imports, inheritances, and uses by other protocol contracts --- a process that is both infeasible and error-prone. In order to solve this issue, we employed \emph{test harnesses} via inheritance. We created two harnesses: \texttt{ContractOriginal.sol}, used exclusively by the original \texttt{aave-v3-origin}, and \texttt{ContractOptimized.sol}, used by Cyfrin's version or our extended variant. Listing~\ref{lst:harness_example} shows an example for the Collector contract. \revised{The same harnesses also carry the return-capturing wrappers of Section~\ref{sec:observable_encoding} --- a public method that persists a function's return into a state variable so the coupling invariant compares it --- shown for \texttt{deltaOf} in Listing~\ref{lst:harness_example}.}
+
+\begin{table}[htb]
+\caption{Harness contracts for differentiating original and optimized versions.}
+\label{lst:harness_example}
+\centering
+\begin{footnotesize}
+\begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
+\hline
+\rowcolor[HTML]{EFEFEF}
+\textbf{CollectorOriginal.sol} & \textbf{CollectorOptimized.sol} \\
+\hline
+\vspace*{-0.4cm}
+\begin{minted}[fontsize=\tiny]{solidity}
+
+
+// SPDX-License-Identifier: BUSL-1.1
+pragma solidity ^0.8.10;
+
+import {Collector} from 
+  "../../aave-v3-origin/src/contracts/
+   treasury/Collector.sol";
+
+contract CollectorOriginal is Collector {
+  uint256 public lastDeltaOfReturn;
+
+  function deltaOf_instr(uint256 id)
+    external returns (uint256) {
+    uint256 r = deltaOf(id);
+    lastDeltaOfReturn = r;
+    return r;
+  }
+}
+\end{minted}
+&
+\vspace*{-0.4cm}
+\begin{minted}[fontsize=\tiny]{solidity}
+
+
+// SPDX-License-Identifier: BUSL-1.1
+pragma solidity ^0.8.10;
+
+import {Collector} from 
+  "../../aave-v3-origin-liquidation-
+   gas-fixes/src/contracts/treasury/
+   Collector.sol";
+
+contract CollectorOptimized is Collector {
+  uint256 public lastDeltaOfReturn;
+
+  function deltaOf_instr(uint256 id)
+    external returns (uint256) {
+    uint256 r = deltaOf(id);
+    lastDeltaOfReturn = r;
+    return r;
+  }
+}
+\end{minted}
+\\ \hline
+\end{tabular}
+\end{footnotesize}
+\end{table}
+
+\paragraph{Utilizing Ghost Functions.}
+Even with proper contract access, the Certora Prover does not always successfully reach some function calls and ends up generating a \texttt{HAVOC} state that compromises our verification system. A \texttt{HAVOC} occurs when the prover cannot precisely determine the effect of a function call and leads to an over-approximation that may yield spurious counterexamples or verification failures.
+
+In order to address this limitation, we employ a \emph{ghost function} --- a CVL-implemented function that overrides the original Solidity function. Ghost functions provide the prover with explicit, tractable specifications of function behaviour and enables it to reason precisely about state changes without resorting to havocking. This technique is particularly crucial when dealing with complex external calls or functions whose behaviour cannot be adequately captured through automated summarisation.
+
+Table~\ref{lst:ghost_function} shows a ghost function from the RewardsDistributor contract. This ghost function overrides the original \texttt{getScaledUserBalanceAndSupply} to return values from ghost variables and ensures the prover can track these values deterministically throughout verification.
+
+\begin{table}[htb]
+\caption{Ghost function example from RewardsDistributor.}
+\label{lst:ghost_function}
+\centering
+\begin{tabular}{|p{0.65\textwidth}|}
+\hline
+\multicolumn{1}{|l|}{\cellcolor[HTML]{EFEFEF}\textbf{Ghost Function: \texttt{getScaledUserBalanceAndSupply}}} \\ \hline
+\vspace*{-0.4cm}
+\begin{minted}[fontsize=\tiny]{Solidity}
+
+
+function ghostGetScaledUserBalanceAndSupply(
+    address asset, 
+    address user
+) returns (uint256, uint256) {
+    return (
+        ghostScaledBalanceOf[asset][user], 
+        ghostScaledTotalSupply[asset]
+    );
+}
+\end{minted}
+\\ \hline
+\end{tabular}
+\end{table}
+
+\paragraph{Utilizing Ghost Variables and Hooks.}
+
+The Certora Prover has limited native support for certain Solidity data structures, particularly nested mappings and complex storage patterns. In order to overcome this limitation, we employed \emph{ghost variables} paired with \emph{hooks}. Ghost variables are CVL-level variables that mirror contract storage, while hooks are instrumentation points that synchronise ghost variables with actual contract state during symbolic execution.
+
+A ghost variable is declared in CVL and represents an abstraction of contract storage. Hooks intercept storage reads (\texttt{Sload}) and writes (\texttt{Sstore}) at the EVM level. This ensures that ghost variables remain consistent with the actual contract state. This approach allows us to: (i) track complex data structures that would otherwise be opaque to the prover; and (ii) establish invariants over these structures that can be referenced in coupling relations.
+
+Table~\ref{lst:ghost_variables} presents an example of the RewardsDistributor contract, showing both a ghost variable declaration with an initialisation axiom and a hook that maintains consistency between the ghost variable and the actual storage location.
+
+The \texttt{init\_state axiom} constrains the initial values of the ghost mapping and establishes that every \texttt{(asset, reward)} pair starts at zero. This reflects the expected initial state of the protocol. The \texttt{Sload} hook enforces that whenever the contract reads from \texttt{a.\_assets[asset].rewards[reward].index}, the ghost variable \texttt{ghost\_a\_rewardIndex} must hold the same value. This requirement ensures semantic equivalence between the ghost abstraction and the concrete implementation.
+
+\begin{table}[htb]
+\caption{Ghost variable and hook example from RewardsDistributor.}
+\label{lst:ghost_variables}
+\centering
+\begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
+\hline
+\rowcolor[HTML]{EFEFEF}
+\textbf{Ghost Variable Declaration} & \textbf{Corresponding Hooks} \\ \hline
+\vspace*{-0.4cm}
+\begin{minted}[fontsize=\tiny]{text}
+
+
+ghost mapping(address => mapping(address => uint104)) 
+    ghost_a_rewardIndex {
+    init_state axiom 
+        forall address asset. 
+        forall address reward.
+            ghost_a_rewardIndex[asset][reward] == 0;
+}
+\end{minted}
+&
+\vspace*{-0.4cm}
+\begin{minted}[fontsize=\tiny]{text}
+
+
+hook Sstore a._assets[KEY address asset]
+    .rewards[KEY address reward].index 
+    uint104 newValue (uint104 oldValue) {
+    ghost_a_rewardIndex[asset][reward] = newValue;
+}
+
+hook Sload uint104 val a._assets[KEY address asset]
+    .rewards[KEY address reward].index {
+    require 
+        ghost_a_rewardIndex[asset][reward] == val;
+}
+\end{minted}
+\\ \hline
+\end{tabular}
+\end{table}
+
+With these techniques in place, we successfully applied our verification framework as depicted in Figure~\ref{fig:architecture}. The harnesses enabled proper contract differentiation, ghost functions resolved \texttt{HAVOC} issues, and ghost variables with hooks allowed us to specify and verify coupling invariants over complex data structures. The results of this comprehensive verification effort are presented in the next section.
+
+%------------------------------------
+\subsection{General Results}
+\label{sec:general_results}
+
+This section presents the aggregated gas measurement and formal verification
+results for the four analysed AAVE~V3 contracts. Per-contract raw data,
+including deployment costs, function-level gas consumption across all three
+versions, and links to Certora verification reports, are available on GitHub\footnote{https://github.com/manvillarim/AAVE-V3-Case-Study}.
+The complete set of diffs is provided in the replication package.
+\mfav{All gas figures reported in this section were obtained with Foundry~1.7.1
+(\texttt{forge test --gas-report}) under the compiler configuration shipped
+with the AAVE~V3 repository (solc~0.8.22, optimiser enabled, 200~runs,
+\textit{shanghai} EVM target). The \textbf{Avg Fn.\ Gas} column is the call-count-weighted mean of
+the per-function average gas over all functions appearing in the contract's
+gas report, i.e.\ $\sum_i g_i c_i / \sum_i c_i$ where $g_i$ is the average
+gas of function $i$ and $c_i$ its number of invocations in the benchmark
+workload.}
+%--------------------------------------------------------------------
+\subsubsection{Aggregated Results}
+\label{sssec:aggregated}
+
+Tables~\ref{tab:aave-papr}--\ref{tab:aave-collector} summarise the
+deployment and runtime gas results for all four contracts, the
+optimisation rules applied in each version, and links to the Certora
+equivalence proofs. In every case, our variant matches or exceeds
+Cyfrin's savings across all metrics, while formal verification confirms
+behavioural equivalence with no valid counterexamples.
+
+%% ── Table 1: PoolAddressesProviderRegistry ──────────────────────────
+\begin{table}[H]
+\centering
+\caption{Gas optimisation results ---
+  \textbf{PoolAddressesProviderRegistry}.}
+\label{tab:aave-papr}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}l p{1.5cm} S[table-format=7.0]
+                S[table-format=4.0] S[table-format=5.0] l@{}}
+\toprule
+\textbf{Version} & \textbf{Rules} &
+  {\textbf{Deploy}} & {\textbf{Size}} &
+  {\textbf{Avg Fn.}} & \textbf{Certora} \\
+ & &
+  {\textbf{Cost (gas)}} & {\textbf{(bytes)}} &
+  {\textbf{Gas}} & \textbf{Proof} \\
+\midrule
+Original       & ---        & 551239 & 2642 & 81814 & --- \\
+Cyfrin Opt.\   & 23         & 549492 & 2634 & 81801 &
+  \href{https://prover.certora.com/output/480394/04ca5be527e24c4796da16abaa7af2d1?anonymousKey=fabe24db0d43d5e6829d26f6130b916d575dbf1b}{Orig--Cyfrin} \\
+Our Opt.\      & 23,1,30    & 510161 & 2441 & 81649 &
+  \href{https://prover.certora.com/output/480394/83241105da784f198c8257bc60690f07?anonymousKey=ae2e0fdc42ef16f9c5e3cb3d6e071d7744b24634}{Orig--Ours} \\
+\cmidrule(lr){3-5}
+\textit{Savings (Cyfrin)} & & 1747   & 8   & 13  & \\
+\textit{Savings (Ours)}   & &
+  \cellcolor{green!20}\textbf{41078} &
+  \cellcolor{green!20}\textbf{201}   &
+  \cellcolor{green!20}\textbf{165}   & \\
+\cmidrule(lr){3-5}
+Cyfrin vs.\ Orig. & &
+  \multicolumn{1}{r}{$-$0.32\%} &
+  \multicolumn{1}{r}{$-$0.30\%} &
+  \multicolumn{1}{r}{$-$0.02\%} & \\
+Ours vs.\ Orig.   & &
+  \multicolumn{1}{r}{\cellcolor{green!20}\textbf{$-$7.45\%}} &
+  \multicolumn{1}{r}{\cellcolor{green!20}\textbf{$-$7.61\%}} &
+  \multicolumn{1}{r}{\cellcolor{green!20}\textbf{$-$0.20\%}} & \\
+Ours vs.\ Cyfrin  & &
+  \multicolumn{1}{r}{\cellcolor{blue!10}$-$7.16\%} &
+  \multicolumn{1}{r}{\cellcolor{blue!10}$-$7.33\%} &
+  \multicolumn{1}{r}{\cellcolor{blue!10}$-$0.19\%} & \\
+\bottomrule
+\end{tabular}
+
+\vspace{2pt}
+\footnotesize See Table~\ref{tab:rules-legend} for rule descriptions.
+  \colorbox{green!20}{Green}: improvements over original;
+  \colorbox{blue!10}{blue}: improvements over Cyfrin.
+\end{table}
+
+%% ── Table 2: RewardsDistributor ─────────────────────────────────────
+\begin{table}[H]
+\centering
+\caption{Gas optimisation results --- \textbf{RewardsDistributor}.}
+\label{tab:aave-rd}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}l p{1.5cm} S[table-format=7.0]
+                S[table-format=4.0] S[table-format=6.0] l@{}}
+\toprule
+\textbf{Version} & \textbf{Rules} &
+  {\textbf{Deploy}} & {\textbf{Size}} &
+  {\textbf{Avg Fn.}} & \textbf{Certora} \\
+ & &
+  {\textbf{Cost (gas)}} & {\textbf{(bytes)}} &
+  {\textbf{Gas}} & \textbf{Proof} \\
+\midrule
+Original       & ---            & 1834732 & 8421 & 156250 & --- \\
+Cyfrin Opt.\   & 9,23,25        & 1807240 & 8291 & 155896 &
+  \href{https://prover.certora.com/output/480394/d52ec3c3c9804eb0916662e1cb78aca4?anonymousKey=bf564909a2fc0579062be983052de352f0eafea4}{Orig--Cyfrin} \\
+Our Opt.\      & 9,23,25,       & 1613633 & 7396 & 154163 &
+  \href{https://prover.certora.com/output/480394/d9b86ebb71e14f12852e8a625a30731a?anonymousKey=50a968b7feb0c28b3deb69f3494451f5da36217b}{Orig--Ours} \\
+               & 1,15,24,26,28  &         &      &        & \\
+\cmidrule(lr){3-5}
+\textit{Savings (Cyfrin)} & & 27492   & 130  & 354  & \\
+\textit{Savings (Ours)}   & &
+  \cellcolor{green!20}\textbf{221099} &
+  \cellcolor{green!20}\textbf{1025}   &
+  \cellcolor{green!20}\textbf{2088}   & \\
+\cmidrule(lr){3-5}
+Cyfrin vs.\ Orig. & &
+  \multicolumn{1}{r}{$-$1.50\%} &
+  \multicolumn{1}{r}{$-$1.54\%} &
+  \multicolumn{1}{r}{$-$0.23\%} & \\
+Ours vs.\ Orig.   & &
+  \multicolumn{1}{r}{\cellcolor{green!20}\textbf{$-$12.05\%}} &
+  \multicolumn{1}{r}{\cellcolor{green!20}\textbf{$-$12.17\%}} &
+  \multicolumn{1}{r}{\cellcolor{green!20}\textbf{$-$1.34\%}} & \\
+Ours vs.\ Cyfrin  & &
+  \multicolumn{1}{r}{\cellcolor{blue!10}$-$10.71\%} &
+  \multicolumn{1}{r}{\cellcolor{blue!10}$-$10.79\%} &
+  \multicolumn{1}{r}{\cellcolor{blue!10}$-$1.11\%} & \\
+\bottomrule
+\end{tabular}
+
+\vspace{2pt}
+\footnotesize See Table~\ref{tab:rules-legend} for rule descriptions.
+  \colorbox{green!20}{Green}: improvements over original;
+  \colorbox{blue!10}{blue}: improvements over Cyfrin.
+\end{table}
+
+%% ── Table 3: RewardsController ──────────────────────────────────────
+\begin{table}[H]
+\centering
+\caption{Gas optimisation results --- \textbf{RewardsController}.}
+\label{tab:aave-rc}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}l p{1.5cm} S[table-format=7.0]
+                S[table-format=5.0] S[table-format=6.0] l@{}}
+\toprule
+\textbf{Version} & \textbf{Rules} &
+  {\textbf{Deploy}} & {\textbf{Size}} &
+  {\textbf{Avg Fn.}} & \textbf{Certora} \\
+ & &
+  {\textbf{Cost (gas)}} & {\textbf{(bytes)}} &
+  {\textbf{Gas}} & \textbf{Proof} \\
+\midrule
+Original       & ---              & 3097547 & 14293 & 153329 & --- \\
+Cyfrin Opt.\   & 9                & 3063250 & 14135 & 153200 &
+  \href{https://prover.certora.com/output/480394/4c990e48e4b048d9861efec041d59b9e?anonymousKey=50fb57accbc22b04d0a64730906f2ad8b1602353}{Orig--Cyfrin} \\
+Our Opt.\      & 9,1,15,          & 2774654 & 12799 & 152114 &
+  \href{https://prover.certora.com/output/480394/5c6ffb5ceeb54212b0bf7f98e4c1ec61?anonymousKey=c95406254c2dfa3d5c242232c85d1a08a0af11b1}{Orig--Ours} \\
+               & 24,25,26,28      &         &       &        & \\
+\cmidrule(lr){3-5}
+\textit{Savings (Cyfrin)} & & 34297   & 158  & 129  & \\
+\textit{Savings (Ours)}   & &
+  \cellcolor{green!20}\textbf{322893} &
+  \cellcolor{green!20}\textbf{1494}   &
+  \cellcolor{green!20}\textbf{1215}   & \\
+\cmidrule(lr){3-5}
+Cyfrin vs.\ Orig. & &
+  \multicolumn{1}{r}{$-$1.11\%} &
+  \multicolumn{1}{r}{$-$1.11\%} &
+  \multicolumn{1}{r}{$-$0.08\%} & \\
+Ours vs.\ Orig.   & &
+  \multicolumn{1}{r}{\cellcolor{green!20}\textbf{$-$10.42\%}} &
+  \multicolumn{1}{r}{\cellcolor{green!20}\textbf{$-$10.45\%}} &
+  \multicolumn{1}{r}{\cellcolor{green!20}\textbf{$-$0.79\%}} & \\
+Ours vs.\ Cyfrin  & &
+  \multicolumn{1}{r}{\cellcolor{blue!10}$-$9.42\%} &
+  \multicolumn{1}{r}{\cellcolor{blue!10}$-$9.45\%} &
+  \multicolumn{1}{r}{\cellcolor{blue!10}$-$0.71\%} & \\
+\bottomrule
+\end{tabular}
+
+\vspace{2pt}
+\footnotesize See Table~\ref{tab:rules-legend} for rule descriptions.
+  \colorbox{green!20}{Green}: improvements over original;
+  \colorbox{blue!10}{blue}: improvements over Cyfrin.
+\end{table}
+
+%% ── Table 4: Collector ──────────────────────────────────────────────
+\begin{table}[H]
+\centering
+\caption{Gas optimisation results --- \textbf{Collector}.}
+\label{tab:aave-collector}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}l p{1.5cm} S[table-format=7.0]
+                S[table-format=4.0] S[table-format=6.0] l@{}}
+\toprule
+\textbf{Version} & \textbf{Rules} &
+  {\textbf{Deploy}} & {\textbf{Size}} &
+  {\textbf{Avg Fn.}} & \textbf{Certora} \\
+ & &
+  {\textbf{Cost (gas)}} & {\textbf{(bytes)}} &
+  {\textbf{Gas}} & \textbf{Proof} \\
+\midrule
+Original       & ---        & 1484479 & 6716 & 79052 & --- \\
+Cyfrin Opt.\   & 15,20,24   & 1371815 & 6195 & 78485 &
+  \href{https://prover.certora.com/output/480394/af57dd9e91d347b9ba73c70baa3fcdf2?anonymousKey=2ae01c430e036ffdf0ae97ae753e2a7522bdbb11}{Orig--Cyfrin} \\
+Our Opt.\      & 15,20,24,  & 1368383 & 6179 & 78373 &
+  \href{https://prover.certora.com/output/480394/40497bd3d38c4ddd801a89e78c0c2a47?anonymousKey=4cd3f453028acf421fe8c4cf758ea5605d3574c6}{Orig--Ours} \\
+               & 16         &         &      &       & \\
+\cmidrule(lr){3-5}
+\textit{Savings (Cyfrin)} & & 112664  & 521  & 568  & \\
+\textit{Savings (Ours)}   & &
+  \cellcolor{green!20}\textbf{116096} &
+  \cellcolor{green!20}\textbf{537}    &
+  \cellcolor{green!20}\textbf{680}    & \\
+\cmidrule(lr){3-5}
+Cyfrin vs.\ Orig. & &
+  \multicolumn{1}{r}{$-$7.59\%} &
+  \multicolumn{1}{r}{$-$7.76\%} &
+  \multicolumn{1}{r}{$-$0.72\%} & \\
+Ours vs.\ Orig.   & &
+  \multicolumn{1}{r}{\cellcolor{green!20}\textbf{$-$7.82\%}} &
+  \multicolumn{1}{r}{\cellcolor{green!20}\textbf{$-$8.00\%}} &
+  \multicolumn{1}{r}{\cellcolor{green!20}\textbf{$-$0.86\%}} & \\
+Ours vs.\ Cyfrin  & &
+  \multicolumn{1}{r}{\cellcolor{blue!10}$-$0.25\%} &
+  \multicolumn{1}{r}{\cellcolor{blue!10}$-$0.26\%} &
+  \multicolumn{1}{r}{\cellcolor{blue!10}$-$0.14\%} & \\
+\bottomrule
+\end{tabular}
+
+\vspace{2pt}
+\footnotesize See Table~\ref{tab:rules-legend} for rule descriptions.
+  \colorbox{green!20}{Green}: improvements over original;
+  \colorbox{blue!10}{blue}: improvements over Cyfrin.
+\end{table}
+
+%% ── Rules Legend (shared) ───────────────────────────────────────────────────
+\begin{table}[H]
+\centering
+\caption{Optimisation rule index.}
+\label{tab:rules-legend}
+\footnotesize
+\begin{tabular}{@{}cl@{}}
+\toprule
+\textbf{Rule} & \textbf{Description} \\
+\midrule
+1  & Custom Errors \\
+9  & No Explicit Zero Init \\
+15 & Reduce Expressions \\
+16 & Short-Circuiting \\
+20 & Limit Modifiers \\
+23 & Cache Storage Variables \\
+24 & Cache Array Members \\
+25 & Cache Array Length \\
+26 & Pre-increment \\
+28 & Unchecked Arithmetic \\
+30 & Payable Constructor \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%--------------------------------------------------------------------
+\subsubsection{Deployment Savings}
+\label{sssec:deploy_savings}
+
+Our optimisations consistently reduce deployment cost and bytecode size beyond Cyfrin's baseline across all four contracts. The largest absolute reduction occurs in \texttt{RewardsController}: $-322{,}893$~gas ($-10.42\%$) and $-1{,}494$~bytes ($-10.45\%$), followed by \texttt{RewardsDistributor} at $-221{,}099$~gas, which is the largest reduction in relative terms ($-12.05\%$ cost, $-12.17\%$ size). The dominant contributor in both cases is Rule~1 (custom errors), which strips error string literals from the deployed bytecode. Table~\ref{tab:rule1_example} illustrates this transformation as applied to the \texttt{onlyEmissionManager} modifier in \texttt{RewardsDistributor}: the \texttt{require} with a string literal is replaced by an \texttt{if}-revert custom error pattern, removing the string from the deployed bytecode. In \texttt{RewardsDistributor}, four string literals are removed; in \texttt{RewardsController}, seven. Rule~28 (unchecked arithmetic) contributes secondary deployment savings by eliminating overflow-check instrumentation from loops --- eight loops in \texttt{RewardsDistributor} and six in \texttt{RewardsController}.
+
+\begin{table}[htb]
+\caption{Rule~1 applied to the \texttt{onlyEmissionManager} modifier in
+  \texttt{RewardsDistributor}: the \texttt{require} with a string literal is
+  replaced by an \texttt{if}-revert custom error pattern, removing the string
+  from the deployed bytecode.}
+\label{tab:rule1_example}
+\centering
+\begin{footnotesize}
+\begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
+\hline
+\rowcolor[HTML]{EFEFEF}
+\textbf{Before (Cyfrin baseline)} & \textbf{After (Rule~1: Custom Errors)} \\ \hline
+\vspace{-0.4cm}
+\begin{minted}[fontsize=\tiny]{Solidity}
+
+
+modifier onlyEmissionManager() {
+    require(
+        msg.sender == EMISSION_MANAGER,
+        'ONLY_EMISSION_MANAGER'
+    );
+    _;
+}
+\end{minted}
+&
+\vspace{-0.4cm}
+\begin{minted}[fontsize=\tiny]{Solidity}
+
+
+error OnlyEmissionManager();
+
+modifier onlyEmissionManager() {
+    if (msg.sender != EMISSION_MANAGER)
+        revert OnlyEmissionManager();
+    _;
+}
+\end{minted}
+\\ \hline
+\end{tabular}
+\end{footnotesize}
+\end{table}
+
+The \texttt{Collector} contract is the only case where Cyfrin already
+achieves substantial deployment reduction ($-7.59\%$), driven by Rule~20
+(replacing the \texttt{onlyAdminOrRecipient} modifier with an internal
+function) together with structural refactoring that removes auxiliary memory
+structs (\texttt{BalanceOfLocalVars}, \texttt{CreateStreamLocalVars}) and
+simplifies function bodies. Our additional contribution here is marginal
+($-0.25\%$ over Cyfrin), limited to Rule~15 eliminating one comparison
+instruction in the \texttt{onlyFundsAdmin} modifier.
+
+For \texttt{PoolAddressesProviderRegistry}, the simplest contract, Cyfrin's
+single Rule~23 application --- hoisting the read of
+\texttt{\_addressesProviderToId[provider]} above the guard in
+\texttt{unregisterAddressesProvider} --- yields only $-0.32\%$ deployment
+savings. Our variant achieves $-7.45\%$, almost entirely from Rule~1
+removing three error string literals. Rule~30 (payable constructor)
+contributes a negligible further reduction, consistent with its
+characterisation in Table~\ref{tab:compiler-vs-refactoring}. These two are
+the only catalogue rules applicable to this contract: it contains no loops
+and no array traversals, so the loop-oriented rules that dominate the other
+three contracts have no match here.
+
+%--------------------------------------------------------------------
+\subsubsection{Runtime Savings}
+\label{sssec:runtime_savings}
+
+Runtime savings vary by contract complexity and the number of applicable
+rules. The largest absolute function-level reductions arise from two
+mechanisms: storage access elimination and loop body optimisation.
+
+\paragraph{Storage access elimination.}
+The single largest per-function saving across the entire study is
+\texttt{deltaOf} in the \texttt{Collector}: $-10{,}922$~gas (average),
+exclusively from Cyfrin's Rule~24 transformation that replaces a full
+\texttt{Stream memory} struct copy with selective caching of two fields via a
+\texttt{storage} reference. This saving propagates through the hot path, as
+\texttt{deltaOf} is called transitively by \texttt{balanceOf}
+($-1{,}038$~gas), which is
+invoked inside both \texttt{withdrawFromStream} and \texttt{cancelStream}.
+Our Rule~16 (short-circuiting) in \texttt{\_onlyAdminOrRecipient}
+contributes additional runtime savings of $-1{,}766$~gas in
+\texttt{withdrawFromStream} and $-1{,}167$~gas in \texttt{cancelStream}
+(both relative to Cyfrin): reordering the conjuncts so that the stack
+comparison \texttt{msg.sender != recipient} is evaluated before the
+\texttt{SLOAD}-dependent \texttt{hasRole} check avoids the storage read on
+the dominant recipient-caller path. Table~\ref{tab:rule16_example}
+illustrates this transformation as applied to
+\texttt{\_onlyAdminOrRecipient} in the \texttt{Collector}.
+
+\begin{table}[htb]
+\caption{Rule~16 applied to \texttt{\_onlyAdminOrRecipient} in the
+  \texttt{Collector}: reordering the conjuncts so that the stack comparison
+  is evaluated first avoids the \texttt{SLOAD} from \texttt{hasRole} on the
+  dominant recipient-caller path, saving $-1{,}766$~gas in
+  \texttt{withdrawFromStream} and $-1{,}167$~gas in \texttt{cancelStream}.}
+\label{tab:rule16_example}
+\centering
+\begin{footnotesize}
+\begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
+\hline
+\rowcolor[HTML]{EFEFEF}
+\textbf{Before (Cyfrin baseline)} & \textbf{After (Rule~16: Short-Circuiting)} \\ \hline
+\vspace*{-0.5cm}
+\begin{minted}[fontsize=\tiny]{Solidity}
+
+
+
+function _onlyAdminOrRecipient(
+    address recipient
+) internal view {
+    // _onlyFundsAdmin() always SLOADs
+    if (!_onlyFundsAdmin()
+            && msg.sender != recipient)
+        revert OnlyFundsAdminOrRecipient();
+}
+\end{minted}
+&
+\vspace*{-0.5cm}
+\begin{minted}[fontsize=\tiny]{Solidity}
+
+
+
+function _onlyAdminOrRecipient(
+    address recipient
+) internal view {
+    // cheap stack comparison first:
+    // avoids SLOAD when caller == recipient
+    if (msg.sender != recipient
+            && !_onlyFundsAdmin())
+        revert OnlyFundsAdminOrRecipient();
+}
+\end{minted}
+\\ \hline
+\end{tabular}
+\end{footnotesize}
+\end{table}
+
+\paragraph{Loop body optimisation.}
+In \texttt{RewardsDistributor}, the combination of Rule~24 (caching \texttt{rewardsInput[i]}, accessed $>$10 times per iteration) and Rule~28 (unchecked increments) yields $-4{,}234$~gas in \texttt{configureAssets} and $-866$~gas in \texttt{getAllUserRewards}, both relative to the original. Table~\ref{tab:rule24_28_example} shows this combined loop optimisation as applied to \texttt{\_configureAssets} in \texttt{RewardsDistributor}: Rule~24 caches the repeatedly accessed array element, Rule~25 hoists the length read, and Rule~28 wraps the increment in \texttt{unchecked}, yielding $-3{,}540$~gas (average) relative to Cyfrin. In \texttt{RewardsController}, the compound effect of Rules~24, 25, 26, and~28 across the nested loops of \texttt{\_claimRewards} and \texttt{\_claimAllRewards} produces savings of $-315$ to $-390$~gas relative to the original across all six \texttt{claim*} entry points ($-612$ to $-625$~gas relative to Cyfrin), and $-5{,}281$~gas in \texttt{configureAssets}.
+
+\begin{table}[htb]
+\caption{Combined loop optimisation in \texttt{\_configureAssets}
+  (\texttt{RewardsDistributor}): Rule~24 caches the repeatedly accessed array
+  element, Rule~25 hoists the length read, and Rules~26 and~28 replace the
+  post-increment by a pre-increment wrapped in \texttt{unchecked}. This
+  combination yields $-3{,}540$~gas (avg) relative to Cyfrin.}
+\label{tab:rule24_28_example}
+\centering
+\begin{footnotesize}
+\begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
+\hline
+\rowcolor[HTML]{EFEFEF}
+\textbf{Before (Cyfrin baseline)} & \textbf{After (Rules~24, 25, 26, 28)} \\ \hline
+\vspace*{-0.5cm}
+\begin{minted}[fontsize=\tiny]{Solidity}
+
+
+
+for (uint256 i;
+     i < rewardsInput.length;
+     i++) {
+    if (_assets[
+            rewardsInput[i].asset]
+            .decimals == 0) { ... }
+    RewardsDataTypes.RewardData
+        storage rewardConfig =
+        _assets[rewardsInput[i].asset]
+        .rewards[rewardsInput[i].reward];
+    // rewardsInput[i] accessed
+    // ~8 more times...
+}
+\end{minted}
+&
+\vspace*{-0.5cm}
+\begin{minted}[fontsize=\tiny]{Solidity}
+
+
+
+uint256 len = rewardsInput.length;
+for (uint256 i; i < len; ) {
+    // cache: accessed 10+ times
+    RewardsDataTypes.RewardsConfigInput
+        memory input = rewardsInput[i];
+    if (_assets[input.asset]
+            .decimals == 0) { ... }
+    RewardsDataTypes.RewardData
+        storage rewardConfig =
+        _assets[input.asset]
+        .rewards[input.reward];
+    // input.field throughout
+    unchecked { ++i; }
+}
+\end{minted}
+\\ \hline
+\end{tabular}
+\end{footnotesize}
+\end{table}
+
+Rule~1 produces modest but consistent runtime savings wherever it is applied: $-229$~gas in \texttt{registerAddressesProvider} (three custom errors), $-15$~gas in \texttt{setEmissionPerSecond} (two custom errors), and $-12$~gas in \texttt{setTransferStrategy} (one custom error), all relative to Cyfrin. Getters that only read storage slots left untouched by the transformations are identical across all three versions, as expected.
+
+%--------------------------------------------------------------------
+\subsubsection{Regressions}
+\label{sssec:regressions}
+
+Two localised regressions are observed, neither attributable to the catalogue rules themselves.
+
+In \texttt{RewardsController}, the Cyfrin version registers a regression of $+235$ to $+297$~gas (average) across all six \texttt{claim*} functions relative to the original. This arises from Cyfrin's structural refactoring (early-return guards and explicit \texttt{return} statements in \texttt{\_claimRewards} and \texttt{\_claimAllRewards}), which alters the compiler's code generation path and introduces overhead when the non-zero-amount path dominates. Our variant recovers from this regression and surpasses the original, demonstrating that the additional loop and caching optimisations compensate for the refactoring overhead.
+
+A marginal regression in \texttt{handleAction} (\texttt{RewardsController}) persists in both optimised versions: $+119$~gas in Cyfrin's and $+118$~gas in ours, relative to the original. It is attributable to code layout changes affecting jump distances in the inherited call chain from \texttt{RewardsDistributor}, where no direct transformation was applied. This is an indirect side-effect of bytecode reorganisation, not a consequence of any specific optimisation rule.
+
+%--------------------------------------------------------------------
+\subsubsection{Formal Verification}
+\label{sssec:formal_verification}
+
+All eight verification runs (two per contract: original vs.\ Cyfrin and
+original vs.\ ours) confirmed behavioural equivalence for every transformation
+pair; \revised{the only violations reported were instances of a single
+characterised encoding artefact, diagnosed at the end of this section}. The
+verification configurations required progressively more sophisticated modelling
+as contract complexity increased:
+
+\begin{itemize}
+  \item \textbf{PoolAddressesProviderRegistry.} Straightforward coupling
+    invariant over the two mapping state variables; no auxiliary ghost
+    state required.
+
+  \item \textbf{RewardsDistributor.} Ghost variables paired with
+    \texttt{Sload}/\texttt{Sstore} hooks to track the nested mappings
+    (\texttt{\_assets[asset].\\rewards[reward].usersData[user]})
+    deterministically throughout symbolic execution.
+
+  \item \textbf{RewardsController.} The coupling invariant spans inherited
+    storage from \texttt{RewardsDistributor}. Ghost function summaries were
+    required for \texttt{getScaledUserBalanceAndSupply} to resolve
+    \texttt{HAVOC} states arising from the prover's inability to summarise
+    external \texttt{IScaledBalanceToken} calls.
+
+  \item \textbf{Collector.} Per-field ghost mappings keyed by
+    \texttt{streamId} for the \texttt{\_streams} mapping; ghost variables
+    with slot-addressed hooks for ERC-7201 namespaced storage slots from
+    \texttt{AccessControlUpgradeable} and
+    \texttt{ReentrancyGuard\\Upgradeable}.
+\end{itemize}
+
+One spurious counterexample showed up in the \texttt{Collector} verification. The \texttt{createStream} function, shown in Listing~\ref{lst:createStream}, stores \texttt{address(this)} in the \texttt{sender} field of the \texttt{Stream} struct upon stream creation.
+
+\begin{listing}[htb]
+\centering
+\begin{scriptsize}
+\begin{minted}{Solidity}
+function createStream(
+    address recipient,
+    uint256 deposit,
+    address tokenAddress,
+    uint256 startTime,
+    uint256 stopTime
+) external onlyFundsAdmin returns (uint256) {
+    // ... validation guards ...
+    uint256 streamId = _nextStreamId;
+    _streams[streamId] = Stream({
+        remainingBalance: deposit,
+        deposit:          deposit,
+        isEntity:         true,
+        ratePerSecond:    vars.ratePerSecond,
+        recipient:        recipient,
+        sender:           address(this), // <-- source of the spurious counterexample
+        startTime:        startTime,
+        stopTime:         stopTime,
+        tokenAddress:     tokenAddress
+    });
+    _nextStreamId++;
+    // ...
+}
+\end{minted}
+\end{scriptsize}
+\caption{The \texttt{createStream} function in the \texttt{Collector}
+  contract. The field \texttt{sender: address(this)} writes the contract's
+  own address into persistent storage, and is the source of the spurious
+  counterexample described in the text.}
+\label{lst:createStream}
+\end{listing}
+
+Since the Certora setup instantiates the original and optimised contracts
+as two distinct symbolic objects---\texttt{CollectorOriginal} and
+\texttt{CollectorOptimized}---each instance is assigned a different
+symbolic \texttt{address(this)}. When \texttt{createStream} is executed,
+the \texttt{sender} field is written to storage with the respective
+symbolic address of each instance. As a result, after the function call,
+the coupling invariant detects that \texttt{\_streams[streamId].sender}
+holds different values in the two contracts, flagging a violation. In any
+real deployment, however, only a single contract address exists; both the
+original and optimised bytecodes would write the same address to the
+\texttt{sender} field. The divergence is therefore a verification
+artefact with no practical counterpart. \revised{It is dismissed not by
+inspecting the counterexample case by case but on the strength of an exact
+characterisation of its class --- the observations whose value derives from
+\texttt{address(this)}, of which the stored \texttt{sender} field is the one this
+counterexample exhibits --- which in a single-address deployment satisfies
+$\mathit{addr}(A)\!=\!\mathit{addr}(A_O)$ and so vanishes by construction. The
+criterion is fixed in advance and checkable, so a counterexample that does not
+reduce to an \texttt{address(this)} difference falls outside the class and is
+treated as a genuine violation (Section~\ref{sec:tcb}).} It does not undermine
+the soundness of the remaining proofs.
+
+%----------------------------------
+\section{Threats to Validity}
+\label{sec:threats_validity}
+
+Our verification framework and the resulting catalogue offer significant improvements in gas optimisation safety. However, there are inherent validity threats and limitations to our approach that must be considered.
+
+\paragraph{Construct Validity: Completeness of Coupling Invariants.}
+The soundness of each verification relies entirely on the completeness
+of the coupling invariant $\mathcal{R}$. If a developer omits a
+relevant state variable from the invariant, the Certora Prover may
+accept a transformation that is not truly behaviourally equivalent,
+yielding a false positive. Although our catalogue provides invariant
+templates for each rule, applying them to custom contracts retains the
+risk of human specification error. We mitigated this risk by
+systematically cross-checking each invariant against all persistent
+state variables of the corresponding contract, and by validating
+our specifications against known-equivalent and known-divergent
+contract pairs before applying them to the AAVE~V3 case study.
+
+\paragraph{Construct Validity: Assumption of Deterministic Observability.}
+Our formal model assumes that observable events are deterministic
+functions of state and inputs (Condition~4 of Theorem~1). This
+assumption holds for the contracts analysed in our case study, where
+all emitted events derive strictly from storage variables and
+transaction context. \revised{Relatedly, the side condition that no rule adds,
+removes, reorders or alters an \texttt{emit} (Table~\ref{tab:observables}) is
+checked syntactically by the person applying the rule, not by the prover; it is
+a lightweight manual obligation whose mechanisation we leave to future work.}
+However, contracts that rely on complex external
+dependencies --- such as price oracles, randomness beacons, or
+cross-chain bridges --- may violate this assumption. If an
+optimisation alters the sequence or arguments of external calls,
+the coupling specification must be manually extended to model the
+external state explicitly. Failure to do so may produce
+verification results that do not reflect real-world behaviour.
+
+\paragraph{Internal Validity: Spurious Counterexamples.}
+As illustrated by the \texttt{createStream} case in
+Section~\ref{sssec:formal_verification}, the two-instance encoding may
+produce counterexamples arising from the distinct symbolic
+addresses assigned to the two contract instances under verification.
+\revised{Such an artefact is not dismissed ad hoc: it is confined to an
+exactly characterised class --- the observations whose value derives from
+\texttt{address(this)} --- that vanishes whenever
+$\mathit{addr}(A)\!=\!\mathit{addr}(A_O)$, as holds in any single-address
+deployment (Section~\ref{sec:tcb}). Because this criterion is fixed in advance,
+the dismissal rests on a checkable characterisation, and any divergence outside
+the class is treated as a genuine violation. This artefact is nonetheless
+intrinsic to the two-instance encoding, which cannot identify the two contract
+addresses; the residual concern is narrower but real: a counterexample of a
+\emph{new} kind, not covered by a previously characterised class, would still
+have to be diagnosed before it could be classified, and the risk of misdiagnosis
+remains, particularly in more complex verification settings.}
+
+\paragraph{Internal Validity: Case Study Scope.}
+Our empirical evaluation covers four contracts from the AAVE~V3
+protocol. Although AAVE~V3 is a widely-adopted, production-grade
+DeFi system and thus constitutes a representative and challenging
+benchmark, the results may not generalise to contracts with
+substantially different architectural patterns --- such as
+proxy-based upgradeability, assembly-heavy implementations, or
+contracts that rely heavily on inline Yul. Extending the case study
+to a broader set of protocols remains future work.
+
+\paragraph{External Validity: Compiler-Dependent Gas Savings.}
+The gas savings reported in Sections~\ref{sec:catalogue_gas_optimisations}
+and~\ref{sec:empirical} are tied to specific compiler versions
+(Solidity~0.8.x) and configurations (Standard and Via-IR pipelines
+with 200 optimisation runs). As the EVM and the Solidity compiler
+evolve, future changes to opcode pricing schedules or optimisation
+passes may alter the \emph{economic} viability of individual rules,
+even if their verified \emph{semantic} correctness remains valid.
+In particular, EIP-driven repricing events --- such as those
+introduced by the Berlin and London hard forks --- have historically
+changed the relative cost of storage and computation opcodes, and
+similar changes could reduce or eliminate the savings reported here.
+
+\paragraph{External Validity: Generalisability of the Catalogue.}
+The 30 transformation rules in our catalogue were derived from two
+primary literature sources~\cite{khanzadeh2023optimizing,Nelaturu2021}
+and three novel contributions from this work. The catalogue is not
+claimed to be exhaustive: additional optimisation patterns exist in
+practice --- for instance, those targeting assembly-level
+constructs, storage packing, or function selector ordering --- that
+are not yet formalised or verified. The behavioural equivalence
+methodology is general and applicable to such patterns, but each
+new rule requires a dedicated CVL specification and verification run.
+%------------------------------------
+\section{Related Work}
+\label{sec:related_work}
+
+Our work combines gas optimisation techniques, formal verification frameworks, and EVM semantics analysis~\cite{GASOL,albert2018ethir,amani2018towards,certora2023}. No prior work provides a centralised catalogue of formally verified gas optimisations.
+
+\paragraph{Gas optimisation Techniques.} While various studies~\cite{chen2017under,khanzadeh2023optimizing,NBL21,Nelaturu2021} and tools like \textbf{GaSaver}~\cite{ZLS23}, \textbf{SolOSphere}~\cite{KA24}, and \textbf{Madmax}~\cite{grech2018madmax} target gas efficiency, they lack rigorous correctness proofs. We address this by providing a mechanised verification of behavioural equivalence for each rule.
+
+\paragraph{Simulation and Refinement for Smart Contracts.}
+Beillahi {\em et al.\/}~\cite{Beillahi2020} introduce behavioural simulation for smart contracts, proposing an automated approach to verify unannotated contracts against annotated canonical counterparts. Their methodology synthesises simulation relations automatically from execution examples via a learning procedure, then validates candidates using a product-contract construction and an SMT-based verifier. The goal is to establish that an unannotated contract is a behavioural refinement of a reference contract, thereby inheriting its functional properties. Nelaturu {\em et al.\/}~\cite{NBL21} propose a refinement-based approach specifically targeting gas optimisation, employing bisimulation and a similar product-contract construction to verify a selected set of transformation rules.
+
+Our work is complementary to and extends both of these contributions~\cite{Beillahi2020,NBL21}. We share the foundational use of simulation relations and LTS-based behavioural equivalence, but differ in three key respects. First, whereas Beillahi {\em et al.\/}\ target the problem of verifying unannotated contracts against existing specifications --- a cross-contract scalability problem --- our framework targets a different scenario: verifying that a source-level gas optimisation preserves the behaviour of a known, already-correct contract. In our case, on the one hand, the developer must write coupling invariants manually in CVL, which requires more specification effort. On the other hand, it enables verification of complex real-world protocols such as AAVE~V3, which involve upgradeable storage, nested mappings, and external calls that the example-driven synthesis of Beillahi~\em{et al.\/} is not designed to handle. Second, whereas Nelaturu~\em{et al.\/} verify a restricted set of gas rules, we compile a comprehensive catalogue of 30 transformations drawn from the broader literature, provide a uniform CVL encoding for mechanical verification via the Certora Prover, and demonstrate that two previously published rules require correction for Solidity~$\geq$~0.8.0 --- a finding that their framework did not report. Third, we contribute with three novel optimisation patterns not covered by either prior work.
+
+\paragraph{Formal Verification Frameworks.} Formal verification ensures contract correctness~\cite{OlivieriSpoto2024}. \textbf{KEVM}~\cite{KEVM} provides complete EVM semantics. Other frameworks use theorem provers~\cite{amani2018towards,Cassez2023,hirai2017defining,MarmsolerBrucker2025}. Verification tools include \textbf{solc-verify}~\cite{hajdu2019solc}, \textbf{Verx}~\cite{permenev2020verx}, and \textbf{Verismart}~\cite{so2020verismart}. Specification languages like \textbf{Scribble}~\cite{scribble2020} define contract properties. Security tools include \textbf{Securify}~\cite{tsankov2018securify} and \textbf{Ethainter}~\cite{brent2020ethainter}.
+
+We use the \textbf{Certora Prover}~\cite{certora22,certora2023} to verify gas optimisation correctness via SMT-based simulation relations~\cite{milner1989communication}. This distinguishes our work from existing tools that primarily focus on security properties.
+
+\paragraph{EVM Semantics and Analysis.} Understanding EVM execution is essential~\cite{luu2016making}. Analysis frameworks include \textbf{Ethir}~\cite{albert2018ethir}, \textbf{Gigahorse}~\cite{grech2019gigahorse}, and \textbf{Hevm}~\cite{DxoSP0B24} for symbolic execution and equivalence checking. Our framework bridges these areas by using formal verification to ensure the correctness of gas optimisations from both existing literature~\cite{khanzadeh2023optimizing,NBL21,Nelaturu2021} and from new rules.
+
+%------------------------------------
+\section{Conclusion}
+\label{sec:conclusion}
+
+This work presents a refinement-based framework that rigorously integrates
+formal verification with gas optimisation for Ethereum smart contracts. By
+leveraging the \textbf{Certora Prover} and a coupling invariant methodology,
+we ensure that gas-optimised contracts maintain strict behavioural equivalence
+to their original implementations.
+
+Our primary contribution is a catalogue of 30 formally verified transformation
+rules, defined using generalised patterns and CVL specifications. This catalogue
+includes three novel optimisations---replacing \texttt{require} with custom
+errors, utilizing \texttt{unchecked} blocks for validated operations, and making
+constructors \texttt{payable}. Furthermore, our verification process identified
+two existing optimisations requiring updates for Solidity 0.8.0+, thus
+demonstrating the framework's critical role in adapting to language evolution.
+
+The AAVE V3 case study confirmed that the framework scales to real-world
+complexity. Across four production contracts, our extended variant achieved
+deployment savings of up to $-12.05\%$ and runtime reductions of up to
+\revised{$-1.34\%$} over the original, consistently surpassing Cyfrin's audited
+optimisations---while all eight Certora verification runs produced proofs with
+\revised{no counterexamples beyond the single characterised \texttt{address(this)}
+encoding artefact of Section~\ref{sssec:formal_verification}}. These results demonstrate that combining formal
+verification with gas optimisation is both feasible and effective at
+industrial scale.
+
+While the current framework involves manual rule selection, future work will
+focus on fully automating the transformation pipeline (as depicted in
+Figure~\ref{fig:architecture}), expanding the rule catalogue, and integrating
+these tools directly into development environments. Ultimately, this research
+demonstrates that gas efficiency need not compromise correctness, offering a
+publicly available foundation for safe, cost-effective smart contract
+deployment.
+
+\section*{Artifacts Availability}
+All artifacts involved in this study are publicly available. The gas optimisation catalogue, including all CVL specifications and gas measurements, is available on GitHub at \url{https://github.com/manvillarim/GasOptimization_Catalog} and archived on Zenodo at \url{https://zenodo.org/records/19150390}. The AAVE V3 case study artifacts are available on GitHub at \url{https://github.com/manvillarim/AAVE-V3-Case-Study} and archived on Zenodo at \url{https://zenodo.org/records/19150408}.
+
+\begin{acks}
+Alexandre Mota would like to thank CNPq for grant No300263/2025-2 and Manoel Villarim also for grant No191620/2025-4.
+\end{acks}
+
+%% References
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{article}
+
+\end{document}

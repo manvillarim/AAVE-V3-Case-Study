@@ -1,0 +1,14 @@
+{
+    "importFilesToOrigRelpaths": {
+        "specs/Structures/GhostRewardsController.spec": "specs/Structures/GhostRewardsController.spec"
+    },
+    "primary_contract": "RewardsControllerOptimized",
+    "specfile": "specs/RewardsController.spec",
+    "specfileOrigRelpath": "specs/RewardsController.spec",
+    "specfilesToImportDecls": {
+        "specs/RewardsController.spec": [
+            "Structures/GhostRewardsController.spec"
+        ]
+    },
+    "type": "spec"
+}

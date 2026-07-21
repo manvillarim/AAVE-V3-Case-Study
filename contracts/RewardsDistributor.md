@@ -11,7 +11,7 @@
 
 ### 1.1 Cyfrin Optimisation
 
-Cyfrin applied **Rule 9 (No Explicit Zero Initialisation)** and **Rule 25 (Cache Array Length)** to this contract. The observable modifications relative to the original are:
+Cyfrin applied **Rule 9 (No Explicit Zero Initialisation)**, **Rule 23 (Cache Storage Variables)** and **Rule 25 (Cache Array Length)** to this contract. The observable modifications relative to the original are:
 
 **`getRewardsByAsset`** — return variable declared in signature, eliminating a separate `return` statement; minor stylistic gain with no material gas impact.
 
@@ -54,7 +54,7 @@ for (uint256 i; i < userAssetBalances.length; i++) {
 }
 ```
 
-**`setDistributionEnd`** — three separate `SLOAD`s in the original emit are replaced by a single structured read before the write, caching `index`, `emissionPerSecond`, and `oldDistributionEnd` in one pass:
+**`setDistributionEnd`** (Rule 23) — three separate `SLOAD`s in the original emit are replaced by a single structured read before the write, caching `index`, `emissionPerSecond`, and `oldDistributionEnd` in one pass:
 
 ```solidity
 // Original
@@ -84,7 +84,7 @@ emit AssetConfigUpdated(
 );
 ```
 
-**`setEmissionPerSecond`** — `distributionEnd` cached locally before the emit to avoid the redundant `SLOAD` that appeared twice in the original:
+**`setEmissionPerSecond`** (Rule 23) — `distributionEnd` cached locally before the emit to avoid the redundant `SLOAD` that appeared twice in the original:
 
 ```solidity
 // Original
@@ -112,7 +112,7 @@ emit AssetConfigUpdated(
 
 ### 1.2 Our Extended Optimisation
 
-Our variant was applied on top of Cyfrin's codebase and introduced **Rule 1 (Replace `require` with Custom Errors)**, **Rule 9 (Avoid Explicit Zero Initialisation)**, **Rule 17 (Write Values Directly)**, **Rule 24 (Cache Array Member Variables)**, **Rule 25 (Cache Array Length)**, and **Rule 28 (Unchecked Arithmetic for Validated Operations)**.
+Our variant was applied on top of Cyfrin's codebase and introduced **Rule 1 (Replace `require` with Custom Errors)**, **Rule 9 (Avoid Explicit Zero Initialisation)**, **Rule 15 (Reduce Expressions)**, **Rule 24 (Cache Array Member Variables)**, **Rule 25 (Cache Array Length)**, **Rule 26 (Efficient Loop Increment)**, and **Rule 28 (Unchecked Arithmetic for Validated Operations)**. Together with Cyfrin's Rules 9, 23 and 25, the resulting contract instantiates eight distinct catalogue rules.
 
 #### Rule 1 — Replace `require` with Custom Errors
 
@@ -178,9 +178,9 @@ require(newIndex <= type(uint104).max, 'INDEX_OVERFLOW');
 if (newIndex > type(uint104).max) revert IndexOverflow();
 ```
 
-#### Rule 9 + Rule 25 + Rule 28 — Loop Optimisations
+#### Rule 9 + Rule 25 + Rule 26 + Rule 28 — Loop Optimisations
 
-Applied systematically to all loops not already covered by Cyfrin. Each loop receives: array length cached before the loop (`RULE 25`), implicit zero initialisation (`RULE 9`), and `unchecked { ++i; }` on the increment (`RULE 28`). The loop bound in every case guarantees absence of overflow.
+Applied systematically to all eight loops of the contract. Each loop receives: array length cached before the loop (Rule 25), implicit zero initialisation (Rule 9), and the post-increment `i++` replaced by a pre-increment (Rule 26) wrapped in `unchecked` (Rule 28). The loop bound in every case guarantees absence of overflow.
 
 **`getRewardsByAsset`:**
 
@@ -193,17 +193,17 @@ for (uint128 i; i < rewardsCount; i++) {
 
 ```solidity
 // Ours
-// RULE 9  - Avoid explicit zero initialization
+// Rule 9  - Avoid explicit zero initialization
 for (uint128 i; i < rewardsCount; ) {
     availableRewards[i] = _assets[asset].availableRewards[i];
-    // RULE 28 - Unchecked arithmetic: i < rewardsCount guarantees no overflow
+    // Rules 26 + 28 - Pre-increment, unchecked: i < rewardsCount guarantees no overflow
     unchecked { ++i; }
 }
 ```
 
-Same pattern applied to: `getUserAccruedRewards`, both loops in `getAllUserRewards`, `setEmissionPerSecond`, `_configureAssets`, `_updateDataMultiple`, `_getUserReward`, and the final transfer loop that exists in `_claimAllRewards` (via `RewardsController`).
+The same pattern is applied to the remaining seven loops: `getUserAccruedRewards`, both loops in `getAllUserRewards`, `setEmissionPerSecond`, `_configureAssets`, `_updateDataMultiple`, and `_getUserReward`.
 
-#### Rule 17 — Write Values Directly
+#### Rule 15 — Reduce Expressions
 
 **`_configureAssets`:**
 
@@ -214,7 +214,7 @@ if (_isRewardEnabled[rewardsInput[i].reward] == false) { ... }
 
 ```solidity
 // Ours
-// RULE 17 - Write values directly: == false → !
+// Rule 15 - Reduce expressions: == false → !
 if (!_isRewardEnabled[input.reward]) { ... }
 ```
 
@@ -253,7 +253,7 @@ Same pattern applied to `_updateDataMultiple` and `_getUserReward` (struct cache
 
 ## 2. Gas Consumption Results
 
-All measurements were obtained using Foundry's gas snapshot functionality. The compiler configuration is Solidity 0.8.x with standard settings.
+All measurements were obtained with Foundry 1.7.1 (`forge test --gas-report --match-contract RewardsDistributor_gas_Tests`) under the compiler configuration shipped with the AAVE V3 repository: solc 0.8.22, optimiser enabled, 200 runs, `shanghai` EVM target. Foundry's accounting for `view` calls has changed across releases; deployment cost, bytecode size, and the gas of state-modifying functions are stable across versions, whereas the absolute figures for `view` functions are not. The figures below correspond to the `MockRewardsDistributor` harness, since `RewardsDistributor` is abstract.
 
 ### 2.1 Deployment
 
@@ -276,17 +276,17 @@ The dominant contributor to the deployment savings in our variant is Rule 1 (Cus
 | Function                  | Original (avg) | Cyfrin (avg) | Ours (avg) |
 |---------------------------|----------------|--------------|------------|
 | `configureAssets`         | 310,033        | 309,339      | 305,799    |
-| `getAllUserRewards`        | 29,761         | 29,716       | 28,895     |
-| `getAssetDecimals`        | 633            | 633          | 633        |
-| `getAssetIndex`           | 4,436          | 4,436        | 4,436      |
-| `getDistributionEnd`      | 766            | 766          | 766        |
+| `getAllUserRewards`       | 49,761         | 49,716       | 48,895     |
+| `getAssetDecimals`        | 2,633          | 2,633        | 2,633      |
+| `getAssetIndex`           | 10,936         | 10,936       | 10,936     |
+| `getDistributionEnd`      | 2,766          | 2,766        | 2,766      |
 | `getEmissionManager`      | 224            | 224          | 224        |
-| `getRewardsByAsset`       | 2,154          | 2,143        | 2,143      |
+| `getRewardsByAsset`       | 8,154          | 8,143        | 8,143      |
 | `getRewardsData`          | 2,954          | 2,954        | 2,954      |
-| `getRewardsList`          | 1,318          | 1,318        | 1,318      |
-| `getUserAccruedRewards`   | 6,514          | 6,318        | 6,318      |
+| `getRewardsList`          | 7,318          | 7,318        | 7,318      |
+| `getUserAccruedRewards`   | 12,514         | 12,318       | 12,318     |
 | `getUserAssetIndex`       | 2,961          | 2,961        | 2,961      |
-| `getUserRewards`          | 11,136         | 11,126       | 10,844     |
+| `getUserRewards`          | 19,136         | 19,126       | 18,844     |
 | `setDistributionEnd`      | 30,815         | 30,783       | 30,783     |
 | `setEmissionPerSecond`    | 53,696         | 53,506       | 53,491     |
 
@@ -319,57 +319,63 @@ Pure view functions that perform only direct storage reads (`getAssetDecimals`, 
 | Function                  | min     | avg     | median  | max     | calls |
 |---------------------------|---------|---------|---------|---------|-------|
 | `configureAssets`         | 213,355 | 310,033 | 213,355 | 842,771 | 17    |
-| `getAllUserRewards`        | 7,715   | 29,761  | 29,761  | 51,808  | 2     |
-| `getAssetDecimals`        | 633     | 633     | 633     | 633     | 1     |
-| `getAssetIndex`           | 4,436   | 4,436   | 4,436   | 4,436   | 1     |
-| `getDistributionEnd`      | 766     | 766     | 766     | 766     | 1     |
+| `getAllUserRewards`       | 15,715  | 49,761  | 49,761  | 83,808  | 2     |
+| `getAssetDecimals`        | 2,633   | 2,633   | 2,633   | 2,633   | 1     |
+| `getAssetIndex`           | 10,936  | 10,936  | 10,936  | 10,936  | 1     |
+| `getDistributionEnd`      | 2,766   | 2,766   | 2,766   | 2,766   | 1     |
 | `getEmissionManager`      | 224     | 224     | 224     | 224     | 1     |
-| `getRewardsByAsset`       | 1,569   | 2,154   | 2,154   | 2,739   | 2     |
+| `getRewardsByAsset`       | 5,569   | 8,154   | 8,154   | 10,739  | 2     |
 | `getRewardsData`          | 2,954   | 2,954   | 2,954   | 2,954   | 1     |
-| `getRewardsList`          | 1,044   | 1,318   | 1,318   | 1,592   | 2     |
-| `getUserAccruedRewards`   | 3,596   | 6,514   | 6,514   | 9,432   | 2     |
+| `getRewardsList`          | 5,044   | 7,318   | 7,318   | 9,592   | 2     |
+| `getUserAccruedRewards`   | 7,596   | 12,514  | 12,514  | 17,432  | 2     |
 | `getUserAssetIndex`       | 2,961   | 2,961   | 2,961   | 2,961   | 1     |
-| `getUserRewards`          | 6,076   | 11,136  | 11,136  | 16,197  | 2     |
+| `getUserRewards`          | 10,076  | 19,136  | 19,136  | 28,197  | 2     |
 | `setDistributionEnd`      | 30,815  | 30,815  | 30,815  | 30,815  | 1     |
 | `setEmissionPerSecond`    | 41,586  | 53,696  | 53,696  | 65,806  | 2     |
+
+Call-weighted average over all functions: **156,250** gas.
 
 **Cyfrin:**
 
 | Function                  | min     | avg     | median  | max     | calls |
 |---------------------------|---------|---------|---------|---------|-------|
 | `configureAssets`         | 213,018 | 309,339 | 213,018 | 839,738 | 17    |
-| `getAllUserRewards`        | 7,705   | 29,716  | 29,716  | 51,728  | 2     |
-| `getAssetDecimals`        | 633     | 633     | 633     | 633     | 1     |
-| `getAssetIndex`           | 4,436   | 4,436   | 4,436   | 4,436   | 1     |
-| `getDistributionEnd`      | 766     | 766     | 766     | 766     | 1     |
+| `getAllUserRewards`       | 15,705  | 49,716  | 49,716  | 83,728  | 2     |
+| `getAssetDecimals`        | 2,633   | 2,633   | 2,633   | 2,633   | 1     |
+| `getAssetIndex`           | 10,936  | 10,936  | 10,936  | 10,936  | 1     |
+| `getDistributionEnd`      | 2,766   | 2,766   | 2,766   | 2,766   | 1     |
 | `getEmissionManager`      | 224     | 224     | 224     | 224     | 1     |
-| `getRewardsByAsset`       | 1,558   | 2,143   | 2,143   | 2,728   | 2     |
+| `getRewardsByAsset`       | 5,558   | 8,143   | 8,143   | 10,728  | 2     |
 | `getRewardsData`          | 2,954   | 2,954   | 2,954   | 2,954   | 1     |
-| `getRewardsList`          | 1,044   | 1,318   | 1,318   | 1,592   | 2     |
-| `getUserAccruedRewards`   | 3,500   | 6,318   | 6,318   | 9,136   | 2     |
+| `getRewardsList`          | 5,044   | 7,318   | 7,318   | 9,592   | 2     |
+| `getUserAccruedRewards`   | 7,500   | 12,318  | 12,318  | 17,136  | 2     |
 | `getUserAssetIndex`       | 2,961   | 2,961   | 2,961   | 2,961   | 1     |
-| `getUserRewards`          | 6,071   | 11,126  | 11,126  | 16,182  | 2     |
+| `getUserRewards`          | 10,071  | 19,126  | 19,126  | 28,182  | 2     |
 | `setDistributionEnd`      | 30,783  | 30,783  | 30,783  | 30,783  | 1     |
 | `setEmissionPerSecond`    | 41,491  | 53,506  | 53,506  | 65,521  | 2     |
+
+Call-weighted average over all functions: **155,896** gas.
 
 **Ours:**
 
 | Function                  | min     | avg     | median  | max     | calls |
 |---------------------------|---------|---------|---------|---------|-------|
 | `configureAssets`         | 211,204 | 305,799 | 211,204 | 825,286 | 17    |
-| `getAllUserRewards`        | 7,582   | 28,895  | 28,895  | 50,209  | 2     |
-| `getAssetDecimals`        | 633     | 633     | 633     | 633     | 1     |
-| `getAssetIndex`           | 4,436   | 4,436   | 4,436   | 4,436   | 1     |
-| `getDistributionEnd`      | 766     | 766     | 766     | 766     | 1     |
+| `getAllUserRewards`       | 15,582  | 48,895  | 48,895  | 82,209  | 2     |
+| `getAssetDecimals`        | 2,633   | 2,633   | 2,633   | 2,633   | 1     |
+| `getAssetIndex`           | 10,936  | 10,936  | 10,936  | 10,936  | 1     |
+| `getDistributionEnd`      | 2,766   | 2,766   | 2,766   | 2,766   | 1     |
 | `getEmissionManager`      | 224     | 224     | 224     | 224     | 1     |
-| `getRewardsByAsset`       | 1,558   | 2,143   | 2,143   | 2,728   | 2     |
+| `getRewardsByAsset`       | 5,558   | 8,143   | 8,143   | 10,728  | 2     |
 | `getRewardsData`          | 2,954   | 2,954   | 2,954   | 2,954   | 1     |
-| `getRewardsList`          | 1,044   | 1,318   | 1,318   | 1,592   | 2     |
-| `getUserAccruedRewards`   | 3,500   | 6,318   | 6,318   | 9,136   | 2     |
+| `getRewardsList`          | 5,044   | 7,318   | 7,318   | 9,592   | 2     |
+| `getUserAccruedRewards`   | 7,500   | 12,318  | 12,318  | 17,136  | 2     |
 | `getUserAssetIndex`       | 2,961   | 2,961   | 2,961   | 2,961   | 1     |
-| `getUserRewards`          | 5,934   | 10,844  | 10,844  | 15,755  | 2     |
+| `getUserRewards`          | 9,934   | 18,844  | 18,844  | 27,755  | 2     |
 | `setDistributionEnd`      | 30,783  | 30,783  | 30,783  | 30,783  | 1     |
 | `setEmissionPerSecond`    | 41,486  | 53,491  | 53,491  | 65,496  | 2     |
+
+Call-weighted average over all functions: **154,163** gas.
 
 ---
 
@@ -385,8 +391,8 @@ For each pair (Original, Cyfrin) and (Original, Ours), the Certora rule `gasopti
 
 Certora verification links:
 
-- Original vs. Cyfrin: https://prover.certora.com/output/480394/d4620fbad7fe4f5c9fa10c0b6b7683b0?anonymousKey=cb8c06a0d65e17c89b93957fb5f8f75c33a5b636
-- Original vs. Ours: https://prover.certora.com/output/480394/215f139d4da4466ab2867c9595825906?anonymousKey=b0896642158a6cf909ae9bc6b96f3d4aedd6c2b2
+- Original vs. Cyfrin: https://prover.certora.com/output/480394/d52ec3c3c9804eb0916662e1cb78aca4?anonymousKey=bf564909a2fc0579062be983052de352f0eafea4
+- Original vs. Ours: https://prover.certora.com/output/480394/d9b86ebb71e14f12852e8a625a30731a?anonymousKey=50a968b7feb0c28b3deb69f3494451f5da36217b
 
 Both verification runs issued proofs (no counterexamples). The transformation is certified behaviourally equivalent to the original under the formal model defined in the framework.
 
@@ -396,8 +402,10 @@ Both verification runs issued proofs (no counterexamples). The transformation is
 
 | Metric                    | Cyfrin vs. Original  | Ours vs. Original    | Ours vs. Cyfrin      |
 |---------------------------|----------------------|----------------------|----------------------|
+| Rules applied (cumulative)| 9, 23, 25            | 9, 23, 25, 1, 15, 24, 26, 28 | —            |
 | Deploy cost (gas)         | −27,492 (−1.50%)     | −221,099 (−12.05%)   | −193,607 (−10.71%)   |
 | Deploy size (bytes)       | −130 (−1.54%)        | −1,025 (−12.17%)     | −895 (−10.79%)       |
+| Avg Fn. Gas               | −354 (−0.23%)        | −2,088 (−1.34%)      | −1,734 (−1.11%)      |
 | `configureAssets` avg     | −694                 | −4,234               | −3,540               |
 | `getAllUserRewards` avg    | −45                  | −866                 | −821                 |
 | `getUserRewards` avg      | −10                  | −292                 | −282                 |
@@ -406,4 +414,6 @@ Both verification runs issued proofs (no counterexamples). The transformation is
 | `getUserAccruedRewards` avg| −196                | −196                 | 0                    |
 | Formally verified         | Yes                  | Yes                  | —                    |
 
-The principal sources of savings in our variant are Rule 1 (Custom Errors), which removes string literals from deployment bytecode and accounts for the majority of the ~12% deployment reduction, and the combination of Rule 24 (Array Member Caching) and Rule 28 (Unchecked Arithmetic), which drive the runtime reductions concentrated in `configureAssets`, `getAllUserRewards`, and `getUserRewards`. Functions with no loop-bound or string-literal dependencies show no runtime delta across any version, as expected.
+The principal sources of savings in our variant are Rule 1 (Custom Errors), which removes string literals from deployment bytecode and accounts for the majority of the ~12% deployment reduction, and the combination of Rule 24 (Array Member Caching) with Rules 26 and 28 (Pre-increment and Unchecked Arithmetic), which drive the runtime reductions concentrated in `configureAssets`, `getAllUserRewards`, and `getUserRewards`. Functions with no loop-bound or string-literal dependencies show no runtime delta across any version, as expected.
+
+`Avg Fn. Gas` denotes the call-count-weighted mean of the per-function average gas over all functions in the gas report, i.e. the sum of `avg × calls` divided by the total number of calls.

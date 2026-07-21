@@ -30,7 +30,7 @@ contract PoolAddressesProviderRegistry is Ownable, IPoolAddressesProviderRegistr
    * @dev Constructor.
    * @param owner The owner address of this contract.
    */
-  // RULE 31 - Make Constructors Payable
+  // RULE 30 - Make Constructors Payable
   constructor(address owner) payable {
     transferOwnership(owner);
   }
@@ -57,10 +57,12 @@ contract PoolAddressesProviderRegistry is Ownable, IPoolAddressesProviderRegistr
 
   /// @inheritdoc IPoolAddressesProviderRegistry
   function unregisterAddressesProvider(address provider) external override onlyOwner {
-    // RULE 1 - Replace require with custom errors
+    // RULE 23 - Cache storage variables: the mapping entry is read once into
+    // oldId and reused by the guard, the writes and the event below
     uint256 oldId = _addressesProviderToId[provider];
-    if (_addressesProviderToId[provider] == 0) revert AddressesProviderNotRegistered();
-    
+    // RULE 1 - Replace require with custom errors
+    if (oldId == 0) revert AddressesProviderNotRegistered();
+
     _idToAddressesProvider[oldId] = address(0);
     _addressesProviderToId[provider] = 0;
 

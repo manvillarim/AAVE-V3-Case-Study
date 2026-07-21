@@ -9,9 +9,14 @@
 
 ## 1. Transformations Applied
 
+This contract contains no loops and no array traversals, so the loop-oriented
+rules of the catalogue (9, 24, 25, 26, 28) have no pattern match here. Three
+catalogue rules are instantiated in total: Rule 23 by Cyfrin, and Rules 1 and
+30 by our variant.
+
 ### 1.1 Cyfrin Optimisation
 
-Cyfrin applied **two catalogue rules** to this contract: **Rule 9 (No Explicit Zero Initialisation)** and **Rule 25 (Cache Array Length)**. However, upon inspection of the Cyfrin-supplied diff, the only observable structural modification relative to the original is a reordering of operations in `unregisterAddressesProvider`: the storage read `uint256 oldId = _addressesProviderToId[provider]` is moved to occur **before** the `require` guard, eliminating one redundant storage lookup when the check passes.
+Cyfrin applied a single catalogue rule to this contract: **Rule 23 (Cache Storage Variables)**. The only structural modification relative to the original is a reordering of operations in `unregisterAddressesProvider`: the storage read `uint256 oldId = _addressesProviderToId[provider]` is moved to occur **before** the `require` guard, so that the cached local is used by the guard instead of a second `SLOAD`.
 
 **Original (`unregisterAddressesProvider`):**
 
@@ -43,7 +48,7 @@ function unregisterAddressesProvider(address provider) external override onlyOwn
 }
 ```
 
-The transformation reads `_addressesProviderToId[provider]` once, stores it in `oldId`, and uses `oldId` in the guard. The original performed the `SLOAD` twice: once for the `require` and once for the assignment. This is an instance of **Rule 25 — Cache Array/Mapping Member**, applied to a mapping access rather than an array length.
+The transformation reads `_addressesProviderToId[provider]` once, stores it in `oldId`, and uses `oldId` in the guard. The original performed the `SLOAD` twice: once for the `require` and once for the assignment. This is an instance of **Rule 23 — Cache Storage Variables**, applied to a mapping access.
 
 The Cyfrin version retains the original `require`-with-string-literal error handling and the non-payable constructor, leaving those optimisations on the table.
 
@@ -51,7 +56,7 @@ The Cyfrin version retains the original `require`-with-string-literal error hand
 
 ### 1.2 Our Extended Optimisation
 
-Our variant was applied on top of Cyfrin's codebase and introduced three additional catalogue rules: **Rule 1 (Replace `require` with Custom Errors)**, **Rule 24 (Cache Array Members)**, **Rule 26 (Pre-increment)** and **Rule 30 (payable constructor)**. Of these, the materially significant transformation for this contract is **Rule 1**.
+Our variant was applied on top of Cyfrin's codebase and introduced two additional catalogue rules: **Rule 1 (Replace `require` with Custom Errors)** and **Rule 30 (Make Constructors Payable)**. Of these, the materially significant transformation for this contract is **Rule 1**.
 
 #### Rule 1 — Replace `require` with Custom Errors
 
@@ -150,7 +155,7 @@ Adding the `payable` modifier eliminates the implicit `CALLVALUE` check that the
 
 ## 2. Gas Consumption Results
 
-All measurements were obtained using Foundry's gas snapshot functionality. The compiler configuration is Solidity 0.8.x with standard settings.
+All measurements were obtained with Foundry 1.7.1 (`forge test --gas-report --match-contract PoolAddressesProviderRegistry_gas_Tests`) under the compiler configuration shipped with the AAVE V3 repository: solc 0.8.22, optimiser enabled, 200 runs, `shanghai` EVM target. Foundry's accounting for `view` calls has changed across releases; deployment cost, bytecode size, and the gas of state-modifying functions are stable across versions, whereas the absolute figures for `view` functions are not.
 
 ### 2.1 Deployment
 
@@ -172,11 +177,11 @@ The dominant contributor to the deployment savings in our variant is Rule 1 (Cus
 
 | Function                          | Original (avg) | Cyfrin (avg) | Ours (avg) |
 |-----------------------------------|----------------|--------------|------------|
-| `getAddressesProviderAddressById` | 1,519          | 1,519        | 1,519      |
-| `getAddressesProviderIdByAddress` | 1,556          | 1,556        | 1,556      |
-| `getAddressesProvidersList`       | 1,749          | 1,749        | 1,749      |
+| `getAddressesProviderAddressById` | 2,519          | 2,519        | 2,519      |
+| `getAddressesProviderIdByAddress` | 2,556          | 2,556        | 2,556      |
+| `getAddressesProvidersList`       | 5,749          | 5,749        | 5,749      |
 | `registerAddressesProvider`       | 118,421        | 118,421      | 118,192    |
-| `unregisterAddressesProvider`     | 44,257         | 44,160       | 44,200     |
+| `unregisterAddressesProvider`     | 44,257         | 44,160       | 44,104     |
 
 | Function                      | Cyfrin vs. Original | Ours vs. Original | Ours vs. Cyfrin |
 |-------------------------------|---------------------|-------------------|-----------------|
@@ -187,7 +192,9 @@ The dominant contributor to the deployment savings in our variant is Rule 1 (Cus
 
 `registerAddressesProvider` shows a reduction of 229 gas (avg) in our variant relative to both Original and Cyfrin. This arises from the replacement of three `require` statements with `if`-revert custom error patterns, which avoid the cost of loading and hashing error strings on the revert path and marginally reduce the non-revert path overhead as well.
 
-The `unregisterAddressesProvider` in the corrected version eliminates the redundant `SLOAD` present in the previous implementation: the value of `_addressesProviderToId[provider]` is read only once in `oldId`, which is used both in the `if (oldId == 0)` guard and in subsequent writes. Combining this caching with the custom error in the revert path, our variant outperforms Cyfrin by 56 gas (avg) and saves 153 gas (avg) compared to the original.
+`unregisterAddressesProvider` saves 56 gas (avg) over Cyfrin and 153 gas (avg) over the original. The gain comes from Rule 1: the string-literal `require` is replaced by a custom error. The improvement over Cyfrin is smaller than the 229 gas observed in `registerAddressesProvider` simply because this function replaces a single `require`, whereas `registerAddressesProvider` replaces three.
+
+An earlier revision of our variant wrote the guard as `if (_addressesProviderToId[provider] == 0)`, re-reading the mapping instead of testing the cached `oldId`. Rewriting it to `if (oldId == 0)` produces **byte-identical bytecode** (1,960 bytes deployed, same hash) and no gas difference whatsoever: with the optimiser enabled, solc already applies common-subexpression elimination to the duplicated `SLOAD`, since no write occurs between the two reads. The rewrite is therefore a source-readability improvement that makes the Rule 23 instance explicit, not a gas optimisation. This is a useful illustration of the boundary discussed in Section 4 of the paper: source-level redundancy that the compiler already removes yields no measurable saving, in contrast to the semantic transformations of the catalogue, which remain effective under aggressive optimisation.
 
 View functions (`getAddressesProviderAddressById`, `getAddressesProviderIdByAddress`, `getAddressesProvidersList`) are unaffected across all three versions, as no storage layout or read-path changes were introduced.
 
@@ -197,31 +204,37 @@ View functions (`getAddressesProviderAddressById`, `getAddressesProviderIdByAddr
 
 | Function                          | min    | avg    | median | max    | calls |
 |-----------------------------------|--------|--------|--------|--------|-------|
-| `getAddressesProviderAddressById` | 519    | 1,519  | 1,519  | 2,519  | 2     |
-| `getAddressesProviderIdByAddress` | 556    | 1,556  | 1,556  | 2,556  | 2     |
-| `getAddressesProvidersList`       | 1,014  | 1,749  | 1,562  | 2,671  | 3     |
+| `getAddressesProviderAddressById` | 2,519  | 2,519  | 2,519  | 2,519  | 2     |
+| `getAddressesProviderIdByAddress` | 2,556  | 2,556  | 2,556  | 2,556  | 2     |
+| `getAddressesProvidersList`       | 2,671  | 5,749  | 5,014  | 9,562  | 3     |
 | `registerAddressesProvider`       | 117,084| 118,421| 117,084| 119,908| 19    |
 | `unregisterAddressesProvider`     | 38,863 | 44,257 | 44,257 | 49,652 | 4     |
+
+Call-weighted average over all functions: **81,814** gas.
 
 **Cyfrin:**
 
 | Function                          | min    | avg    | median | max    | calls |
 |-----------------------------------|--------|--------|--------|--------|-------|
-| `getAddressesProviderAddressById` | 519    | 1,519  | 1,519  | 2,519  | 2     |
-| `getAddressesProviderIdByAddress` | 556    | 1,556  | 1,556  | 2,556  | 2     |
-| `getAddressesProvidersList`       | 1,014  | 1,749  | 1,562  | 2,671  | 3     |
+| `getAddressesProviderAddressById` | 2,519  | 2,519  | 2,519  | 2,519  | 2     |
+| `getAddressesProviderIdByAddress` | 2,556  | 2,556  | 2,556  | 2,556  | 2     |
+| `getAddressesProvidersList`       | 2,671  | 5,749  | 5,014  | 9,562  | 3     |
 | `registerAddressesProvider`       | 117,084| 118,421| 117,084| 119,908| 19    |
 | `unregisterAddressesProvider`     | 38,766 | 44,160 | 44,160 | 49,556 | 4     |
+
+Call-weighted average over all functions: **81,801** gas.
 
 **Ours:**
 
 | Function                          | min    | avg    | median | max    | calls |
 |-----------------------------------|--------|--------|--------|--------|-------|
-| `getAddressesProviderAddressById` | 519    | 1,519  | 1,519  | 2,519  | 2     |
-| `getAddressesProviderIdByAddress` | 556    | 1,556  | 1,556  | 2,556  | 2     |
-| `getAddressesProvidersList`       | 1,014  | 1,749  | 1,562  | 2,671  | 3     |
+| `getAddressesProviderAddressById` | 2,519  | 2,519  | 2,519  | 2,519  | 2     |
+| `getAddressesProviderIdByAddress` | 2,556  | 2,556  | 2,556  | 2,556  | 2     |
+| `getAddressesProvidersList`       | 2,671  | 5,749  | 5,014  | 9,562  | 3     |
 | `registerAddressesProvider`       | 116,855| 118,192| 116,855| 119,679| 19    |
 | `unregisterAddressesProvider`     | 38,709 | 44,104 | 44,104 | 49,499 | 4     |
+
+Call-weighted average over all functions: **81,649** gas.
 
 ---
 
@@ -246,11 +259,14 @@ Both verification runs issued proofs (no counterexamples). The transformation is
 
 | Metric | Cyfrin vs. Original | Ours vs. Original | Ours vs. Cyfrin |
 |--------|---------------------|-------------------|-----------------|
+| Rules applied (cumulative) | 23 | 23, 1, 30 | — |
 | Deploy cost (gas) | −1,747 (−0.32%) | −41,078 (−7.45%) | −39,331 (−7.16%) |
 | Deploy size (bytes) | −8 (−0.30%) | −201 (−7.61%) | −193 (−7.33%) |
-| Avg Fn. Gas | −13 (−0.02%) | −165 (−0.20%) | −153 (−0.19%) |
+| Avg Fn. Gas | −13 (−0.02%) | −165 (−0.20%) | −152 (−0.19%) |
 | `registerAddressesProvider` avg | 0 | −229 | −229 |
 | `unregisterAddressesProvider` avg | −97 | −153 | −56 |
 | Formally verified | Yes | Yes | — |
 
 The principal source of savings in our variant is Rule 1 (Custom Errors), which removes string-literal storage from the bytecode. Runtime savings on write functions are secondary and modest in absolute terms, consistent with the general characterisation of this rule in Table 2 of the paper (0.00%–0.05% average function savings). The deployment cost reduction of approximately 7% is the primary practical benefit for this contract.
+
+`Avg Fn. Gas` denotes the call-count-weighted mean of the per-function average gas over all functions in the gas report, i.e. the sum of `avg × calls` divided by the total number of calls.
