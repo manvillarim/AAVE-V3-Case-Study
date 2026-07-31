@@ -19,6 +19,8 @@ import {SafeCast} from '../../../dependencies/openzeppelin/contracts/SafeCast.so
  * @notice Implements the logic to update the reserves state
  */
 library ReserveLogic {
+  error ReserveAlreadyInitialized();
+
   using WadRayMath for uint256;
   using PercentageMath for uint256;
   using SafeCast for uint256;
@@ -141,7 +143,7 @@ library ReserveLogic {
     address variableDebtTokenAddress,
     address interestRateStrategyAddress
   ) internal {
-    require(reserve.aTokenAddress == address(0), Errors.RESERVE_ALREADY_INITIALIZED);
+    if (reserve.aTokenAddress != address(0)) revert ReserveAlreadyInitialized();
 
     reserve.liquidityIndex = uint128(WadRayMath.RAY);
     reserve.variableBorrowIndex = uint128(WadRayMath.RAY);

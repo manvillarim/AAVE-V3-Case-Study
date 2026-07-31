@@ -207,7 +207,7 @@ All measurements were obtained with Foundry 1.7.1 (`forge test --gas-report --ma
 | Ours vs. Original   | 322,893 (−10.42%)        | 1,494 (−10.45%)       |
 | Ours vs. Cyfrin     | 288,596 (−9.42%)         | 1,336 (−9.45%)        |
 
-The dominant contributor to the deployment savings in our variant is Rule 1 (Custom Errors), which removes all seven error string literals from the deployed bytecode. The combined loop optimisations (Rules 9, 24, 25, 26, 28) contribute secondarily by reducing bytecode size through simplified loop preamble and increment logic. This is the largest absolute deployment reduction observed across the four contracts of the case study.
+The dominant contributor to the deployment savings in our variant is Rule 1 (Custom Errors), which removes all seven error string literals from the deployed bytecode. The combined loop optimisations (Rules 9, 24, 25, 26, 28) contribute secondarily by reducing bytecode size through simplified loop preamble and increment logic. This is the largest absolute deployment reduction observed across the eight subjects of the case study.
 
 ### 2.2 Function Execution
 

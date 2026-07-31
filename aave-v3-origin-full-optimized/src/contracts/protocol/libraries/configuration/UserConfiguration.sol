@@ -13,6 +13,8 @@ import {ReserveConfiguration} from './ReserveConfiguration.sol';
 library UserConfiguration {
   using ReserveConfiguration for DataTypes.ReserveConfigurationMap;
 
+  error InvalidReserveIndex();
+
   uint256 internal constant BORROWING_MASK =
     0x5555555555555555555555555555555555555555555555555555555555555555;
   uint256 internal constant COLLATERAL_MASK =
@@ -30,7 +32,7 @@ library UserConfiguration {
     bool borrowing
   ) internal {
     unchecked {
-      require(reserveIndex < ReserveConfiguration.MAX_RESERVES_COUNT, Errors.INVALID_RESERVE_INDEX);
+      if (reserveIndex >= ReserveConfiguration.MAX_RESERVES_COUNT) revert InvalidReserveIndex();
       uint256 bit = 1 << (reserveIndex << 1);
       if (borrowing) {
         self.data |= bit;
@@ -46,7 +48,7 @@ library UserConfiguration {
     bool borrowing
   ) internal pure {
     unchecked {
-      require(reserveIndex < ReserveConfiguration.MAX_RESERVES_COUNT, Errors.INVALID_RESERVE_INDEX);
+      if (reserveIndex >= ReserveConfiguration.MAX_RESERVES_COUNT) revert InvalidReserveIndex();
       uint256 bit = 1 << (reserveIndex << 1);
       if (borrowing) {
         self.data |= bit;
@@ -68,7 +70,7 @@ library UserConfiguration {
     bool usingAsCollateral
   ) internal {
     unchecked {
-      require(reserveIndex < ReserveConfiguration.MAX_RESERVES_COUNT, Errors.INVALID_RESERVE_INDEX);
+      if (reserveIndex >= ReserveConfiguration.MAX_RESERVES_COUNT) revert InvalidReserveIndex();
       uint256 bit = 1 << ((reserveIndex << 1) + 1);
       if (usingAsCollateral) {
         self.data |= bit;
@@ -84,7 +86,7 @@ library UserConfiguration {
     bool usingAsCollateral
   ) internal pure {
     unchecked {
-      require(reserveIndex < ReserveConfiguration.MAX_RESERVES_COUNT, Errors.INVALID_RESERVE_INDEX);
+      if (reserveIndex >= ReserveConfiguration.MAX_RESERVES_COUNT) revert InvalidReserveIndex();
       uint256 bit = 1 << ((reserveIndex << 1) + 1);
       if (usingAsCollateral) {
         self.data |= bit;
@@ -105,7 +107,7 @@ library UserConfiguration {
     uint256 reserveIndex
   ) internal pure returns (bool) {
     unchecked {
-      require(reserveIndex < ReserveConfiguration.MAX_RESERVES_COUNT, Errors.INVALID_RESERVE_INDEX);
+      if (reserveIndex >= ReserveConfiguration.MAX_RESERVES_COUNT) revert InvalidReserveIndex();
       return (self.data >> (reserveIndex << 1)) & 3 != 0;
     }
   }
@@ -121,7 +123,7 @@ library UserConfiguration {
     uint256 reserveIndex
   ) internal pure returns (bool) {
     unchecked {
-      require(reserveIndex < ReserveConfiguration.MAX_RESERVES_COUNT, Errors.INVALID_RESERVE_INDEX);
+      if (reserveIndex >= ReserveConfiguration.MAX_RESERVES_COUNT) revert InvalidReserveIndex();
       return (self.data >> (reserveIndex << 1)) & 1 != 0;
     }
   }
@@ -137,7 +139,7 @@ library UserConfiguration {
     uint256 reserveIndex
   ) internal pure returns (bool) {
     unchecked {
-      require(reserveIndex < ReserveConfiguration.MAX_RESERVES_COUNT, Errors.INVALID_RESERVE_INDEX);
+      if (reserveIndex >= ReserveConfiguration.MAX_RESERVES_COUNT) revert InvalidReserveIndex();
       return (self.data >> ((reserveIndex << 1) + 1)) & 1 != 0;
     }
   }

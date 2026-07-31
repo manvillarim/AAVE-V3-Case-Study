@@ -1,0 +1,21 @@
+[profile.default]
+src = 'src'
+test = 'test'
+out = 'out'
+libs = ['lib']
+allow_paths = ['..']
+optimizer = true
+optimizer_runs = 200
+solc = '0.8.22'
+evm_version = 'shanghai'
+bytecode_hash = 'none'
+remappings = [
+  'forge-std/=lib/forge-std/src/',
+  'origin/=lib/origin/',
+  'cyfrin/=lib/cyfrin/',
+  'ours/=lib/ours/',
+]
+
+[profile.viair]
+via_ir = true
+skip = ['src/Pool*.sol', 'test/PoolGas.t.sol']

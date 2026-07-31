@@ -36,6 +36,14 @@ import {PoolStorage} from './PoolStorage.sol';
  *   PoolAddressesProvider
  */
 abstract contract Pool is VersionedInitializable, PoolStorage, IPool {
+  error ZeroAddressNotValid();
+  error AssetNotListed();
+  error EModeCategoryReserved();
+  error CallerNotAToken();
+  error CallerNotUmbrella();
+  error CallerNotPoolConfigurator();
+  error CallerNotPoolAdmin();
+  error CallerNotBridge();
   using ReserveLogic for DataTypes.ReserveData;
 
   IPoolAddressesProvider public immutable ADDRESSES_PROVIDER;
@@ -71,29 +79,22 @@ abstract contract Pool is VersionedInitializable, PoolStorage, IPool {
    * @dev Only the umbrella contract can call functions marked by this modifier.
    */
   modifier onlyUmbrella() {
-    require(ADDRESSES_PROVIDER.getAddress(UMBRELLA) == msg.sender, Errors.CALLER_NOT_UMBRELLA);
+    if (ADDRESSES_PROVIDER.getAddress(UMBRELLA) != msg.sender) revert CallerNotUmbrella();
     _;
   }
 
   function _onlyPoolConfigurator() internal view virtual {
-    require(
-      ADDRESSES_PROVIDER.getPoolConfigurator() == msg.sender,
-      Errors.CALLER_NOT_POOL_CONFIGURATOR
-    );
+    if (ADDRESSES_PROVIDER.getPoolConfigurator() != msg.sender) revert CallerNotPoolConfigurator();
   }
 
   function _onlyPoolAdmin() internal view virtual {
-    require(
-      IACLManager(ADDRESSES_PROVIDER.getACLManager()).isPoolAdmin(msg.sender),
-      Errors.CALLER_NOT_POOL_ADMIN
-    );
+    if (!IACLManager(ADDRESSES_PROVIDER.getACLManager()).isPoolAdmin(msg.sender))
+      revert CallerNotPoolAdmin();
   }
 
   function _onlyBridge() internal view virtual {
-    require(
-      IACLManager(ADDRESSES_PROVIDER.getACLManager()).isBridge(msg.sender),
-      Errors.CALLER_NOT_BRIDGE
-    );
+    if (!IACLManager(ADDRESSES_PROVIDER.getACLManager()).isBridge(msg.sender))
+      revert CallerNotBridge();
   }
 
   /**
@@ -531,7 +532,7 @@ abstract contract Pool is VersionedInitializable, PoolStorage, IPool {
     uint256 droppedReservesCount;
     reservesList = new address[](reservesListCount);
 
-    for (uint256 i = 0; i < reservesListCount; i++) {
+    for (uint256 i; i < reservesListCount; ++i) {
       if (_reservesList[i] != address(0)) {
         reservesList[i - droppedReservesCount] = _reservesList[i];
       } else {
@@ -584,7 +585,7 @@ abstract contract Pool is VersionedInitializable, PoolStorage, IPool {
     uint256 balanceFromBefore,
     uint256 balanceToBefore
   ) external virtual override {
-    require(msg.sender == _reserves[asset].aTokenAddress, Errors.CALLER_NOT_ATOKEN);
+    if (msg.sender != _reserves[asset].aTokenAddress) revert CallerNotAToken();
     SupplyLogic.executeFinalizeTransfer(
       _reserves,
       _reservesList,
@@ -639,8 +640,8 @@ abstract contract Pool is VersionedInitializable, PoolStorage, IPool {
     address asset,
     address rateStrategyAddress
   ) external virtual override onlyPoolConfigurator {
-    require(asset != address(0), Errors.ZERO_ADDRESS_NOT_VALID);
-    require(_reserves[asset].id != 0 || _reservesList[0] == asset, Errors.ASSET_NOT_LISTED);
+    if (asset == address(0)) revert ZeroAddressNotValid();
+    if (_reserves[asset].id == 0 && _reservesList[0] != asset) revert AssetNotListed();
 
     _reserves[asset].interestRateStrategyAddress = rateStrategyAddress;
   }
@@ -666,8 +667,8 @@ abstract contract Pool is VersionedInitializable, PoolStorage, IPool {
     address asset,
     DataTypes.ReserveConfigurationMap calldata configuration
   ) external virtual override onlyPoolConfigurator {
-    require(asset != address(0), Errors.ZERO_ADDRESS_NOT_VALID);
-    require(_reserves[asset].id != 0 || _reservesList[0] == asset, Errors.ASSET_NOT_LISTED);
+    if (asset == address(0)) revert ZeroAddressNotValid();
+    if (_reserves[asset].id == 0 && _reservesList[0] != asset) revert AssetNotListed();
     _reserves[asset].configuration = configuration;
   }
 
@@ -693,7 +694,7 @@ abstract contract Pool is VersionedInitializable, PoolStorage, IPool {
     DataTypes.EModeCategoryBaseConfiguration calldata category
   ) external virtual override onlyPoolConfigurator {
     // category 0 is reserved for volatile heterogeneous assets and it's always disabled
-    require(id != 0, Errors.EMODE_CATEGORY_RESERVED);
+    if (id == 0) revert EModeCategoryReserved();
     _eModeCategories[id].ltv = category.ltv;
     _eModeCategories[id].liquidationThreshold = category.liquidationThreshold;
     _eModeCategories[id].liquidationBonus = category.liquidationBonus;
@@ -706,7 +707,7 @@ abstract contract Pool is VersionedInitializable, PoolStorage, IPool {
     uint128 collateralBitmap
   ) external virtual override onlyPoolConfigurator {
     // category 0 is reserved for volatile heterogeneous assets and it's always disabled
-    require(id != 0, Errors.EMODE_CATEGORY_RESERVED);
+    if (id == 0) revert EModeCategoryReserved();
     _eModeCategories[id].collateralBitmap = collateralBitmap;
   }
 
@@ -716,7 +717,7 @@ abstract contract Pool is VersionedInitializable, PoolStorage, IPool {
     uint128 borrowableBitmap
   ) external virtual override onlyPoolConfigurator {
     // category 0 is reserved for volatile heterogeneous assets and it's always disabled
-    require(id != 0, Errors.EMODE_CATEGORY_RESERVED);
+    if (id == 0) revert EModeCategoryReserved();
     _eModeCategories[id].borrowableBitmap = borrowableBitmap;
   }
 
@@ -802,7 +803,7 @@ abstract contract Pool is VersionedInitializable, PoolStorage, IPool {
     address asset,
     uint40 until
   ) external virtual override onlyPoolConfigurator {
-    require(_reserves[asset].id != 0 || _reservesList[0] == asset, Errors.ASSET_NOT_LISTED);
+    if (_reserves[asset].id == 0 && _reservesList[0] != asset) revert AssetNotListed();
     PoolLogic.executeSetLiquidationGracePeriod(_reserves, asset, until);
   }
 

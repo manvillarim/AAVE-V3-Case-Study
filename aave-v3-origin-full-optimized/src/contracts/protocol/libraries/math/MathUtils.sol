@@ -45,13 +45,13 @@ library MathUtils {
    *
    * @param rate The interest rate, in ray
    * @param lastUpdateTimestamp The timestamp of the last update of the interest
-   * @return The interest rate compounded during the timeDelta, in ray
+   * @return result The interest rate compounded during the timeDelta, in ray
    */
   function calculateCompoundedInterest(
     uint256 rate,
     uint40 lastUpdateTimestamp,
     uint256 currentTimestamp
-  ) internal pure returns (uint256) {
+  ) internal pure returns (uint256 result) {
     //solium-disable-next-line
     uint256 exp = currentTimestamp - uint256(lastUpdateTimestamp);
 
@@ -72,28 +72,30 @@ library MathUtils {
       basePowerThree = basePowerTwo.rayMul(rate) / SECONDS_PER_YEAR;
     }
 
-    uint256 secondTerm = exp * expMinusOne * basePowerTwo;
+    uint256 expTimesExpMinusOne = exp * expMinusOne;
+
+    uint256 secondTerm = expTimesExpMinusOne * basePowerTwo;
     unchecked {
       secondTerm /= 2;
     }
-    uint256 thirdTerm = exp * expMinusOne * expMinusTwo * basePowerThree;
+    uint256 thirdTerm = expTimesExpMinusOne * expMinusTwo * basePowerThree;
     unchecked {
       thirdTerm /= 6;
     }
 
-    return WadRayMath.RAY + (rate * exp) / SECONDS_PER_YEAR + secondTerm + thirdTerm;
+    result = WadRayMath.RAY + (rate * exp) / SECONDS_PER_YEAR + secondTerm + thirdTerm;
   }
 
   /**
    * @dev Calculates the compounded interest between the timestamp of the last update and the current block timestamp
    * @param rate The interest rate (in ray)
    * @param lastUpdateTimestamp The timestamp from which the interest accumulation needs to be calculated
-   * @return The interest rate compounded between lastUpdateTimestamp and current block timestamp, in ray
+   * @return result The interest rate compounded between lastUpdateTimestamp and current block timestamp, in ray
    */
   function calculateCompoundedInterest(
     uint256 rate,
     uint40 lastUpdateTimestamp
-  ) internal view returns (uint256) {
-    return calculateCompoundedInterest(rate, lastUpdateTimestamp, block.timestamp);
+  ) internal view returns (uint256 result) {
+    result = calculateCompoundedInterest(rate, lastUpdateTimestamp, block.timestamp);
   }
 }
