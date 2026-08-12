@@ -301,8 +301,8 @@ For each pair (Original, Cyfrin) and (Original, Ours), the Certora rule `gasOpti
 
 Certora verification links:
 
-- Original vs. Cyfrin:  https://prover.certora.com/output/480394/af57dd9e91d347b9ba73c70baa3fcdf2?anonymousKey=2ae01c430e036ffdf0ae97ae753e2a7522bdbb11
-- Original vs. Ours: https://prover.certora.com/output/480394/40497bd3d38c4ddd801a89e78c0c2a47?anonymousKey=4cd3f453028acf421fe8c4cf758ea5605d3574c6
+- Original vs. Cyfrin:  https://prover.certora.com/output/480394/48eb4e0bcb0a44a99428c5a8ed0e38bb?anonymousKey=29a4fffe26ff3b854135cc612527752afc4f3881
+- Original vs. Ours: https://prover.certora.com/output/480394/7a418ea283cc48c09d336e99408e80d9?anonymousKey=1c68a86d0e932ff83888838bcdf9b6e315b3143d
 
 Both verification runs issued proofs (no counterexamples). The transformation is certified behaviourally equivalent to the original under the formal model defined in the framework.
 

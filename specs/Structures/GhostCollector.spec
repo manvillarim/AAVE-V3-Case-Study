@@ -9,6 +9,22 @@ ghost mapping(address => bool) ghostTransferFromSuccess {
     init_state axiom forall address token. ghostTransferFromSuccess[token] == true;
 }
 
+ghost mapping(address => bool) ghostApproveSuccess {
+    init_state axiom forall address token. ghostApproveSuccess[token] == true;
+}
+
+ghost mapping(address => bool) ghostLowLevelCallSuccess {
+    init_state axiom forall address target. ghostLowLevelCallSuccess[target] == true;
+}
+
+function ghostSafeTransfer(address token) {
+    require ghostTransferSuccess[token];
+}
+
+function ghostForceApprove(address token) {
+    require ghostApproveSuccess[token];
+}
+
 ghost mapping(uint256 => uint256) ghost_a_gap {
     init_state axiom forall uint256 i. i < 53 => ghost_a_gap[i] == 0;
 }

@@ -1,17 +1,17 @@
 import "Structures/GhostCollector.spec";
 
 methods {
-    function _.approve(address, uint256) external => ALWAYS(true);
+    function _.approve(address, uint256) external => ghostApproveSuccess[calledContract] expect bool;
     
     function _.transfer(address, uint256) external => ghostTransferSuccess[calledContract] expect bool;
     
     function _.transferFrom(address, address, uint256) external => ghostTransferFromSuccess[calledContract] expect bool ALL;
     
-    function _.safeTransfer(address, uint256) external => NONDET ALL;
+    function _.safeTransfer(address, uint256) external => ghostSafeTransfer(calledContract) expect void ALL;
     
-    function _.forceApprove(address, uint256) external => NONDET ALL;
+    function _.forceApprove(address, uint256) external => ghostForceApprove(calledContract) expect void ALL;
     
-    function _.call(bytes) external => NONDET ALL;
+    function _.call(bytes) external => ghostLowLevelCallSuccess[calledContract] expect bool ALL;
     
     function a.isFundsAdmin(address) external returns (bool) envfree;
     function ao.isFundsAdmin(address) external returns (bool) envfree;

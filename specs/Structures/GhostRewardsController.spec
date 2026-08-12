@@ -179,6 +179,10 @@ ghost mapping(address => mapping(address => uint256)) ghostScaledBalanceOf {
         ghostScaledBalanceOf[asset][user] <= ghostScaledTotalSupply[asset];
 }
 
+ghost mapping(address => bool) ghostPerformTransferSuccess;
+
+ghost mapping(address => int256) ghostLatestAnswerMapping;
+
 ghost mapping(address => uint8) ghostDecimalsMapping {
     init_state axiom forall address asset.
         ghostDecimalsMapping[asset] >= 6 &&
@@ -190,11 +194,11 @@ function ghostGetScaledUserBalanceAndSupply(address asset, address user) returns
 }
 
 function ghostPerformTransfer(address strategy) returns bool {
-    return true;
+    return ghostPerformTransferSuccess[strategy];
 }
 
 function ghostLatestAnswer(address oracle) returns int256 {
-    return 100000000;
+    return ghostLatestAnswerMapping[oracle];
 }
 
 function ghostDecimals(address asset) returns uint8 {
