@@ -31,7 +31,14 @@ definition couplingInv() returns bool =
     ) &&
     (forall address provider.
         a._addressesProvidersIndexes[provider] == ao._addressesProvidersIndexes[provider]
-    );
+    ) &&
+
+    a.emitCount == ao.emitCount &&
+    a.emitDigest == ao.emitDigest &&
+    a.lastRegisteredProvider == ao.lastRegisteredProvider &&
+    a.lastRegisteredId == ao.lastRegisteredId &&
+    a.lastUnregisteredProvider == ao.lastUnregisteredProvider &&
+    a.lastUnregisteredId == ao.lastUnregisteredId;
 
     
 function gasOptimizationCorrectness(method f, method g) {

@@ -391,10 +391,22 @@ For each pair (Original, Cyfrin) and (Original, Ours), the Certora rule `gasopti
 
 Certora verification links:
 
-- Original vs. Cyfrin: https://prover.certora.com/output/480394/d52ec3c3c9804eb0916662e1cb78aca4?anonymousKey=bf564909a2fc0579062be983052de352f0eafea4
-- Original vs. Ours: https://prover.certora.com/output/480394/d9b86ebb71e14f12852e8a625a30731a?anonymousKey=50a968b7feb0c28b3deb69f3494451f5da36217b
+- Original vs. Cyfrin: https://prover.certora.com/output/480394/988e4b50b4884117a1b14c56e529099a?anonymousKey=a1dfe2d31eed732ad34897366ba77005e08b4e6a
+- Original vs. Ours: https://prover.certora.com/output/480394/687fec79d6b247f38d18a72157ffe9f6?anonymousKey=bfac3dd4fc37aed85b161e71a32731855323a9de
 
 Both verification runs issued proofs (no counterexamples). The transformation is certified behaviourally equivalent to the original under the formal model defined in the framework.
+
+---
+
+### 3.1 Event Logs
+
+Three of the emission points are reachable from the verified selectors. In `setDistributionEnd`, Rule 23 reads `index`, `emissionPerSecond` and `oldDistributionEnd` once into locals instead of re-loading them from storage inside the `emit`, so the expressions supplying the event arguments were rewritten. In `setEmissionPerSecond` the `emit` sits inside a loop whose header Rules 1, 9 and 25 rewrote. In `_updateData` the whole loop containing `emit Accrued` was moved inside `if (numAvailableRewards != 0) { unchecked { ... } }`.
+
+The last two are the case a syntactic side condition cannot settle: a rewrite that changes a loop header or a guard can change how many events are emitted without touching any storage slot. Each emission point therefore calls an empty `internal virtual` recorder that the harness overrides, persisting the argument vector, incrementing `emitCount` and folding the vector into the order-sensitive accumulator `emitDigest`; the invariant compares all three.
+
+The recorder is not added to the subject tree itself. `scripts/make_instrumented.sh` generates an instrumented copy of each tree for the prover, leaving the trees the gas benchmark reads untouched. This matters here: at `_updateData` the optimiser does not remove the empty call, so instrumenting in place would move the measured deployment cost.
+
+All rules are `VERIFIED` in both runs, so the number, order and arguments of the emissions agree.
 
 ---
 

@@ -4,6 +4,12 @@ using ReserveLogicOptimized as ao;
 ghost mapping(address => uint256) ghostScaledTotalSupply;
 ghost mapping(uint256 => mapping(uint256 => uint256)) ghostLinearInterest;
 ghost mapping(uint256 => mapping(uint256 => uint256)) ghostCompoundedInterest;
+ghost mapping(address => uint256) ghostLiquidityRate;
+ghost mapping(address => uint256) ghostVariableBorrowRate;
+
+function interestRatesSummary(address strategy) returns (uint256, uint256) {
+    return (ghostLiquidityRate[strategy], ghostVariableBorrowRate[strategy]);
+}
 
 function linearInterestSummary(uint256 rate, uint40 lastUpdateTimestamp) returns uint256 {
     return ghostLinearInterest[rate][assert_uint256(lastUpdateTimestamp)];

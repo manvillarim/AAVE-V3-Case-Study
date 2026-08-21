@@ -2,7 +2,7 @@ import "Structures/GhostRewardsController.spec";
 
 methods {
     function _.scaledTotalSupply() external => ghostScaledTotalSupply[calledContract] expect uint256 ALL;
-    function _.getScaledUserBalanceAndSupply(address) external => ghostGetScaledUserBalanceAndSupply(calledContract, calledContract) expect (uint256, uint256) ALL;
+    function _.getScaledUserBalanceAndSupply(address user) external => ghostGetScaledUserBalanceAndSupply(calledContract, user) expect (uint256, uint256) ALL;
     function _.performTransfer(address, address, uint256) external => ghostPerformTransfer(calledContract) expect bool ALL;
     function _.latestAnswer() external => ghostLatestAnswer(calledContract) expect int256 ALL;
     function _.decimals() external => ghostDecimals(calledContract) expect uint8 ALL;
@@ -84,7 +84,34 @@ definition CouplingInv() returns bool =
     (forall uint256 i.
         i < a.lastClaimAllAmounts.length =>
         a.lastClaimAllAmounts[i] == ao.lastClaimAllAmounts[i]
-    );
+    ) &&
+
+    a.emitCount == ao.emitCount &&
+    a.emitDigest == ao.emitDigest &&
+    a.lastAcuAsset == ao.lastAcuAsset &&
+    a.lastAcuReward == ao.lastAcuReward &&
+    a.lastAcuOldEmission == ao.lastAcuOldEmission &&
+    a.lastAcuNewEmission == ao.lastAcuNewEmission &&
+    a.lastAcuOldDistributionEnd == ao.lastAcuOldDistributionEnd &&
+    a.lastAcuNewDistributionEnd == ao.lastAcuNewDistributionEnd &&
+    a.lastAcuAssetIndex == ao.lastAcuAssetIndex &&
+    a.lastAccruedAsset == ao.lastAccruedAsset &&
+    a.lastAccruedReward == ao.lastAccruedReward &&
+    a.lastAccruedUser == ao.lastAccruedUser &&
+    a.lastAccruedAssetIndex == ao.lastAccruedAssetIndex &&
+    a.lastAccruedUserIndex == ao.lastAccruedUserIndex &&
+    a.lastAccruedAmount == ao.lastAccruedAmount &&
+    a.lastClaimerSetUser == ao.lastClaimerSetUser &&
+    a.lastClaimerSetClaimer == ao.lastClaimerSetClaimer &&
+    a.lastRcUser == ao.lastRcUser &&
+    a.lastRcReward == ao.lastRcReward &&
+    a.lastRcTo == ao.lastRcTo &&
+    a.lastRcClaimer == ao.lastRcClaimer &&
+    a.lastRcAmount == ao.lastRcAmount &&
+    a.lastTsiReward == ao.lastTsiReward &&
+    a.lastTsiStrategy == ao.lastTsiStrategy &&
+    a.lastRouReward == ao.lastRouReward &&
+    a.lastRouOracle == ao.lastRouOracle;
 
 function gasOptimizationCorrectness(method f, method g) {
     env eA;

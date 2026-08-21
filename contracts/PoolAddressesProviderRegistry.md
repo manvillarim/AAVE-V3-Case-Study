@@ -248,10 +248,33 @@ Behavioural equivalence for both optimised versions against the original was ver
 
 Certora verification links:
 
-- Original vs. Cyfrin: https://prover.certora.com/output/480394/04ca5be527e24c4796da16abaa7af2d1?anonymousKey=fabe24db0d43d5e6829d26f6130b916d575dbf1b
-- Original vs. Ours: https://prover.certora.com/output/480394/83241105da784f198c8257bc60690f07?anonymousKey=ae2e0fdc42ef16f9c5e3cb3d6e071d7744b24634
+- Original vs. Cyfrin: https://prover.certora.com/output/480394/0dfe47e87f754337825fe948fc8755d9?anonymousKey=5c9a6d2cd6da3df77917586787aa71e7e624acda
+- Original vs. Ours: https://prover.certora.com/output/480394/e9e35c15f2784134bc90d2b141c0f802?anonymousKey=36c1409e39a6e9487035a42bdbdbad3fb63216ac
 
 Both verification runs issued proofs (no counterexamples). The transformation is therefore certified behaviourally equivalent to the original under the formal model defined in the framework.
+
+---
+
+### 3.1 Event Logs
+
+Two of the verified selectors emit: `registerAddressesProvider` and `unregisterAddressesProvider`. Rule 23 caches `_addressesProviderToId[provider]` into `oldId` before `_addressesProviderToId[provider] = 0`, and the event below reads that cache rather than storage, so the expression supplying an event argument was rewritten by a rule.
+
+Logs are outside the state a CVL specification can read. Each emission point therefore calls an empty `internal virtual` recorder declared in the subject, which the harness overrides to persist the argument vector, increment `emitCount` and fold the event identifier and arguments into the order-sensitive accumulator `emitDigest`. The counter and the accumulator are what make the comparison cover the log *sequence*: storage and revert agreement do not imply that the two sides emitted the same events in the same order.
+
+The recorder is not added to the subject tree itself. `scripts/make_instrumented.sh` generates an instrumented copy of each tree for the prover, leaving the trees the gas benchmark reads untouched.
+
+Coupling invariant conjuncts:
+
+```cvl
+a.emitCount == ao.emitCount &&
+a.emitDigest == ao.emitDigest &&
+a.lastRegisteredProvider == ao.lastRegisteredProvider &&
+a.lastRegisteredId == ao.lastRegisteredId &&
+a.lastUnregisteredProvider == ao.lastUnregisteredProvider &&
+a.lastUnregisteredId == ao.lastUnregisteredId
+```
+
+All rules are `VERIFIED` in both runs, the two emitting ones included.
 
 ---
 

@@ -325,10 +325,22 @@ For each pair (Original, Cyfrin) and (Original, Ours), the Certora rule `gasopti
 
 Certora verification links:
 
-- Original vs. Cyfrin: https://prover.certora.com/output/480394/4a011a0f1d49425787a132791c49e807?anonymousKey=5193246b4d75d7daa6bd802421b9394b531e58a5
-- Original vs. Ours:  https://prover.certora.com/output/480394/5297d5c0e25349f89d0b50f2072878cd?anonymousKey=e2c4a954ea6175b370030c0584b096e24429ca04
+- Original vs. Cyfrin: https://prover.certora.com/output/480394/488f4f02312f421da9a6c1a8d9fc5af3?anonymousKey=cb778249d0dcc8e8d3343746a8057752ce099128
+- Original vs. Ours:  https://prover.certora.com/output/480394/f62e6cf0fb6c41bb915c76416ea576d2?anonymousKey=b2c3d9ec252107adcd453dba61e54ec23c0c29f0
 
 Both verification runs issued proofs (no counterexamples). The transformations are therefore certified behaviourally equivalent to the original under the formal model defined in the framework.
+
+---
+
+### 3.1 Event Logs
+
+This is the subject where the transformations reach the emission points most deeply. In `_claimRewards` the guard was inverted, from `if (totalRewards == 0) return 0;` followed by the `emit`, to `if (totalRewards != 0) { _transferRewards(...); emit ...; }` — the emission point moved into a different block. In `_claimAllRewards` the `emit` sits inside a loop whose header Rules 9, 26 and 28 rewrote. `_updateData`, inherited from `RewardsDistributor`, had its whole emitting loop moved inside a guard.
+
+None of that is settled by the syntactic condition that no rule creates, deletes or reorders an `emit`: a rewrite of a loop header or of a guard can change how many events are emitted while leaving every storage slot equal. Each of the five emission points therefore calls an empty `internal virtual` recorder that the harness overrides, persisting the argument vector, incrementing `emitCount` and folding the vector into the order-sensitive accumulator `emitDigest`; the invariant compares all three, for the four events of `RewardsController` and the two inherited from `RewardsDistributor`.
+
+The recorder is not added to the subject tree itself. `scripts/make_instrumented.sh` generates an instrumented copy of each tree for the prover, leaving the trees the gas benchmark reads untouched. This matters here: the empty call at `_updateData` survives the optimiser and costs between 134 and 350 bytes of deployed code according to the variant, so instrumenting in place would shift the reported savings.
+
+All rules are `VERIFIED` in both runs. The guard inversion and the rewritten loops preserve the number, the order and the arguments of every emission, which the invariant now asserts rather than assumes.
 
 ---
 

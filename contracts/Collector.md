@@ -299,12 +299,85 @@ For each pair (Original, Cyfrin) and (Original, Ours), the Certora rule `gasOpti
 2. After any external call with any symbolic arguments, the coupling invariant is preserved.
 3. Revert behaviour is identical: both contracts revert on the same inputs.
 
+### 3.1 Event Arguments
+
+Rule 24 rewrites the expressions that supply the arguments of two events. The original reads them from a `Stream memory` copy taken at the top of the function; the optimised versions read them from locals cached before the `delete` that clears the record, since a `Stream storage` reference would yield zeros after it:
+
+```solidity
+// Original
+emit WithdrawFromStream(streamId, stream.recipient, amount);
+emit CancelStream(streamId, stream.sender, stream.recipient, senderBalance, recipientBalance);
+```
+
+```solidity
+// Cyfrin / Ours
+emit WithdrawFromStream(streamId, recipient, amount);
+emit CancelStream(streamId, sender, recipient, senderBalance, recipientBalance);
+```
+
+Logs are outside the state a CVL specification can read, and the coupling invariant relates the two contracts at the boundaries of a transition, not at a point inside it. Neither the argument vectors nor the number and order of the emissions follow from it. We record all three explicitly. Each emission point calls an empty `internal virtual` function declared in `Collector` itself:
+
+```solidity
+function _recordWithdrawFromStream(uint256, address, uint256) internal virtual {}
+```
+
+The harnesses override it, persisting the vector, incrementing a counter and folding the event identifier and the arguments into an order-sensitive accumulator:
+
+```solidity
+function _recordWithdrawFromStream(
+    uint256 streamId,
+    address recipient,
+    uint256 amount
+) internal override {
+    lastWithdrawStreamId = streamId;
+    lastWithdrawRecipient = recipient;
+    lastWithdrawAmount = amount;
+    emitCount = emitCount + 1;
+    emitDigest = keccak256(
+        abi.encode(emitDigest, "WithdrawFromStream", streamId, recipient, amount)
+    );
+}
+```
+
+The counter and the accumulator are what make the comparison cover the log *sequence* rather than the arguments alone: storage agreement and revert agreement do not imply that the two sides emitted the same number of events in the same order, and a rule that changes control flow could break that without touching any slot. The hash is computed in Solidity inside the harness, so the coupling invariant stays a conjunction of pointwise equalities with no arithmetic of its own.
+
+The recorded slots then enter the coupling invariant as ordinary conjuncts:
+
+```cvl
+a.emitCount == ao.emitCount &&
+a.emitDigest == ao.emitDigest &&
+
+a.lastCreateStreamId == ao.lastCreateStreamId &&
+a.lastCreateSender == ao.lastCreateSender &&
+a.lastCreateRecipient == ao.lastCreateRecipient &&
+a.lastCreateDeposit == ao.lastCreateDeposit &&
+a.lastCreateTokenAddress == ao.lastCreateTokenAddress &&
+a.lastCreateStartTime == ao.lastCreateStartTime &&
+a.lastCreateStopTime == ao.lastCreateStopTime &&
+
+a.lastWithdrawStreamId == ao.lastWithdrawStreamId &&
+a.lastWithdrawRecipient == ao.lastWithdrawRecipient &&
+a.lastWithdrawAmount == ao.lastWithdrawAmount &&
+
+a.lastCancelStreamId == ao.lastCancelStreamId &&
+a.lastCancelSender == ao.lastCancelSender &&
+a.lastCancelRecipient == ao.lastCancelRecipient &&
+a.lastCancelSenderBalance == ao.lastCancelSenderBalance &&
+a.lastCancelRecipientBalance == ao.lastCancelRecipientBalance
+```
+
+The override exists only in the harness, so the subject keeps an empty call that the optimiser removes: the three variants of `Collector` compile to byte-identical creation and runtime code with the three hooks and without them, and every figure in Section 2 is unaffected.
+
+All three emission points are instrumented, `CreateStream` included. Leaving one out would withdraw its emissions from the comparison altogether, which is the situation the recorder exists to prevent. Its argument list contains `address(this)`, so its recorder slots and the digest diverge between the two instances along with the `sender` field the same function writes — one more manifestation of the encoding artefact described below, not a new one.
+
 Certora verification links:
 
-- Original vs. Cyfrin:  https://prover.certora.com/output/480394/48eb4e0bcb0a44a99428c5a8ed0e38bb?anonymousKey=29a4fffe26ff3b854135cc612527752afc4f3881
-- Original vs. Ours: https://prover.certora.com/output/480394/7a418ea283cc48c09d336e99408e80d9?anonymousKey=1c68a86d0e932ff83888838bcdf9b6e315b3143d
+- Original vs. Cyfrin:  https://prover.certora.com/output/480394/3d1a5de6fe834197ae8eb18b1ffd43fd?anonymousKey=d55f60a2f1f4dfbff4f843dbd7eee33519697659
+- Original vs. Ours: https://prover.certora.com/output/480394/cc7981b6170c408fa75ec0d765717dc3?anonymousKey=1f7ec975d74d5c17be868c9c2b889a3a16b072c6
 
-Both verification runs issued proofs (no counterexamples). The transformation is certified behaviourally equivalent to the original under the formal model defined in the framework.
+Every rule is `VERIFIED` in both runs except `gasOptimizedCorrectnessOfCreateStream`, which reports a counterexample in both, through the coupling-invariant assertion. It is the `address(this)` artefact of the two-instance encoding: `createStream` compares `recipient` against `address(this)` and stores `address(this)` into the `sender` field, and the prover must place the two instances at distinct symbolic addresses. Both halves of the divergence are outside the observation the framework fixes in advance, and no real deployment exhibits either.
+
+The recorder conjuncts introduced no counterexample of their own. `withdrawFromStream` and `cancelStream` — the two functions whose emitted vectors, count and digest are now compared — are `VERIFIED` in both runs, and the eight rules that emit nothing are unaffected. The only rule that changed status relative to a specification without the recorder is none: `createStream` was already the single violation before the instrumentation, for the same reason.
 
 ---
 

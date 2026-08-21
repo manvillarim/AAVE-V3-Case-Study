@@ -3,7 +3,7 @@ import "Structures/GhostReserveLogic.spec";
 methods {
     function _.scaledTotalSupply() external => ghostScaledTotalSupply[calledContract] expect uint256 ALL;
     function _.calculateInterestRates(DataTypes.CalculateInterestRatesParams) external
-        => NONDET;
+        => interestRatesSummary(calledContract) expect (uint256, uint256) ALL;
 
     function _.calculateLinearInterest(uint256 rate, uint40 t) internal
         => linearInterestSummary(rate, t) expect uint256 ALL;

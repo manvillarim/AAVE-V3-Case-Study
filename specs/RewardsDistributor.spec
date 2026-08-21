@@ -2,7 +2,7 @@ import "Structures/GhostsRewardsDistributor.spec";
 
 methods {
     function _.scaledTotalSupply() external => ghostScaledTotalSupply[calledContract] expect uint256 ALL;
-    function _.scaledBalanceOf(address) external => ghostScaledBalanceOf[calledContract][calledContract] expect uint256 ALL;
+    function _.scaledBalanceOf(address user) external => ghostScaledBalanceOf[calledContract][user] expect uint256 ALL;
     
     function a.getUserAccruedRewards(address, address) external returns (uint256) envfree;
     function ao.getUserAccruedRewards(address, address) external returns (uint256) envfree;
@@ -83,7 +83,23 @@ definition CouplingInv() returns bool =
     (forall uint256 i.
         i < a.lastAllUnclaimedAmounts.length =>
         a.lastAllUnclaimedAmounts[i] == ao.lastAllUnclaimedAmounts[i]
-    );
+    ) &&
+
+    a.emitCount == ao.emitCount &&
+    a.emitDigest == ao.emitDigest &&
+    a.lastAcuAsset == ao.lastAcuAsset &&
+    a.lastAcuReward == ao.lastAcuReward &&
+    a.lastAcuOldEmission == ao.lastAcuOldEmission &&
+    a.lastAcuNewEmission == ao.lastAcuNewEmission &&
+    a.lastAcuOldDistributionEnd == ao.lastAcuOldDistributionEnd &&
+    a.lastAcuNewDistributionEnd == ao.lastAcuNewDistributionEnd &&
+    a.lastAcuAssetIndex == ao.lastAcuAssetIndex &&
+    a.lastAccruedAsset == ao.lastAccruedAsset &&
+    a.lastAccruedReward == ao.lastAccruedReward &&
+    a.lastAccruedUser == ao.lastAccruedUser &&
+    a.lastAccruedAssetIndex == ao.lastAccruedAssetIndex &&
+    a.lastAccruedUserIndex == ao.lastAccruedUserIndex &&
+    a.lastAccruedAmount == ao.lastAccruedAmount;
 
 function gasOptimizationCorrectness(method f, method g) {
     env eA;

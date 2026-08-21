@@ -49,7 +49,28 @@ definition couplingInv() returns bool =
     ) &&
 
     a.lastDeltaOfReturn == ao.lastDeltaOfReturn &&
-    a.lastBalanceOfReturn == ao.lastBalanceOfReturn;
+    a.lastBalanceOfReturn == ao.lastBalanceOfReturn &&
+
+    a.emitCount == ao.emitCount &&
+    a.emitDigest == ao.emitDigest &&
+
+    a.lastCreateStreamId == ao.lastCreateStreamId &&
+    a.lastCreateSender == ao.lastCreateSender &&
+    a.lastCreateRecipient == ao.lastCreateRecipient &&
+    a.lastCreateDeposit == ao.lastCreateDeposit &&
+    a.lastCreateTokenAddress == ao.lastCreateTokenAddress &&
+    a.lastCreateStartTime == ao.lastCreateStartTime &&
+    a.lastCreateStopTime == ao.lastCreateStopTime &&
+
+    a.lastWithdrawStreamId == ao.lastWithdrawStreamId &&
+    a.lastWithdrawRecipient == ao.lastWithdrawRecipient &&
+    a.lastWithdrawAmount == ao.lastWithdrawAmount &&
+
+    a.lastCancelStreamId == ao.lastCancelStreamId &&
+    a.lastCancelSender == ao.lastCancelSender &&
+    a.lastCancelRecipient == ao.lastCancelRecipient &&
+    a.lastCancelSenderBalance == ao.lastCancelSenderBalance &&
+    a.lastCancelRecipientBalance == ao.lastCancelRecipientBalance;
 
 function gasOptimizationCorrectness(method f, method g) {
     env eA;

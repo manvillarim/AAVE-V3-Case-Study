@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.10;
 
-import {RewardsDistributor} from "../../aave-v3-origin/src/contracts/rewards/RewardsDistributor.sol";
-import {RewardsDataTypes} from "../../aave-v3-origin/src/contracts/rewards/libraries/RewardsDataTypes.sol";
-import {IScaledBalanceToken} from "../../aave-v3-origin/src/contracts/interfaces/IScaledBalanceToken.sol";
+import {RewardsDistributor} from "../../aave-v3-origin-instr/src/contracts/rewards/RewardsDistributor.sol";
+import {RewardsDataTypes} from "../../aave-v3-origin-instr/src/contracts/rewards/libraries/RewardsDataTypes.sol";
+import {IScaledBalanceToken} from "../../aave-v3-origin-instr/src/contracts/interfaces/IScaledBalanceToken.sol";
 
 contract RewardsDistributorOriginal is RewardsDistributor {
     constructor(address emissionManager) RewardsDistributor(emissionManager) {}
@@ -45,5 +45,88 @@ contract RewardsDistributorOriginal is RewardsDistributor {
             userAssetBalances[i].totalSupply = IScaledBalanceToken(assets[i]).scaledTotalSupply();
         }
         return userAssetBalances;
+    }
+
+    uint256 public emitCount;
+    bytes32 public emitDigest;
+
+    address public lastAcuAsset;
+    address public lastAcuReward;
+    uint256 public lastAcuOldEmission;
+    uint256 public lastAcuNewEmission;
+    uint256 public lastAcuOldDistributionEnd;
+    uint256 public lastAcuNewDistributionEnd;
+    uint256 public lastAcuAssetIndex;
+
+    address public lastAccruedAsset;
+    address public lastAccruedReward;
+    address public lastAccruedUser;
+    uint256 public lastAccruedAssetIndex;
+    uint256 public lastAccruedUserIndex;
+    uint256 public lastAccruedAmount;
+
+    function _recordAssetConfigUpdated(
+        address asset,
+        address reward,
+        uint256 oldEmission,
+        uint256 newEmission,
+        uint256 oldDistributionEnd,
+        uint256 newDistributionEnd,
+        uint256 assetIndex
+    ) internal override {
+        lastAcuAsset = asset;
+        lastAcuReward = reward;
+        lastAcuOldEmission = oldEmission;
+        lastAcuNewEmission = newEmission;
+        lastAcuOldDistributionEnd = oldDistributionEnd;
+        lastAcuNewDistributionEnd = newDistributionEnd;
+        lastAcuAssetIndex = assetIndex;
+        unchecked {
+            emitCount = emitCount + 1;
+        }
+        emitDigest = keccak256(
+            abi.encode(
+                emitDigest,
+                "AssetConfigUpdated",
+                asset,
+                reward,
+                oldEmission,
+                newEmission,
+                oldDistributionEnd,
+                newDistributionEnd,
+                assetIndex
+            )
+        );
+    }
+
+    function _recordAccrued(
+        address asset,
+        address reward,
+        address user,
+        uint256 assetIndex,
+        uint256 userIndex,
+        uint256 rewardsAccrued
+    ) internal override {
+        lastAccruedAsset = asset;
+        lastAccruedReward = reward;
+        lastAccruedUser = user;
+        lastAccruedAssetIndex = assetIndex;
+        lastAccruedUserIndex = userIndex;
+        lastAccruedAmount = rewardsAccrued;
+        unchecked {
+            emitCount = emitCount + 1;
+        }
+        emitDigest = keccak256(
+            abi.encode(
+                emitDigest,
+                "Accrued",
+                asset,
+                reward,
+                user,
+                assetIndex,
+                userIndex,
+                rewardsAccrued
+            )
+        );
     }
 }
