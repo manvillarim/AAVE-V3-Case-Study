@@ -207,7 +207,7 @@ All measurements were obtained with Foundry 1.7.1 (`forge test --gas-report --ma
 | Ours vs. Original   | 322,893 (−10.42%)        | 1,494 (−10.45%)       |
 | Ours vs. Cyfrin     | 288,596 (−9.42%)         | 1,336 (−9.45%)        |
 
-The dominant contributor to the deployment savings in our variant is Rule 1 (Custom Errors), which removes all seven error string literals from the deployed bytecode. The combined loop optimisations (Rules 9, 24, 25, 26, 28) contribute secondarily by reducing bytecode size through simplified loop preamble and increment logic. This is the largest absolute deployment reduction observed across the eight subjects of the case study.
+The dominant contributor to the deployment savings in our variant is Rule 24 (Array Member Caching), which accounts for −214,018 gas (−989 bytes) of the reduction, counting the sites it also rewrites in the inherited `RewardsDistributor`. Rule 1 (Custom Errors), which removes all seven error string literals from the deployed bytecode, accounts for −112,999 gas (−524 bytes), and Rule 28 (Unchecked Arithmetic) for −28,336 gas (−131 bytes), by eliminating overflow check instrumentation from the loops. Each of these figures is the effect of reverting one rule from the complete variant, so they do not add up exactly to the total. This is the largest absolute deployment reduction observed across the subjects of the case study.
 
 ### 2.2 Function Execution
 
@@ -363,6 +363,6 @@ All rules are `VERIFIED` in both runs. The guard inversion and the rewritten loo
 | `setTransferStrategy` avg         | 0                   | −12                | −12                |
 | Formally verified                 | Yes                 | Yes                | —                  |
 
-The principal source of savings in our variant is Rule 1 (Custom Errors), which removes all seven string literals from the deployed bytecode; this is the largest absolute deployment reduction of the case study, at 10.42%. At runtime, the compound effect of Rules 9, 24, 25, 26, and 28 across the six loops of the claim and configuration functions produces savings of 315–390 gas (avg) per claim function and 5,281 gas in `configureAssets`. The Cyfrin variant, by contrast, introduces marginal regressions on claim functions due to structural refactoring, with its savings concentrated in deployment size and `configureAssets`.
+The principal source of savings in our variant is Rule 24 (Array Member Caching), at −214,018 gas (−989 bytes), followed by Rule 1 (Custom Errors), which removes all seven string literals from the deployed bytecode, at −112,999 gas (−524 bytes); this is the largest absolute deployment reduction of the case study, at 10.42%. At runtime, the compound effect of Rules 9, 24, 25, 26, and 28 across the six loops of the claim and configuration functions produces savings of 315–390 gas (avg) per claim function and 5,281 gas in `configureAssets`. The Cyfrin variant, by contrast, introduces marginal regressions on claim functions due to structural refactoring, with its savings concentrated in deployment size and `configureAssets`.
 
 `Avg Fn. Gas` denotes the call-count-weighted mean of the per-function average gas over all functions in the gas report, i.e. the sum of `avg × calls` divided by the total number of calls.

@@ -24,9 +24,14 @@ Alexandre Cabral Mota[0000-0003-4416-8123] - acm@cin.ufpe.br
 ├── aave-v3-origin/                       # Original AAVE V3 codebase (commit 464a0ea, v3.3)
 ├── aave-v3-origin-liquidation-gas-fixes/ # Cyfrin-optimised variant
 ├── aave-v3-origin-full-optimized/        # Our extended variant
-├── aave-v3-origin-renamed/               # Original tree with the colliding external
-│                                         #   library names alpha-renamed, used only by
-│                                         #   the Pool harness (see "Pool subject" below)
+├── aave-v3-origin-renamed/               # Generated. Original tree with the colliding
+│                                         #   external library names alpha-renamed, used
+│                                         #   only by the Pool harness (see "Pool subject")
+├── aave-v3-origin-instr/                 # Generated. The three trees above with an empty
+├── aave-v3-origin-liquidation-gas-fixes-instr/   #   recorder call after every emit, so
+├── aave-v3-origin-full-optimized-instr/  #   the coupling invariant can compare the log.
+│                                         #   Only the prover reads these; the gas
+│                                         #   benchmark reads the pristine trees.
 ├── conf/                                 # Certora configuration files for this case study
 ├── contracts/                            # Gas optimisation reports per subject
 │   ├── PoolAddressesProviderRegistry.md
@@ -97,11 +102,41 @@ original tree that resolves this; it is generated, not hand-edited, and only the
 
 ## Formal Verification
 
-Run from the **repository root**:
+### 1. Build the generated trees
+
+Four of the trees the prover reads are generated from the three pristine ones and
+are not checked in, because they are reproducible and would otherwise be a second
+copy of the protocol to keep in step. Build them once, from the **repository
+root**, before any verification run:
+
+```bash
+bash scripts/make_instrumented.sh       # the three *-instr trees
+bash scripts/make_renamed_original.sh   # aave-v3-origin-renamed, used by the Pool harness
+```
+
+`scripts/check_conf_wiring.py` reports whether every configuration can find the
+files, specs, packages and imports it names. It compiles nothing, so it separates
+a wiring problem from a Solidity or CVL one:
+
+```bash
+python3 scripts/check_conf_wiring.py    # 20 configurations checked, 0 problems
+```
+
+### 2. Run a configuration
 
 ```bash
 certoraRun.py --prover_version master conf/<NAME_OF_CONF_FILE>.conf
 ```
+
+There are 20 configurations, two per subject: `<Subject>.conf` compares the
+original against the Cyfrin variant and `<Subject>Ours.conf` against ours. `Pool`
+carries two more, `PoolLabel.conf` and `PoolOursLabel.conf`, which discharge the
+two rules that observe the e-mode `label` string under the whole-storage coupling
+invariant of `specs/PoolStorageEq.spec`. The two sides of a comparison differ only
+in the tree that the `aave-v3-origin-optimized` and `aave-v3-origin-optimized-instr`
+packages resolve to, so switching baseline is a conf edit and never a harness edit.
+
+To typecheck without consuming prover time, add `--compilation_steps_only`.
 
 ---
 

@@ -2,7 +2,7 @@
 pragma solidity ^0.8.10;
 
 
-import {PoolAddressesProviderRegistry} from "../../aave-v3-origin-instr/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol";
+import {PoolAddressesProviderRegistry} from "aave-v3-origin-instr/src/contracts/protocol/configuration/PoolAddressesProviderRegistry.sol";
 
 contract RegistryOriginal is PoolAddressesProviderRegistry {
     constructor(address owner) PoolAddressesProviderRegistry(owner) {}

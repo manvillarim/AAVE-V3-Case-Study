@@ -179,34 +179,34 @@ The suite contains one pre-existing failing test, `test_transfer_ETH` (reverting
 |----------|-----------------------|-------------------------|
 | Original | 1,484,479             | 6,716                   |
 | Cyfrin   | 1,371,815             | 6,195                   |
-| Ours     | 1,368,383             | 6,179                   |
+| Ours     | 1,369,235             | 6,183                   |
 
 | Comparison          | Deploy Cost Savings | Deploy Size Savings |
 |---------------------|---------------------|---------------------|
 | Cyfrin vs. Original | −112,664 (−7.59%)   | −521 (−7.76%)       |
-| Ours vs. Original   | −116,096 (−7.82%)   | −537 (−8.00%)       |
-| Ours vs. Cyfrin     | −3,432 (−0.25%)     | −16 (−0.26%)        |
+| Ours vs. Original   | −115,244 (−7.76%)   | −533 (−7.94%)       |
+| Ours vs. Cyfrin     | −2,580 (−0.19%)     | −12 (−0.19%)        |
 
-The dominant contributors to Cyfrin's deployment savings are Rule 20 (the modifier-to-function conversion, which removes the inlined modifier body from every call site) and the removal of the `BalanceOfLocalVars` and `CreateStreamLocalVars` auxiliary structs. Our additional −3,432 gas over Cyfrin stems from the `onlyFundsAdmin` modifier rewrite (Rule 15), which eliminates one comparison instruction from the bytecode.
+The dominant contributors to Cyfrin's deployment savings are Rule 20 (the modifier-to-function conversion, which removes the inlined modifier body from every call site) and the removal of the `BalanceOfLocalVars` and `CreateStreamLocalVars` auxiliary structs. Our additional −2,580 gas (−12 bytes) over Cyfrin is entirely the `onlyFundsAdmin` modifier rewrite (Rule 15), as reverting each of the two rules in turn shows: with Rule 16 reverted the contract still deploys at 1,369,235 gas / 6,183 bytes, and reverting Rule 15 as well returns exactly Cyfrin's 1,371,815 gas / 6,195 bytes. Rule 16 contributes no deployment saving at all — exchanging the two conjuncts of `_onlyAdminOrRecipient` leaves the instruction count unchanged and pays only at runtime.
 
 ### 2.2 Function Execution
 
 | Function             | Original (avg) | Cyfrin (avg) | Ours (avg) |
 |----------------------|----------------|--------------|------------|
 | `approve`            | 30,450         | 30,454       | 30,443     |
-| `balanceOf`          | 19,849         | 18,811       | 18,825     |
-| `cancelStream`       | 83,366         | 80,433       | 79,266     |
+| `balanceOf`          | 19,849         | 18,811       | 18,811     |
+| `cancelStream`       | 83,366         | 80,433       | 79,259     |
 | `createStream`       | 203,297        | 203,135      | 203,124    |
 | `deltaOf`            | 17,907         | 6,985        | 6,985      |
-| `transfer`           | 19,385         | 19,385       | 19,374     |
-| `withdrawFromStream` | 72,074         | 70,059       | 68,293     |
+| `transfer`           | 36,663         | 36,663       | 36,652     |
+| `withdrawFromStream` | 72,074         | 70,059       | 68,283     |
 
 | Function             | Cyfrin vs. Original | Ours vs. Original | Ours vs. Cyfrin |
 |----------------------|---------------------|-------------------|-----------------|
 | `deltaOf`            | −10,922             | −10,922           | 0               |
-| `cancelStream`       | −2,933              | −4,100            | −1,167          |
-| `withdrawFromStream` | −2,015              | −3,781            | −1,766          |
-| `balanceOf`          | −1,038              | −1,024            | +14             |
+| `cancelStream`       | −2,933              | −4,107            | −1,174          |
+| `withdrawFromStream` | −2,015              | −3,791            | −1,776          |
+| `balanceOf`          | −1,038              | −1,038            | 0               |
 | `createStream`       | −162                | −173              | −11             |
 | `transfer`           | 0                   | −11               | −11             |
 | `approve`            | +4                  | −7                | −11             |
@@ -215,7 +215,7 @@ The dominant contributors to Cyfrin's deployment savings are Rule 20 (the modifi
 
 `deltaOf` shows the largest single-function reduction (−10,922 gas avg) and is entirely attributable to Cyfrin's Rule 24 transformation: switching from `Stream memory` (full struct copy) to `Stream storage` with selective field caching eliminates the cost of copying all struct fields to memory. Since `deltaOf` is called transitively by both `withdrawFromStream` and `cancelStream` via `balanceOf`, this saving propagates into those functions and accounts for a substantial portion of their Cyfrin-vs-Original deltas as well.
 
-`cancelStream` and `withdrawFromStream` show additional savings in our variant relative to Cyfrin (−1,167 and −1,766 gas avg respectively). These arise from Rule 16 in `_onlyAdminOrRecipient`: when `msg.sender == recipient`, the short-circuit prevents evaluation of `!_onlyFundsAdmin()`, avoiding the `SLOAD` inside `hasRole`. This is the dominant call pattern in the test workload for these two functions.
+`cancelStream` and `withdrawFromStream` show additional savings in our variant relative to Cyfrin (−1,174 and −1,776 gas avg respectively). These arise from Rule 16 in `_onlyAdminOrRecipient`: when `msg.sender == recipient`, the short-circuit prevents evaluation of `!_onlyFundsAdmin()`, avoiding the `SLOAD` inside `hasRole`. This is the dominant call pattern in the test workload for these two functions.
 
 `balanceOf` shows +14 gas in our variant relative to Cyfrin, within measurement noise. The marginal difference is consistent with the short-circuit reordering having a slightly different cost profile depending on the specific call distribution.
 
@@ -239,10 +239,10 @@ Pure administrative functions (`approve`, `createStream`, `transfer`) show negli
 | `grantRole`          | 29,754  | 29,754  | 29,754  | 29,754  | 20    |
 | `initialize`         | 96,440  | 96,440  | 96,440  | 96,440  | 20    |
 | `isFundsAdmin`       | 2,809   | 2,809   | 2,809   | 2,809   | 1     |
-| `transfer`           | 2,964   | 19,385  | 19,385  | 35,807  | 2     |
+| `transfer`           | 35,807  | 36,663  | 36,663  | 37,520  | 2     |
 | `withdrawFromStream` | 66,687  | 72,074  | 66,889  | 87,831  | 4     |
 
-Call-weighted average over all functions: **79,052** gas.
+Call-weighted average over all functions: **79,375** gas.
 
 **Cyfrin:**
 
@@ -260,10 +260,10 @@ Call-weighted average over all functions: **79,052** gas.
 | `grantRole`          | 29,754  | 29,754  | 29,754  | 29,754  | 20    |
 | `initialize`         | 96,440  | 96,440  | 96,440  | 96,440  | 20    |
 | `isFundsAdmin`       | 2,809   | 2,809   | 2,809   | 2,809   | 1     |
-| `transfer`           | 2,964   | 19,385  | 19,385  | 35,807  | 2     |
+| `transfer`           | 35,807  | 36,663  | 36,663  | 37,520  | 2     |
 | `withdrawFromStream` | 64,830  | 70,059  | 64,861  | 85,686  | 4     |
 
-Call-weighted average over all functions: **78,485** gas.
+Call-weighted average over all functions: **78,807** gas.
 
 **Ours:**
 
@@ -272,8 +272,8 @@ Call-weighted average over all functions: **78,485** gas.
 | `ETH_MOCK_ADDRESS`   | 260     | 260     | 260     | 260     | 1     |
 | `FUNDS_ADMIN_ROLE`   | 245     | 245     | 245     | 245     | 20    |
 | `approve`            | 30,443  | 30,443  | 30,443  | 30,443  | 1     |
-| `balanceOf`          | 18,736  | 18,825  | 18,816  | 18,933  | 4     |
-| `cancelStream`       | 55,714  | 79,266  | 86,324  | 88,703  | 4     |
+| `balanceOf`          | 18,723  | 18,811  | 18,804  | 18,914  | 4     |
+| `cancelStream`       | 55,707  | 79,259  | 86,317  | 88,696  | 4     |
 | `createStream`       | 189,444 | 203,124 | 206,544 | 206,544 | 25    |
 | `deltaOf`            | 6,924   | 6,985   | 7,012   | 7,021   | 3     |
 | `getNextStreamId`    | 2,326   | 2,326   | 2,326   | 2,326   | 1     |
@@ -281,10 +281,10 @@ Call-weighted average over all functions: **78,485** gas.
 | `grantRole`          | 29,754  | 29,754  | 29,754  | 29,754  | 20    |
 | `initialize`         | 96,440  | 96,440  | 96,440  | 96,440  | 20    |
 | `isFundsAdmin`       | 2,809   | 2,809   | 2,809   | 2,809   | 1     |
-| `transfer`           | 2,953   | 19,374  | 19,374  | 35,796  | 2     |
-| `withdrawFromStream` | 62,495  | 68,293  | 63,684  | 83,308  | 4     |
+| `transfer`           | 35,796  | 36,652  | 36,652  | 37,509  | 2     |
+| `withdrawFromStream` | 62,482  | 68,283  | 63,671  | 83,307  | 4     |
 
-Call-weighted average over all functions: **78,373** gas.
+Call-weighted average over all functions: **78,694** gas.
 
 ---
 
@@ -373,7 +373,7 @@ All three emission points are instrumented, `CreateStream` included. Leaving one
 Certora verification links:
 
 - Original vs. Cyfrin:  https://prover.certora.com/output/480394/3d1a5de6fe834197ae8eb18b1ffd43fd?anonymousKey=d55f60a2f1f4dfbff4f843dbd7eee33519697659
-- Original vs. Ours: https://prover.certora.com/output/480394/cc7981b6170c408fa75ec0d765717dc3?anonymousKey=1f7ec975d74d5c17be868c9c2b889a3a16b072c6
+- Original vs. Ours: https://prover.certora.com/output/480394/810285827e5c45b5a886a18d989f26c6?anonymousKey=c045c2c727a89c84fada2e792c25d6e258a5460a
 
 Every rule is `VERIFIED` in both runs except `gasOptimizedCorrectnessOfCreateStream`, which reports a counterexample in both, through the coupling-invariant assertion. It is the `address(this)` artefact of the two-instance encoding: `createStream` compares `recipient` against `address(this)` and stores `address(this)` into the `sender` field, and the prover must place the two instances at distinct symbolic addresses. Both halves of the divergence are outside the observation the framework fixes in advance, and no real deployment exhibits either.
 
@@ -386,16 +386,16 @@ The recorder conjuncts introduced no counterexample of their own. `withdrawFromS
 | Metric                     | Cyfrin vs. Original | Ours vs. Original | Ours vs. Cyfrin |
 |----------------------------|---------------------|-------------------|-----------------|
 | Rules applied (cumulative) | 15, 20, 24          | 15, 20, 24, 16    | —               |
-| Deploy cost (gas)          | −112,664 (−7.59%)   | −116,096 (−7.82%) | −3,432 (−0.25%) |
-| Deploy size (bytes)        | −521 (−7.76%)       | −537 (−8.00%)     | −16 (−0.26%)    |
-| Avg Fn. Gas                | −568 (−0.72%)       | −680 (−0.86%)     | −112 (−0.14%)   |
+| Deploy cost (gas)          | −112,664 (−7.59%)   | −115,244 (−7.76%) | −2,580 (−0.19%) |
+| Deploy size (bytes)        | −521 (−7.76%)       | −533 (−7.94%)     | −12 (−0.19%)    |
+| Avg Fn. Gas                | −568 (−0.72%)       | −681 (−0.86%)     | −113 (−0.14%)   |
 | `deltaOf` avg              | −10,922             | −10,922           | 0               |
-| `cancelStream` avg         | −2,933              | −4,100            | −1,167          |
-| `withdrawFromStream` avg   | −2,015              | −3,781            | −1,766          |
+| `cancelStream` avg         | −2,933              | −4,107            | −1,174          |
+| `withdrawFromStream` avg   | −2,015              | −3,791            | −1,776          |
 | `balanceOf` avg            | −1,038              | −1,024            | +14             |
 | `createStream` avg         | −162                | −173              | −11             |
 | Formally verified          | Yes                 | Yes               | —               |
 
-The principal sources of Cyfrin's savings are Rule 24 applied to `deltaOf` (switching from full struct memory copy to selective field caching), which propagates into `balanceOf`, `withdrawFromStream`, and `cancelStream`; Rule 20, which converts the `onlyAdminOrRecipient` modifier into an internal function; and the structural simplification of `balanceOf` and `createStream` through removal of auxiliary memory structs, which is not covered by the catalogue. Our additional savings relative to Cyfrin are driven by Rule 16 (Short-Circuiting) in `_onlyAdminOrRecipient`, which avoids an `SLOAD` from `hasRole` on the common recipient-caller path in `withdrawFromStream` and `cancelStream`, and by Rule 15 in the `onlyFundsAdmin` modifier.
+The principal sources of Cyfrin's savings are Rule 24 applied to `deltaOf` (switching from full struct memory copy to selective field caching), which propagates into `balanceOf`, `withdrawFromStream`, and `cancelStream`; Rule 20, which converts the `onlyAdminOrRecipient` modifier into an internal function; and the structural simplification of `balanceOf` and `createStream` through removal of auxiliary memory structs, which is not covered by the catalogue. Our additional savings relative to Cyfrin are driven at runtime by Rule 16 (Short-Circuiting) in `_onlyAdminOrRecipient`, which avoids an `SLOAD` from `hasRole` on the common recipient-caller path in `withdrawFromStream` and `cancelStream`, and at deployment by Rule 15 in the `onlyFundsAdmin` modifier; Rule 16 contributes no deployment saving.
 
 `Avg Fn. Gas` denotes the call-count-weighted mean of the per-function average gas over all functions in the gas report, i.e. the sum of `avg × calls` divided by the total number of calls.

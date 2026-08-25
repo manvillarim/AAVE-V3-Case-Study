@@ -15,15 +15,19 @@ measured through a harness holding `mapping(address => DataTypes.UserConfigurati
 
 ### 1.1 Cyfrin Optimisation
 
-Cyfrin applies two rules.
+Cyfrin applies one catalogue rule inside this library and enables a second one
+outside it.
 
-**Rule 23 (Cache Storage Variables)**, enabled across library boundaries. Cyfrin
-adds `setBorrowingInMemory` and `setUsingAsCollateralInMemory`, memory counterparts
-of the two storage-writing setters. Their purpose is to let callers (`SupplyLogic`,
-`BorrowLogic`, `LiquidationLogic`) read the user's configuration word once, mutate
-the cached copy, and write it back once.
+**Rule 31 (Named Return Variables)** on `_getFirstAssetIdByMask` is the only
+transformation Cyfrin applies to the library itself, and the −3 bytes it saves are
+the whole of Cyfrin's deployment gain here.
 
-**Rule 31 (Named Return Variables)** on `_getFirstAssetIdByMask`.
+**Rule 23 (Cache Storage Variables)** is *not* applied in this file. Cyfrin adds
+`setBorrowingInMemory` and `setUsingAsCollateralInMemory`, memory counterparts of the
+two storage-writing setters, so that the callers (`SupplyLogic`, `BorrowLogic`,
+`LiquidationLogic`) can read the user's configuration word once, mutate the cached
+copy, and write it back once. The caching itself lives in those callers, which is why
+the subject is credited with Rule 31 alone.
 
 ### 1.2 Our Extended Optimisation
 
@@ -88,6 +92,15 @@ Rule 1 saves exactly −68 gas on every function that contains a guarded bound c
 `setBorrowing`, `setUsingAsCollateral`) and exactly 0 on the other four, which
 contain none. The one Cyfrin runtime change is `getFirstAssetIdByMask` at −37 gas,
 from the Rule 31 named return.
+
+That −68 gas is not the cost of the `require` itself. The guards name their message
+through `Errors.INVALID_RESERVE_INDEX`, a `string public constant` that the compiler
+materialises in memory on every call, not only when the guard fails. Replacing that
+reference by the inline literal `'74'` in the Cyfrin variant, keeping the `require`,
+already yields our figures exactly: 2,729, 2,779, 42,529 and 27,146 gas on
+`isBorrowing`, `isUsingAsCollateral`, `setBorrowing` and `setUsingAsCollateral`. The
+custom error rewrite on its own is worth only a few gas per guard, as the guards with
+inline literals elsewhere in the study show.
 
 ### 2.3 Detailed Gas Snapshots
 
@@ -180,5 +193,6 @@ legacy code generator.
 `UserConfiguration` shows how Rule 1 scales with the number of guarded sites:
 seven bound checks give the largest relative deployment-size reduction in the case
 study (−13.59%) and a fixed −68 gas at each of the five call sites that reach a
-guard at runtime. The gain is specific to the legacy code generator, and reverses
-under Via-IR.
+guard at runtime. The runtime gain is not specific to the legacy code generator: under
+Via-IR it is larger, at −146, −148, −126 and −126 gas on `isBorrowing`,
+`isUsingAsCollateral`, `setBorrowing` and `setUsingAsCollateral`.

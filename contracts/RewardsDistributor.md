@@ -269,7 +269,7 @@ All measurements were obtained with Foundry 1.7.1 (`forge test --gas-report --ma
 | Ours vs. Original   | −221,099 (−12.05%)       | −1,025 (−12.17%)       |
 | Ours vs. Cyfrin     | −193,607 (−10.71%)       | −895 (−10.79%)         |
 
-The dominant contributor to the deployment savings in our variant is Rule 1 (Custom Errors), which removes all string literals associated with `ONLY_EMISSION_MANAGER`, `INVALID_INPUT`, `DISTRIBUTION_DOES_NOT_EXIST`, and `INDEX_OVERFLOW` from the deployed bytecode. Rule 28 (Unchecked Arithmetic) contributes secondary savings by eliminating overflow check instrumentation from eight loops.
+The dominant contributor to the deployment savings in our variant is Rule 24 (Array Member Caching), which accounts for −155,837 gas (−720 bytes) of the reduction: reverting that rule alone, with every other one left in place, takes the harness from 1,613,633 gas / 7,396 bytes back to 1,769,470 gas / 8,116 bytes. Rule 1 (Custom Errors), which removes all string literals associated with `ONLY_EMISSION_MANAGER`, `INVALID_INPUT`, `DISTRIBUTION_DOES_NOT_EXIST`, and `INDEX_OVERFLOW` from the deployed bytecode, accounts for −41,262 gas (−191 bytes), and Rule 28 (Unchecked Arithmetic) for −16,230 gas (−75 bytes), by eliminating overflow check instrumentation from eight loops. Each of these figures is the effect of reverting one rule from the complete variant, so they do not add up exactly to the total.
 
 ### 2.2 Function Execution
 
@@ -426,6 +426,6 @@ All rules are `VERIFIED` in both runs, so the number, order and arguments of the
 | `getUserAccruedRewards` avg| −196                | −196                 | 0                    |
 | Formally verified         | Yes                  | Yes                  | —                    |
 
-The principal sources of savings in our variant are Rule 1 (Custom Errors), which removes string literals from deployment bytecode and accounts for the majority of the ~12% deployment reduction, and the combination of Rule 24 (Array Member Caching) with Rules 26 and 28 (Pre-increment and Unchecked Arithmetic), which drive the runtime reductions concentrated in `configureAssets`, `getAllUserRewards`, and `getUserRewards`. Functions with no loop-bound or string-literal dependencies show no runtime delta across any version, as expected.
+The principal source of savings in our variant is Rule 24 (Array Member Caching), which accounts for −720 of the −1,025 bytes of the deployment reduction and, combined with Rules 26 and 28 (Pre-increment and Unchecked Arithmetic), drives the runtime reductions concentrated in `configureAssets`, `getAllUserRewards`, and `getUserRewards`; Rule 1 (Custom Errors) removes the string literals from the deployment bytecode and accounts for a further −191 bytes. Functions with no loop-bound or string-literal dependencies show no runtime delta across any version, as expected.
 
 `Avg Fn. Gas` denotes the call-count-weighted mean of the per-function average gas over all functions in the gas report, i.e. the sum of `avg × calls` divided by the total number of calls.

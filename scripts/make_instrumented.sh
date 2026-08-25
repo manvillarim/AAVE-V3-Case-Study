@@ -15,10 +15,15 @@
 # WHY IT IS A COPY AND NOT AN EDIT IN PLACE. The same three trees feed the gas
 # benchmark under gas/lib/{origin,cyfrin,ours}, which are symlinks to them. The
 # recorder is semantically transparent -- an empty call -- but it is not always
-# free in bytecode: the optimiser removes it at the emission points of
-# Collector, PoolAddressesProviderRegistry and the top-level ones of
-# RewardsDistributor, and does not remove it from `_updateData`, where the emit
-# sits in a conditional inside a loop inside an `unchecked` block. Measuring gas
+# free in bytecode, and what decides that is the shape of the repeated argument
+# expressions. Stack locals cost nothing: the optimiser removes the call at every
+# emission point of Collector and PoolAddressesProviderRegistry, and at the
+# `Accrued` emit of `_updateData`, even though that one sits in a conditional
+# inside a loop inside an `unchecked` block. Storage and calldata reads do cost:
+# the three `AssetConfigUpdated` emits of RewardsDistributor pass
+# `rewardConfig.distributionEnd` and `rewardsInput[i].asset`, whose loads the
+# duplicate reissues, at 89 to 262 bytes according to the variant and 134 to 350
+# in RewardsController, which inherits them. Measuring gas
 # on instrumented code would inflate the reported savings, and by different
 # amounts in each variant. The benchmark therefore keeps the pristine trees and
 # only the prover sees these copies.

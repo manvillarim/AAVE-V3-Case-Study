@@ -163,12 +163,10 @@ contract Collector_gas_Tests is Test {
         // Fund collector with ETH
         vm.deal(address(collector), 10 ether);
         
+        IERC20 ethMock = IERC20(collector.ETH_MOCK_ADDRESS());
+
         vm.prank(fundsAdmin);
-        collector.transfer(
-            IERC20(collector.ETH_MOCK_ADDRESS()),
-            recipient,
-            1 ether
-        );
+        collector.transfer(ethMock, recipient, 1 ether);
         vm.snapshotGasLastCall('Collector', 'transfer_ETH');
     }
 

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity ^0.8.10;
 
-import {RewardsDistributor} from "../../aave-v3-origin-full-optimized-instr/src/contracts/rewards/RewardsDistributor.sol";
-import {RewardsDataTypes} from "../../aave-v3-origin-full-optimized-instr/src/contracts/rewards/libraries/RewardsDataTypes.sol";
-import {IScaledBalanceToken} from "../../aave-v3-origin-full-optimized-instr/src/contracts/interfaces/IScaledBalanceToken.sol";
+import {RewardsDistributor} from "aave-v3-origin-optimized-instr/src/contracts/rewards/RewardsDistributor.sol";
+import {RewardsDataTypes} from "aave-v3-origin-optimized-instr/src/contracts/rewards/libraries/RewardsDataTypes.sol";
+import {IScaledBalanceToken} from "aave-v3-origin-optimized-instr/src/contracts/interfaces/IScaledBalanceToken.sol";
 
 contract RewardsDistributorOptimized is RewardsDistributor {
     constructor(address emissionManager) RewardsDistributor(emissionManager) {}

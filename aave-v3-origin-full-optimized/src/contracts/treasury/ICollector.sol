@@ -4,18 +4,18 @@ pragma solidity ^0.8.0;
 import {IERC20} from 'openzeppelin-contracts/contracts/token/ERC20/IERC20.sol';
 
 interface ICollector {
-  // Rule 0.6: Struct Packing - reordered fields to pack addresses and bool together
   struct Stream {
-    address sender;           // 20 bytes
-    address recipient;        // 20 bytes
-    address tokenAddress;     // 20 bytes
-    bool isEntity;            // 1 byte
-    uint256 deposit;          // 32 bytes
-    uint256 remainingBalance; // 32 bytes
-    uint256 ratePerSecond;    // 32 bytes
-    uint256 startTime;        // 32 bytes
-    uint256 stopTime;         // 32 bytes
+    uint256 deposit;
+    uint256 ratePerSecond;
+    uint256 remainingBalance;
+    uint256 startTime;
+    uint256 stopTime;
+    address recipient;
+    address sender;
+    address tokenAddress;
+    bool isEntity;
   }
+
   /**
    * @dev Withdraw amount exceeds available balance
    */

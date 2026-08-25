@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.10;
 
-import {RewardsController} from "../../aave-v3-origin-instr/src/contracts/rewards/RewardsController.sol";
+import {RewardsController} from "aave-v3-origin-instr/src/contracts/rewards/RewardsController.sol";
 
 contract RewardsControllerOriginal is RewardsController {
 constructor(address emissionManager) RewardsController(emissionManager) {}
