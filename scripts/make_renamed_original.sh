@@ -52,4 +52,4 @@ done
 find "$DST/src" -name 'DataTypes.sol' -exec bash -c 'mv "$1" "${1%/*}/DataTypesOrig.sol"' _ {} \;
 
 echo "built $DST"
-echo "verify with: python3 ~/certora_builds/certoraRun.py --prover_version master conf/Pool.conf --compilation_steps_only"
+echo "verify with: certoraRun --prover_version master conf/Pool.conf --compilation_steps_only"

@@ -42,12 +42,17 @@ Alexandre Cabral Mota[0000-0003-4416-8123] - acm@cin.ufpe.br
 │   ├── MathUtils.md
 │   ├── UserConfiguration.md
 │   ├── CalldataLogic.md
-│   └── ReserveLogic.md
-│                                         #   of the Cyfrin diff against the catalogue
+│   ├── ReserveLogic.md
+│   └── cyfrin-transformation-classification.md
+│                                         #   Classification of the Cyfrin diff
+│                                         #   against the catalogue
 ├── gas/                                  # Foundry project measuring the library subjects
 │                                         #   and Pool under both compiler profiles
 ├── Harness/                              # Harness contracts for Certora verification
 ├── specs/                                # CVL specifications for this case study
+│   └── Structures/                       #   Ghost state shared by the specs above
+├── scripts/                              # Generators for the four trees above, and a
+│                                         #   wiring check over conf/
 └── license.txt
 ```
 
@@ -68,6 +73,10 @@ Detailed reports for each analysed contract, covering the transformations applie
 | `UserConfiguration` | [contracts/UserConfiguration.md](contracts/UserConfiguration.md) |
 | `CalldataLogic` | [contracts/CalldataLogic.md](contracts/CalldataLogic.md) |
 | `ReserveLogic` | [contracts/ReserveLogic.md](contracts/ReserveLogic.md) |
+
+[contracts/cyfrin-transformation-classification.md](contracts/cyfrin-transformation-classification.md)
+sits alongside them and classifies every edit of the Cyfrin diff against the
+catalogue of transformations, including the files no subject covers.
 
 ### Subject coverage
 
@@ -95,8 +104,21 @@ original tree that resolves this; it is generated, not hand-edited, and only the
 
 ## Requirements
 
-1. [Certora Prover](https://www.certora.com/) (with a valid API key)
-2. [Foundry Framework](https://getfoundry.sh/)
+1. [Certora Prover](https://www.certora.com/) — the `certora-cli` package, with the API key
+   exported as `CERTORAKEY`. All 20 configurations set `"server": "production"`, so every
+   run is a cloud job. Developed against `certora-cli` 8.8.0.
+2. [Foundry Framework](https://getfoundry.sh/) — `forge`. Developed against forge 1.7.1.
+3. `solc` on the `PATH`. No configuration pins a compiler version for the prover, so it uses
+   whichever is installed (0.8.26 in the environment these runs were made in); the
+   configurations set the optimiser, the EVM version and the Yul pipeline themselves. Every
+   Foundry project here pins `0.8.22` in its own `foundry.toml`, so `forge` fetches that
+   compiler itself and the gas figures do not depend on what is on the `PATH`.
+4. Python 3, for the two tree generators and for `scripts/check_conf_wiring.py`.
+
+The Foundry dependencies of the three subject trees — `forge-std`, `solidity-utils` and the
+OpenZeppelin trees below it — are committed as ordinary files rather than submodules, even
+though `aave-v3-origin/.gitmodules` still declares them as such. A clone gets them directly:
+neither `git submodule update` nor `forge install` is needed.
 
 ---
 
@@ -125,7 +147,7 @@ python3 scripts/check_conf_wiring.py    # 20 configurations checked, 0 problems
 ### 2. Run a configuration
 
 ```bash
-certoraRun.py --prover_version master conf/<NAME_OF_CONF_FILE>.conf
+certoraRun --prover_version master conf/<NAME_OF_CONF_FILE>.conf
 ```
 
 There are 20 configurations, two per subject: `<Subject>.conf` compares the
@@ -144,6 +166,21 @@ To typecheck without consuming prover time, add `--compilation_steps_only`.
 
 ### Library subjects and `Pool`
 
+`gas/` reaches the three subject trees through `gas/lib/`, which holds symlinks rather than
+vendored copies so that the benchmark always measures the same source the prover verifies.
+The directory is not checked in, so recreate it once after cloning, from the **repository
+root**:
+
+```bash
+mkdir -p gas/lib
+ln -sfn ../../aave-v3-origin                        gas/lib/origin
+ln -sfn ../../aave-v3-origin-liquidation-gas-fixes  gas/lib/cyfrin
+ln -sfn ../../aave-v3-origin-full-optimized         gas/lib/ours
+ln -sfn ../../aave-v3-origin/lib/forge-std          gas/lib/forge-std
+```
+
+Then:
+
 ```bash
 cd gas
 forge test --gas-report --match-contract '^MathUtilsOriginGas$'    # Standard profile
@@ -152,7 +189,21 @@ FOUNDRY_PROFILE=viair forge test --gas-report --match-contract '^MathUtilsOursGa
 
 Each subject-version pair has its own test contract, so that versions with
 identical bytecode (for example `CalldataLogicCyfrin` and `CalldataLogicOurs`)
-are not merged into a single gas-report entry. The Via-IR profile skips `Pool`:
+are not merged into a single gas-report entry. The names are `<Subject><Version>Gas`
+with `Version` one of `Origin`, `Cyfrin` and `Ours`, over five subjects:
+
+| Subject | Test contracts |
+|---------|----------------|
+| `MathUtils` | `MathUtilsOriginGas`, `MathUtilsCyfrinGas`, `MathUtilsOursGas` |
+| `CalldataLogic` | `CalldataLogicOriginGas`, `CalldataLogicCyfrinGas`, `CalldataLogicOursGas` |
+| `UserConfiguration` | `UserConfigurationOriginGas`, `UserConfigurationCyfrinGas`, `UserConfigurationOursGas` |
+| `ReserveLogic` | `RLOriginGas`, `RLCyfrinGas`, `RLOursGas` |
+| `Pool` | `PoolOriginGas`, `PoolCyfrinGas`, `PoolOursGas` |
+
+`ReserveLogic` is the one exception to the pattern: its contracts are prefixed `RL`, so
+`--match-contract '^ReserveLogicOriginGas$'` matches nothing.
+
+The Via-IR profile skips `Pool`:
 the full AAVE tree does not compile through the Yul pipeline at solc 0.8.22
 (`SupplyLogic` hits a "stack too deep" error).
 
@@ -180,6 +231,11 @@ forge test --gas-report --match-contract RewardsDistributor_gas_Tests
 cd aave-v3-origin-full-optimized
 forge test --gas-report --match-contract RewardsDistributor_gas_Tests
 ```
+
+The three trees carry the same test-contract names. Those covering the five contract
+subjects are `PoolAddressesProviderRegistry_gas_Tests`, `RewardsController_gas_Tests`,
+`RewardsDistributor_gas_Tests` and `Collector_gas_Tests`; `Pool` is split across
+`PoolOperations_gas_Tests`, `PoolGetters_gas_Tests` and `PoolSetters_gas_Tests`.
 
 ---
 
